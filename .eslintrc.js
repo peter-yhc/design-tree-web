@@ -22,12 +22,16 @@ module.exports = {
   rules: {
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     'react/jsx-props-no-spreading': [0, {}],
-    'import/extensions': ['error', 'ignorePackages', {
-      js: 'never', jsx: 'never', ts: 'never', tsx: 'never',
-    },
-    ],
+    'import/extensions': [0, {}],
     // note you must disable the base rule as it can report incorrect errors, https://stackoverflow.com/a/64024916
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
   },
 };

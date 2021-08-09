@@ -19,7 +19,7 @@
     "isolatedModules": true,
     "noEmit": false,
     "jsx": "react-jsx",
-    "baseUrl": "src"
+    "baseUrl": "./src"
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
