@@ -7,6 +7,7 @@ module.exports = {
   mode: process.env.NODE_ENV || 'development',
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
+    modules: [path.resolve('./src'), path.resolve('./node_modules')],
   },
   devServer: {
     contentBase: path.join(__dirname, 'src'),
