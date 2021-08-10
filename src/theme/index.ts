@@ -28,3 +28,9 @@ export default {
   innerSpacing,
   outerSpacing,
 };
+
+export interface ThemeType {
+  colours: any;
+  innerSpacing: any;
+  outerSpacing: any;
+}

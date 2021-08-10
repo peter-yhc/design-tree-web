@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import styled from 'styled-components';
 import Logo from 'assets/images/Logo.svg';
 import { Link } from 'react-router-dom';
@@ -9,6 +9,7 @@ const Nav = styled.nav`
   height: 100%;
   border-right: 1px ${(props) => props.theme.colours.grey} solid;
   padding: ${(props) => props.theme.innerSpacing.large};
+  background-color: ${(props) => props.theme.colours.lightGrey};
 `;
 
 const LogoContainer = styled.div`
@@ -47,9 +48,13 @@ const SubCategories = styled.div`
   display: flex;
   flex-direction: column;
 `;
+const ProjectLabel = styled.label`
+  display: block;
+  margin-top: ${(props) => props.theme.outerSpacing.medium};
+`;
 
 const ProjectSelect = styled(Select)`
-  margin-top: ${(props) => props.theme.outerSpacing.medium};
+  font-weight: 600;
   margin-bottom: ${(props) => props.theme.outerSpacing.medium};
 `;
 
@@ -57,7 +62,7 @@ const NewCategoryButton = styled(Button)`
   margin-top: ${(props) => props.theme.outerSpacing.medium}
 `;
 
-export default function SideNav() {
+export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
   const availableProjects = ['Taylor Home', 'Garden'];
   const activeCategories: Record<string, string[]> = {
     Kitchen: ['Cabinets', 'Windows'],
@@ -68,32 +73,35 @@ export default function SideNav() {
     Bathtubs: [],
   };
 
+  const renderCategories = () => Object.keys(activeCategories).map((category) => (
+    <React.Fragment key={category}>
+      <CategoryLink role="listitem" to="#">{category}</CategoryLink>
+      { activeCategories[category].length > 1
+        ? (
+          <SubCategories>
+            {activeCategories[category].map((subCategory) => (
+              <SubCategoryLink role="listitem" to="#" key={subCategory}>
+                {subCategory}
+              </SubCategoryLink>
+            ))}
+          </SubCategories>
+        )
+        : ''}
+    </React.Fragment>
+  ));
+
   return (
-    <Nav>
+    <Nav className={className}>
       <LogoContainer>
         <LogoImage src={Logo} alt="" />
         <h3>Design Tree</h3>
       </LogoContainer>
-      <ProjectSelect values={availableProjects} />
+      <ProjectLabel>
+        <h6>Current Project:</h6>
+        <ProjectSelect values={availableProjects} />
+      </ProjectLabel>
       <Categories role="list">
-        {
-          Object.keys(activeCategories).map((category) => (
-            <React.Fragment key={category}>
-              <CategoryLink role="listitem" to="#">{category}</CategoryLink>
-              {
-                activeCategories[category].length > 1
-                  ? (
-                    <SubCategories>
-                      {activeCategories[category].map((subCategory) => (
-                        <SubCategoryLink role="listitem" to="#" key={subCategory}>{subCategory}</SubCategoryLink>
-                      ))}
-                    </SubCategories>
-                  )
-                  : ''
-              }
-            </React.Fragment>
-          ))
-        }
+        { renderCategories() }
       </Categories>
       <NewCategoryButton inline>
         + New Category

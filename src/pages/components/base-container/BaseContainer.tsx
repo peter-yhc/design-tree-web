@@ -6,6 +6,21 @@ const Container = styled.div`
   height: 100%;
   display: grid;
   grid-template-columns: 250px auto;
+  grid-template-rows: 60px auto;
+  grid-template-areas: "nav header" "nav main";
+`;
+
+const Nav = styled(SideNav)`
+  grid-area: nav;
+`;
+
+const Header = styled.header`
+  grid-area: header;
+  border-bottom: 1px ${(props) => props.theme.colours.grey} solid;
+`;
+
+const Main = styled.main`
+  grid-area: main;
 `;
 
 interface BaseContainerProps {
@@ -15,8 +30,13 @@ interface BaseContainerProps {
 export default function BaseContainer({ children }: BaseContainerProps) {
   return (
     <Container>
-      <SideNav />
-      {children}
+      <Nav />
+      <Header>
+        Search
+      </Header>
+      <Main>
+        {children}
+      </Main>
     </Container>
   );
 }

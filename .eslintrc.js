@@ -26,6 +26,7 @@ module.exports = {
     // note you must disable the base rule as it can report incorrect errors, https://stackoverflow.com/a/64024916
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
+    'jsx-a11y/label-has-associated-control': [0, {}],
   },
   settings: {
     'import/resolver': {

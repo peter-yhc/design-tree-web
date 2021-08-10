@@ -4,6 +4,7 @@ import styled from 'styled-components';
 const SelectBox = styled.select`
   margin-left: -4px;
   border: 0;
+  background-color: transparent;
 `;
 
 interface SelectProps {
