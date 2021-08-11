@@ -15,10 +15,14 @@ const Nav = styled.nav`
 const LogoContainer = styled.div`
   display: flex;
   align-items: center;
+  margin-top: -${(props) => props.theme.innerSpacing.large};
+  height: 60px;
 `;
 
 const LogoImage = styled.img`
   margin-right: ${(props) => props.theme.outerSpacing.small};
+  width: 35px;
+  height: 35px;
 `;
 
 const Categories = styled.div`

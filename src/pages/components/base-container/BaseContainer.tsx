@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import SideNav from 'pages/components/side-nav/SideNav';
+import { Search } from 'react-feather';
 
 const Container = styled.div`
   height: 100%;
@@ -16,6 +17,8 @@ const Nav = styled(SideNav)`
 
 const Header = styled.header`
   grid-area: header;
+  display: flex;
+  align-items: center;
   border-bottom: 1px ${(props) => props.theme.colours.grey} solid;
 `;
 
@@ -32,7 +35,9 @@ export default function BaseContainer({ children }: BaseContainerProps) {
     <Container>
       <Nav />
       <Header>
-        Search
+        <Search />
+        {' '}
+        Search ...
       </Header>
       <Main>
         {children}
