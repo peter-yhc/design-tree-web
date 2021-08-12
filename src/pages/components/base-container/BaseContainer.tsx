@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import SideNav from 'pages/components/side-nav/SideNav';
-import { Search } from 'react-feather';
+import { SearchIcon, UserCircleIcon } from '@heroicons/react/outline';
 
 const Container = styled.div`
   height: 100%;
@@ -18,12 +18,45 @@ const Nav = styled(SideNav)`
 const Header = styled.header`
   grid-area: header;
   display: flex;
-  align-items: center;
+  justify-content: space-between;
   border-bottom: 1px ${(props) => props.theme.colours.grey} solid;
 `;
 
 const Main = styled.main`
   grid-area: main;
+`;
+
+const SearchBox = styled.div`
+  display: flex;
+  align-items: center;
+  padding-left: ${(props) => props.theme.outerSpacing.medium};
+`;
+
+const Search = styled(SearchIcon)`
+  color: ${(props) => props.theme.colours.grey};
+  width: 1.6em;
+`;
+
+const SearchField = styled.input`
+  border: 0;
+  outline: none;
+  color: ${(props) => props.theme.colours.black};
+  margin-left: ${(props) => props.theme.outerSpacing.tiny};
+  
+  &::placeholder {
+    color: ${(props) => props.theme.colours.darkGrey};
+  }
+`;
+
+const SecondaryLinks = styled.div`
+  display: flex;
+  align-items: center;
+  padding-right: ${(props) => props.theme.outerSpacing.medium};
+`;
+
+const UserCircle = styled(UserCircleIcon)`
+  color: ${(props) => props.theme.colours.black};
+  width: 1.75em;
 `;
 
 interface BaseContainerProps {
@@ -35,9 +68,13 @@ export default function BaseContainer({ children }: BaseContainerProps) {
     <Container>
       <Nav />
       <Header>
-        <Search />
-        {' '}
-        Search ...
+        <SearchBox>
+          <Search />
+          <SearchField placeholder="Search..." />
+        </SearchBox>
+        <SecondaryLinks>
+          <UserCircle />
+        </SecondaryLinks>
       </Header>
       <Main>
         {children}
