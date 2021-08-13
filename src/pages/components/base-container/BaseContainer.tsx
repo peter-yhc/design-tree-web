@@ -24,6 +24,7 @@ const Header = styled.header`
 
 const Main = styled.main`
   grid-area: main;
+  padding: ${(props) => props.theme.outerSpacing.medium}
 `;
 
 const SearchBox = styled.div`
