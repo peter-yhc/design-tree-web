@@ -41,9 +41,20 @@ export default function Dashboard() {
   return (
     <BaseContainer>
       <h1>Kitchen</h1>
-      <h1>Bathroom</h1>
-      <h1>Wardrobe</h1>
-      <h1>Bedroom 1</h1>
+      <TileContainer>
+        <PreviewTile src={a01} />
+        <PreviewTile src={a02} />
+        <PreviewTile src={a03} />
+        <PreviewTile src={a04} />
+        <PreviewTile src={a05} />
+        <PreviewTile src={a06} />
+        <PreviewTile src={a07} />
+        <PreviewTile src={a08} />
+        <PreviewTile src={a09} />
+        <PreviewTile src={a10} />
+        <PreviewTile src={a11} />
+        <PreviewTile src={a12} />
+      </TileContainer>
     </BaseContainer>
   );
 }
