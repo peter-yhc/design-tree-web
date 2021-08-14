@@ -65,20 +65,20 @@ const NewCategoryButton = styled(Button)`
 `;
 
 export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
-  const activeProject = 'Taylor Home';
+  const activeProjectId = 'taylor-home';
   const { availableProjects, activeCategories } = useSelector((state:RootState) => ({
-    availableProjects: state.profile.projects.reduce((acc, cv) => [...acc, cv.name], [] as string[]),
-    activeCategories: state.profile.projects.find((p) => p.name === activeProject)?.categories || [],
+    availableProjects: Object.values(state.profile.projects).reduce((acc, cv) => [...acc, cv.name], [] as string[]),
+    activeCategories: state.profile.projects[activeProjectId]?.categories || {},
   }));
 
-  const renderCategories = () => activeCategories.map((category) => (
-    <React.Fragment key={category.id}>
-      <CategoryLink role="listitem" to={`/${category.id}`}>{category.name}</CategoryLink>
-      { category.subCategories.length > 0
+  const renderCategories = () => Object.entries(activeCategories).map(([id, category]) => (
+    <React.Fragment key={id}>
+      <CategoryLink role="listitem" to={`/${id}`}>{category.name}</CategoryLink>
+      { Object.keys(category.subCategories).length > 0
       && (
       <SubCategories>
-        {category.subCategories.map((subCategory) => (
-          <SubCategoryLink role="listitem" to={`/${category.id}/${subCategory.id}`} key={subCategory.id}>
+        {Object.entries(category.subCategories).map(([subId, subCategory]) => (
+          <SubCategoryLink role="listitem" to={`/${id}/${subId}`} key={subId}>
             {subCategory.name}
           </SubCategoryLink>
         ))}
