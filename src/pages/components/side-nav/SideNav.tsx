@@ -2,8 +2,10 @@ import React, { HTMLAttributes } from 'react';
 import styled from 'styled-components';
 import Logo from 'assets/images/Logo.svg';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Select from '../select/Select';
 import Button from '../button/Button';
+import { RootState } from '../../../store';
 
 const Nav = styled.nav`
   height: 100%;
@@ -36,22 +38,18 @@ const CategoryLink = styled(Link)`
   margin: ${(props) => `calc(${props.theme.outerSpacing.tiny} / 2)`};
 `;
 
-const SubCategoryLink = styled(CategoryLink)`
-  margin-left: ${(props) => props.theme.outerSpacing.small};
-  
-  &:first-child {
-    margin-top: calc(${(props) => props.theme.outerSpacing.small}/2);
-  }
-  
-  &:last-child {
-    margin-bottom: calc(${(props) => props.theme.outerSpacing.small}/2);
-  }
-`;
-
 const SubCategories = styled.div`
   display: flex;
   flex-direction: column;
+  border-left: 1px solid gray;
+  margin: ${(props) => `calc(${props.theme.outerSpacing.tiny} / 2)`} 0 ${(props) => `calc(${props.theme.outerSpacing.tiny} / 2)`} 4px;
 `;
+
+const SubCategoryLink = styled(CategoryLink)`
+  margin-left: ${(props) => props.theme.outerSpacing.medium};
+  color: ${(props) => props.theme.colours.darkGrey};
+`;
+
 const ProjectLabel = styled.label`
   display: block;
   margin-top: ${(props) => props.theme.outerSpacing.medium};
@@ -67,30 +65,25 @@ const NewCategoryButton = styled(Button)`
 `;
 
 export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
-  const availableProjects = ['Taylor Home', 'Garden'];
-  const activeCategories: Record<string, string[]> = {
-    Kitchen: ['Cabinets', 'Windows'],
-    Bathroom: [],
-    Wardrobe: [],
-    'Bedroom 1': [],
-    'Bedroom 2': [],
-    Bathtubs: [],
-  };
+  const activeProject = 'Taylor Home';
+  const { availableProjects, activeCategories } = useSelector((state:RootState) => ({
+    availableProjects: state.profile.projects.reduce((acc, cv) => [...acc, cv.name], [] as string[]),
+    activeCategories: state.profile.projects.find((p) => p.name === activeProject)?.categories || [],
+  }));
 
-  const renderCategories = () => Object.keys(activeCategories).map((category) => (
-    <React.Fragment key={category}>
-      <CategoryLink role="listitem" to="#">{category}</CategoryLink>
-      { activeCategories[category].length > 1
-        ? (
-          <SubCategories>
-            {activeCategories[category].map((subCategory) => (
-              <SubCategoryLink role="listitem" to="#" key={subCategory}>
-                {subCategory}
-              </SubCategoryLink>
-            ))}
-          </SubCategories>
-        )
-        : ''}
+  const renderCategories = () => activeCategories.map((category) => (
+    <React.Fragment key={category.id}>
+      <CategoryLink role="listitem" to={`/${category.id}`}>{category.name}</CategoryLink>
+      { category.subCategories.length > 0
+      && (
+      <SubCategories>
+        {category.subCategories.map((subCategory) => (
+          <SubCategoryLink role="listitem" to={`/${category.id}/${subCategory.id}`} key={subCategory.id}>
+            {subCategory.name}
+          </SubCategoryLink>
+        ))}
+      </SubCategories>
+      )}
     </React.Fragment>
   ));
 

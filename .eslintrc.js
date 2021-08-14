@@ -27,6 +27,7 @@ module.exports = {
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
     'jsx-a11y/label-has-associated-control': [0, {}],
+    'max-len': [0, {}],
   },
   settings: {
     'import/resolver': {
