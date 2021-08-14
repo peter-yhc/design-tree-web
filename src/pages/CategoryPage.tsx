@@ -12,53 +12,38 @@ import a09 from 'assets/images/9.png';
 import a10 from 'assets/images/10.png';
 import a11 from 'assets/images/11.png';
 import a12 from 'assets/images/12.png';
-import { RouteComponentProps } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import BaseContainer from './components/base-container/BaseContainer';
 import PreviewTile from './components/preview-tile/PreviewTile';
-import { RootState } from '../store';
+import BreadCrumbs from './components/bread-crumbs/BreadCrumbs';
+import PageTitle from './components/page-title/PageTitle';
 
 const TileContainer = styled.section`
   column-count: 5;
   column-gap: ${(props) => props.theme.outerSpacing.small};
   line-height: 0;
-  
+
   @media screen and (max-width: 1440px) {
     column-count: 4;
   }
-  
+
   @media screen and (max-width: 1280px) {
     column-count: 3;
   }
-  
+
   @media screen and (max-width: 960px) {
     column-count: 2;
   }
-  
+
   @media screen and (max-width: 720px) {
     column-count: 1;
   }
 `;
 
-interface MatchProps {
-  category: string;
-  subcategory: string;
-}
-
-export default function CategoryPage({ match }: RouteComponentProps<MatchProps>) {
-  const activeProjectId = 'taylor-home';
-  const categories = useSelector((state: RootState) => state.profile.projects[activeProjectId].categories);
-  const [category, subCategory] = [match.params.category, match.params.subcategory];
-
+export default function CategoryPage() {
   return (
     <BaseContainer>
-      <h1>
-        {
-          categories[category].subCategories[subCategory]
-            ? categories[category].subCategories[subCategory].name
-            : categories[category].name
-        }
-      </h1>
+      <BreadCrumbs />
+      <PageTitle />
       <TileContainer>
         <PreviewTile src={a01} />
         <PreviewTile src={a02} />

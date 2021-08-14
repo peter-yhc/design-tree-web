@@ -52,6 +52,10 @@ const GlobalStyle = createGlobalStyle<{theme: ThemeType}>`
   
   h1, h2, h3, h4, h5, h6 {
     color: ${(props) => props.theme.colours.black};
+    
+    &:first-child {
+      margin-top: 0;
+    }
   }
 
   button, input, textarea, select {
