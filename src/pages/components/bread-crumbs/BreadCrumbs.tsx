@@ -1,8 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Link, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
-import { RootState } from '../../../store';
+import { useProject } from '../../../hooks';
 
 interface MatchProps {
     category: string;
@@ -16,17 +15,16 @@ const BreadCrumbLink = styled(Link)`
 
 export default function BreadCrumbs() {
   const match = useRouteMatch<MatchProps>();
-  const activeProjectId = useSelector((state: RootState) => state.system.activeProjectId) as string;
-  const categories = useSelector((state: RootState) => state.profile.projects[activeProjectId].categories);
+  const { projectName, projectCategories } = useProject();
   const [category, subcategory] = [match.params.category, match.params.subcategory];
 
   return (
     <h5>
-      Taylor Home
+      <BreadCrumbLink to="/dashboard">{projectName}</BreadCrumbLink>
       {' > '}
-      <BreadCrumbLink to={`/${category}`}>{categories[category].name}</BreadCrumbLink>
+      <BreadCrumbLink to={`/${category}`}>{projectCategories[category].name}</BreadCrumbLink>
       {subcategory && ' > '}
-      {subcategory && <BreadCrumbLink to={`/${category}/${subcategory}`}>{categories[category].subCategories[subcategory].name}</BreadCrumbLink>}
+      {subcategory && <BreadCrumbLink to={`/${category}/${subcategory}`}>{projectCategories[category].subCategories[subcategory].name}</BreadCrumbLink>}
     </h5>
   );
 }

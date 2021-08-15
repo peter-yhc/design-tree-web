@@ -2,10 +2,9 @@ import React, { HTMLAttributes } from 'react';
 import styled from 'styled-components';
 import Logo from 'assets/images/Logo.svg';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import Select from '../select/Select';
 import Button from '../button/Button';
-import { RootState } from '../../../store';
+import ProjectSelector from './components/ProjectSelector';
+import { useProject } from '../../../hooks';
 
 const Nav = styled.nav`
   height: 100%;
@@ -55,7 +54,7 @@ const ProjectLabel = styled.label`
   margin-top: ${(props) => props.theme.outerSpacing.medium};
 `;
 
-const ProjectSelect = styled(Select)`
+const ActiveProjectSelector = styled(ProjectSelector)`
   font-weight: 600;
   margin-bottom: ${(props) => props.theme.outerSpacing.medium};
 `;
@@ -65,25 +64,21 @@ const NewCategoryButton = styled(Button)`
 `;
 
 export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
-  const activeProjectId = 'taylor-home';
-  const { availableProjects, activeCategories } = useSelector((state:RootState) => ({
-    availableProjects: Object.values(state.profile.projects).reduce((acc, cv) => [...acc, cv.name], [] as string[]),
-    activeCategories: state.profile.projects[activeProjectId]?.categories || {},
-  }));
+  const { projectCategories } = useProject();
 
-  const renderCategories = () => Object.entries(activeCategories).map(([id, category]) => (
+  const renderCategories = () => Object.entries(projectCategories).map(([id, category]) => (
     <React.Fragment key={id}>
       <CategoryLink role="listitem" to={`/${id}`}>{category.name}</CategoryLink>
-      { Object.keys(category.subCategories).length > 0
-      && (
-      <SubCategories>
-        {Object.entries(category.subCategories).map(([subId, subCategory]) => (
-          <SubCategoryLink role="listitem" to={`/${id}/${subId}`} key={subId}>
-            {subCategory.name}
-          </SubCategoryLink>
-        ))}
-      </SubCategories>
-      )}
+      {Object.keys(category.subCategories).length > 0
+        && (
+        <SubCategories>
+          {Object.entries(category.subCategories).map(([subId, subCategory]) => (
+            <SubCategoryLink role="listitem" to={`/${id}/${subId}`} key={subId}>
+              {subCategory.name}
+            </SubCategoryLink>
+          ))}
+        </SubCategories>
+        )}
     </React.Fragment>
   ));
 
@@ -95,10 +90,10 @@ export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
       </LogoContainer>
       <ProjectLabel>
         <h6>Current Project:</h6>
-        <ProjectSelect values={availableProjects} />
+        <ActiveProjectSelector />
       </ProjectLabel>
       <Categories role="list">
-        { renderCategories() }
+        {renderCategories()}
       </Categories>
       <NewCategoryButton inline>
         + New Category

@@ -9,7 +9,9 @@ const { actions, reducer } = createSlice({
   initialState: {
     activeProjectId: 'taylor-home',
   } as InitialStateType,
-  reducers: {},
+  reducers: {
+    changeActiveProject: (state, action) => ({ ...state, activeProjectId: action.payload }),
+  },
 });
 
 export default { actions, reducer };

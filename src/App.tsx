@@ -8,9 +8,9 @@ export default function App() {
       <Route path="/" exact>
         <span>Landing page</span>
       </Route>
+      <Route path="/dashboard" exact component={Dashboard} />
       <Route path="/:category/:subcategory" exact component={CategoryPage} />
       <Route path="/:category" exact component={CategoryPage} />
-      <Route path="/dashboard" exact component={Dashboard} />
     </Switch>
   );
 }
