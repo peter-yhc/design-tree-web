@@ -1,8 +1,11 @@
 import { combineReducers, createStore } from 'redux';
 import profileStore from './profile/profile-store';
+import systemStore from './system/system-store';
 
-// Use ES6 object literal shorthand syntax to define the object shape
-const rootReducer = combineReducers({ profile: profileStore.reducer });
+const rootReducer = combineReducers({
+  profile: profileStore.reducer,
+  system: systemStore.reducer,
+});
 
 const store = createStore(rootReducer);
 

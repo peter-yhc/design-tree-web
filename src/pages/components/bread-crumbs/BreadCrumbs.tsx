@@ -16,7 +16,7 @@ const BreadCrumbLink = styled(Link)`
 
 export default function BreadCrumbs() {
   const match = useRouteMatch<MatchProps>();
-  const activeProjectId = 'taylor-home';
+  const activeProjectId = useSelector((state: RootState) => state.system.activeProjectId) as string;
   const categories = useSelector((state: RootState) => state.profile.projects[activeProjectId].categories);
   const [category, subcategory] = [match.params.category, match.params.subcategory];
 
