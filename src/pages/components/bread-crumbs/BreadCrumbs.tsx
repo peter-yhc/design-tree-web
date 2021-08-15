@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
-import { useProject } from '../../../hooks';
+import { useProject } from 'hooks';
 
 interface MatchProps {
     category: string;

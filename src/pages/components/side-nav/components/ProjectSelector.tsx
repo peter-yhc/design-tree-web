@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { useProject } from '../../../../hooks';
+import { useProject } from 'hooks';
 
 const SelectBox = styled.select`
   margin-left: -4px;

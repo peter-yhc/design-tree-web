@@ -2,9 +2,9 @@ import React, { HTMLAttributes } from 'react';
 import styled from 'styled-components';
 import Logo from 'assets/images/Logo.svg';
 import { Link } from 'react-router-dom';
+import { useProject } from 'hooks';
 import Button from '../button/Button';
 import ProjectSelector from './components/ProjectSelector';
-import { useProject } from '../../../hooks';
 
 const Nav = styled.nav`
   height: 100%;
