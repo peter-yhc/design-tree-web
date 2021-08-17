@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import SideNav from 'pages/components/side-nav/SideNav';
-import { SearchIcon, UserCircleIcon } from '@heroicons/react/outline';
+import { SearchIcon, UserCircleIcon, PencilIcon } from '@heroicons/react/outline';
+import EditDialog from '../edit-dialog/EditDialog';
 
 const Container = styled.div`
   height: 100%;
@@ -74,6 +75,7 @@ export default function BaseContainer({ children }: BaseContainerProps) {
           <SearchField placeholder="Search..." />
         </SearchBox>
         <SecondaryLinks>
+          <EditDialog />
           <UserCircle />
         </SecondaryLinks>
       </Header>

@@ -13,10 +13,13 @@ import a10 from 'assets/images/10.png';
 import a11 from 'assets/images/11.png';
 import a12 from 'assets/images/12.png';
 import { Type } from 'typescript';
+import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import BaseContainer from './components/base-container/BaseContainer';
 import PreviewTile from './components/preview-tile/PreviewTile';
 import BreadCrumbs from './components/bread-crumbs/BreadCrumbs';
 import PageTitle from './components/page-title/PageTitle';
+import { RootState } from '../store';
 
 const TileContainer = styled.section`
   column-count: 5;
@@ -52,6 +55,12 @@ function shuffleArray(array: Array<Type>) {
 }
 
 export default function CategoryPage() {
+  const activeProjectId = useSelector((state: RootState) => state.system.activeProjectId);
+
+  if (!activeProjectId) {
+    return <Redirect to="/dashboard" />;
+  }
+
   const images = [a01, a02, a03, a04, a05, a06, a07, a08, a09, a10, a11, a12];
   shuffleArray([...images, ...images]);
   const randomImages = images.splice(0, Math.floor(Math.random() * (images.length + 1)));
