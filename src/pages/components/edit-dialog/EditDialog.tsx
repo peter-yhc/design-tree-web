@@ -20,9 +20,21 @@ const EditButton = styled.button`
 const Dialog = styled.div`
   position: absolute;
   border: 1px solid red;
+  padding: ${(props) => props.theme.innerSpacing.medium};
   top: 100%;
   right: 50%;
   transform: translateX(50%);
+  
+  &:before {
+    position: absolute;
+    top: -0.3em;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    content: ' ';
+    border: 1px solid blue;
+    width: 1em;
+    height: 1em;
+  }
 `;
 
 export default function EditDialog() {
