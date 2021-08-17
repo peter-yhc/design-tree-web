@@ -12,6 +12,7 @@ import a09 from 'assets/images/9.png';
 import a10 from 'assets/images/10.png';
 import a11 from 'assets/images/11.png';
 import a12 from 'assets/images/12.png';
+import { Type } from 'typescript';
 import BaseContainer from './components/base-container/BaseContainer';
 import PreviewTile from './components/preview-tile/PreviewTile';
 import BreadCrumbs from './components/bread-crumbs/BreadCrumbs';
@@ -39,24 +40,29 @@ const TileContainer = styled.section`
   }
 `;
 
+function shuffleArray(array: Array<Type>) {
+  for (let i = array.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = array[i];
+    // eslint-disable-next-line no-param-reassign
+    array[i] = array[j];
+    // eslint-disable-next-line no-param-reassign
+    array[j] = temp;
+  }
+}
+
 export default function CategoryPage() {
+  const images = [a01, a02, a03, a04, a05, a06, a07, a08, a09, a10, a11, a12];
+  shuffleArray([...images, ...images]);
+  const randomImages = images.splice(0, Math.floor(Math.random() * (images.length + 1)));
   return (
     <BaseContainer>
       <BreadCrumbs />
       <PageTitle />
       <TileContainer>
-        <PreviewTile src={a01} />
-        <PreviewTile src={a02} />
-        <PreviewTile src={a03} />
-        <PreviewTile src={a04} />
-        <PreviewTile src={a05} />
-        <PreviewTile src={a06} />
-        <PreviewTile src={a07} />
-        <PreviewTile src={a08} />
-        <PreviewTile src={a09} />
-        <PreviewTile src={a10} />
-        <PreviewTile src={a11} />
-        <PreviewTile src={a12} />
+        {
+          randomImages.map((i) => <PreviewTile src={i} />)
+        }
       </TileContainer>
     </BaseContainer>
   );
