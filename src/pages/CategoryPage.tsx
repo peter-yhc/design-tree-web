@@ -63,7 +63,6 @@ interface MatchProps {
 export default function CategoryPage() {
   const match = useRouteMatch<MatchProps>();
   const [ready, setReady] = useState(false);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -84,7 +83,8 @@ export default function CategoryPage() {
       <PageTitle />
       <TileContainer>
         {
-          randomImages.map((i) => <PreviewTile src={i} />)
+          // eslint-disable-next-line react/no-array-index-key
+          randomImages.map((v, i) => <PreviewTile key={i} src={v} />)
         }
       </TileContainer>
     </BaseContainer>

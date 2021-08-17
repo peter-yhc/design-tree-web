@@ -15,16 +15,16 @@ const BreadCrumbLink = styled(Link)`
 
 export default function BreadCrumbs() {
   const match = useRouteMatch<MatchProps>();
-  const { projectName, projectCategories } = useProject();
+  const { projectId, projectName, projectCategories } = useProject();
   const [category, subcategory] = [match.params.category, match.params.subcategory];
 
   return (
     <h5>
       <BreadCrumbLink to="/dashboard">{projectName}</BreadCrumbLink>
       {' > '}
-      <BreadCrumbLink to={`/${category}`}>{projectCategories[category].name}</BreadCrumbLink>
+      <BreadCrumbLink to={`/${projectId}/${category}`}>{projectCategories[category].name}</BreadCrumbLink>
       {subcategory && ' > '}
-      {subcategory && <BreadCrumbLink to={`/${category}/${subcategory}`}>{projectCategories[category].subCategories[subcategory].name}</BreadCrumbLink>}
+      {subcategory && <BreadCrumbLink to={`/${projectId}/${category}/${subcategory}`}>{projectCategories[category].subCategories[subcategory].name}</BreadCrumbLink>}
     </h5>
   );
 }
