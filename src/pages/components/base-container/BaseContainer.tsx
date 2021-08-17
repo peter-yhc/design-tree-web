@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import SideNav from 'pages/components/side-nav/SideNav';
-import { SearchIcon, UserCircleIcon, PencilIcon } from '@heroicons/react/outline';
-import EditDialog from '../edit-dialog/EditDialog';
+import { SearchIcon, UserCircleIcon } from '@heroicons/react/outline';
+import SideNav from './components/side-nav/SideNav';
+import EditDialog from './components/edit-dialog/EditDialog';
 
 const Container = styled.div`
   height: 100%;
@@ -44,7 +44,7 @@ const SearchField = styled.input`
   outline: none;
   color: ${(props) => props.theme.colours.black};
   margin-left: ${(props) => props.theme.outerSpacing.tiny};
-  
+
   &::placeholder {
     color: ${(props) => props.theme.colours.darkGrey};
   }
