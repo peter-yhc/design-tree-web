@@ -4,7 +4,7 @@ const colours = {
   accent: 'hsl(35,99%,59%)',
   white: '#f5f5fa',
   black: 'hsl(204,4%,22%)',
-  lightGrey: 'hsl(0,0%,96%)',
+  lightGrey: 'hsl(200,27%,98%)',
   grey: 'hsl(0,0%,82%)',
   darkGrey: 'hsl(0,0%,46%)',
 };

@@ -34,18 +34,21 @@ const Categories = styled.div`
 const CategoryLink = styled(Link)`
   color: ${(props) => props.theme.colours.black};
   text-decoration: none;
-  margin: ${(props) => `calc(${props.theme.outerSpacing.tiny} / 2)`};
+  padding: ${(props) => `calc(${props.theme.outerSpacing.tiny} / 2)`};
+  
+  &:hover {
+    background-color: hsl(200,27%,91%)
+  }
 `;
 
 const SubCategories = styled.div`
   display: flex;
   flex-direction: column;
-  border-left: 1px solid gray;
-  margin: ${(props) => `calc(${props.theme.outerSpacing.tiny} / 2)`} 0 ${(props) => `calc(${props.theme.outerSpacing.tiny} / 2)`} 4px;
+  padding-bottom: ${(props) => props.theme.outerSpacing.small};
 `;
 
 const SubCategoryLink = styled(CategoryLink)`
-  margin-left: ${(props) => props.theme.outerSpacing.medium};
+  padding-left: ${(props) => props.theme.outerSpacing.medium};
   color: ${(props) => props.theme.colours.darkGrey};
 `;
 
