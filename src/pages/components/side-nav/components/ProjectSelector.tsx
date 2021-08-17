@@ -27,10 +27,10 @@ export default function ProjectSelector({ className }: HTMLAttributes<HTMLSelect
   };
 
   return (
-    <SelectBox className={className} onChange={changeHandler}>
+    <SelectBox className={className} onChange={changeHandler} defaultValue={projectId}>
       {
         availableProjects.map((entry) => (
-          <option key={entry.key} value={entry.key} selected={entry.key === projectId}>{entry.value}</option>
+          <option key={entry.key} value={entry.key}>{entry.value}</option>
         ))
       }
     </SelectBox>
