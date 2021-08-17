@@ -67,16 +67,16 @@ const NewCategoryButton = styled(Button)`
 `;
 
 export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
-  const { projectCategories } = useProject();
+  const { projectId, projectCategories } = useProject();
 
   const renderCategories = () => Object.entries(projectCategories).map(([id, category]) => (
     <React.Fragment key={id}>
-      <CategoryLink role="listitem" to={`/${id}`}>{category.name}</CategoryLink>
+      <CategoryLink role="listitem" to={`/${projectId}/${id}`}>{category.name}</CategoryLink>
       {Object.keys(category.subCategories).length > 0
         && (
         <SubCategories>
           {Object.entries(category.subCategories).map(([subId, subCategory]) => (
-            <SubCategoryLink role="listitem" to={`/${id}/${subId}`} key={subId}>
+            <SubCategoryLink role="listitem" to={`/${projectId}/${id}/${subId}`} key={subId}>
               {subCategory.name}
             </SubCategoryLink>
           ))}
