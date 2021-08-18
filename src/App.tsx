@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { CategoryPage, Dashboard, PageNotFound } from './pages';
-import RouteValidator from './hoc/RouteValidator';
+import { RouteValidator } from 'hoc';
+import { CategoryViewPage, Dashboard, PageNotFound } from './pages';
 
 export default function App() {
   return (
@@ -12,12 +12,12 @@ export default function App() {
       <Route path="/dashboard" exact component={Dashboard} />
       <Route path="/:project/:category/:subcategory" exact>
         <RouteValidator>
-          <CategoryPage />
+          <CategoryViewPage />
         </RouteValidator>
       </Route>
       <Route path="/:project/:category" exact>
         <RouteValidator>
-          <CategoryPage />
+          <CategoryViewPage />
         </RouteValidator>
       </Route>
       <Route path="/" component={PageNotFound} />

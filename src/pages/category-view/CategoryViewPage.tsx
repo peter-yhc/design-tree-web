@@ -16,10 +16,11 @@ import { Type } from 'typescript';
 import { useDispatch } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 import systemStore from 'store/system/system-store';
-import BaseContainer from './components/base-container/BaseContainer';
-import PreviewTile from './components/preview-tile/PreviewTile';
-import BreadCrumbs from './components/bread-crumbs/BreadCrumbs';
-import PageTitle from './components/page-title/PageTitle';
+import BaseContainer from '../components/base-container/BaseContainer';
+import PreviewTile from '../components/preview-tile/PreviewTile';
+import BreadCrumbs from '../components/bread-crumbs/BreadCrumbs';
+import PageTitle from '../components/page-title/PageTitle';
+import EditInfo from './components/edit-info/EditInfo';
 
 const TileContainer = styled.section`
   column-count: 5;
@@ -60,7 +61,7 @@ interface MatchProps {
   subcategory: string;
 }
 
-export default function CategoryPage() {
+export default function CategoryViewPage() {
   const match = useRouteMatch<MatchProps>();
   const [ready, setReady] = useState(false);
   const dispatch = useDispatch();
@@ -87,6 +88,7 @@ export default function CategoryPage() {
           randomImages.map((v, i) => <PreviewTile key={i} src={v} />)
         }
       </TileContainer>
+      <EditInfo />
     </BaseContainer>
   );
 }

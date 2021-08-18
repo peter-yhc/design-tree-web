@@ -9,7 +9,7 @@ import { RootState } from '../../../store';
 const Container = styled.div`
   height: 100%;
   display: grid;
-  grid-template-columns: 250px auto;
+  grid-template-columns: ${(props) => props.theme.system.sideNavWidth} auto;
   grid-template-rows: 60px auto;
   grid-template-areas: "nav header" "nav main";
 `;

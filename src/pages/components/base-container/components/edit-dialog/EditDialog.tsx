@@ -25,11 +25,11 @@ const EditButton = styled.button`
 `;
 
 const ActionButton = styled(Button)`
-  margin: 0.4em;
   border: 1px solid ${(props) => props.theme.colours.white};
   background-color: ${(props) => props.theme.colours.white};
   box-shadow: 0 0 3px 1px hsl(0,0%,80%);
   transition: all linear 150ms;
+  margin-bottom: ${(props) => props.theme.outerSpacing.small};
 
   & > svg {
     margin-right: ${(props) => props.theme.outerSpacing.small}
@@ -38,17 +38,20 @@ const ActionButton = styled(Button)`
   &:hover {
     border: 1px solid ${(props) => props.theme.colours.secondary};
   }
+  
+  &:first-child {
+    margin-top: ${(props) => props.theme.outerSpacing.medium};
+  }
 `;
 
 const Dialog = styled.div`
   position: fixed;
   top: 59px;
-  right: 10px;
+  right: ${(props) => props.theme.outerSpacing.medium};
   display: flex;
   flex-direction: column;
-  padding: ${(props) => props.theme.innerSpacing.medium};
-  transition: right ease-in-out 0.3s;
-
+  transition: right ${(props) => props.theme.system.editModeTimings};
+  
   ${(props) => props.hidden && css`
     right: -200px;
   `}

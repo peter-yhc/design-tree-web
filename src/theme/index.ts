@@ -24,14 +24,21 @@ const outerSpacing = {
   xlarge: '4em',
 };
 
+const system = {
+  sideNavWidth: '250px',
+  editModeTimings: 'ease-in-out 300ms',
+};
+
 export default {
   colours,
   innerSpacing,
   outerSpacing,
+  system,
 };
 
 export interface ThemeType {
   colours: any;
   innerSpacing: any;
   outerSpacing: any;
+  system: any;
 }

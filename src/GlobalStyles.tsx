@@ -63,6 +63,10 @@ const GlobalStyle = createGlobalStyle<{theme: ThemeType}>`
     font-family: inherit;
     color: ${(props) => props.theme.colours.black};
   }
+  
+  * {
+    box-sizing: border-box;
+  }
 `;
 
 export default GlobalStyle;

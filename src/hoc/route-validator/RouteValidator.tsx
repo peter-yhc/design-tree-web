@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect, useRouteMatch } from 'react-router-dom';
-import { RootState } from '../store';
+import { RootState } from 'store';
 
 interface RouteValidatorProps{
     children: React.ReactNode
