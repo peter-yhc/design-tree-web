@@ -1,8 +1,13 @@
 import {
   PencilIcon, ArrowCircleRightIcon, DuplicateIcon, TrashIcon, XCircleIcon,
 } from '@heroicons/react/outline';
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import styled, { css } from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store';
+import systemStore from 'store/system/system-store';
+import Button from 'pages/components/button/Button';
+import { useRouteMatch } from 'react-router-dom';
 
 const Container = styled.div`
   position: relative;
@@ -19,69 +24,67 @@ const EditButton = styled.button`
   background-color: transparent;
 `;
 
+const ActionButton = styled(Button)`
+  margin: 0.4em;
+  border: 1px solid ${(props) => props.theme.colours.white};
+  background-color: ${(props) => props.theme.colours.white};
+  box-shadow: 0 0 3px 1px hsl(0,0%,80%);
+  transition: all linear 150ms;
+
+  & > svg {
+    margin-right: ${(props) => props.theme.outerSpacing.small}
+  }
+
+  &:hover {
+    border: 1px solid ${(props) => props.theme.colours.secondary};
+  }
+`;
+
 const Dialog = styled.div`
   position: fixed;
   top: 59px;
   right: 10px;
-  border: 1px solid ${(props) => props.theme.colours.grey};
   display: flex;
   flex-direction: column;
   padding: ${(props) => props.theme.innerSpacing.medium};
-  transition: right ease-out 0.4s;
-  background-color: ${(props) => props.theme.colours.lightGrey};
-  
-  ${(props) => props.hidden && css`
-    right: -100%;
-  `}
-  
-  &:before {
-    position: absolute;
-    top: 50%;
-    right: -0.5em;
-    transform: translateY(-50%) rotate(45deg);
-    content: ' ';
-    border: 1px solid blue;
-    width: 1em;
-    height: 1em;
-  }
-`;
+  transition: right ease-in-out 0.3s;
 
-const Button = styled.button`
-  border: 0;
-  background-color: transparent;
-  display: flex;
-  margin: ${(props) => props.theme.outerSpacing.tiny};
-  
-  & > svg {
-    margin-right: ${(props) => props.theme.outerSpacing.tiny}
-  }
+  ${(props) => props.hidden && css`
+    right: -200px;
+  `}
 `;
 
 export default function EditDialog() {
-  const [dialogHidden, setDialogHidden] = useState(false);
+  const dispatch = useDispatch();
+  const inEditMode = useSelector((state: RootState) => state.system.inEditMode);
+  const match = useRouteMatch();
+
+  useEffect(() => {
+    dispatch(systemStore.actions.toggleEditMode(false));
+  }, [match]);
 
   return (
     <Container>
-      <EditButton onClick={() => setDialogHidden(!dialogHidden)}>
+      <EditButton onClick={() => dispatch(systemStore.actions.toggleEditMode(!inEditMode))}>
         <PencilIcon width="1.6em" />
       </EditButton>
-      <Dialog hidden={dialogHidden}>
-        <Button>
+      <Dialog hidden={!inEditMode}>
+        <ActionButton>
           <ArrowCircleRightIcon width={20} />
           Move
-        </Button>
-        <Button>
+        </ActionButton>
+        <ActionButton>
           <TrashIcon width={20} />
           Delete
-        </Button>
-        <Button>
+        </ActionButton>
+        <ActionButton>
           <DuplicateIcon width={20} />
           Copy
-        </Button>
-        <Button>
+        </ActionButton>
+        <ActionButton>
           <XCircleIcon width={20} />
           Close
-        </Button>
+        </ActionButton>
       </Dialog>
     </Container>
   );

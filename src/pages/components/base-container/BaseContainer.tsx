@@ -1,8 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { SearchIcon, UserCircleIcon } from '@heroicons/react/outline';
+import { useSelector } from 'react-redux';
 import SideNav from './components/side-nav/SideNav';
 import EditDialog from './components/edit-dialog/EditDialog';
+import { RootState } from '../../../store';
 
 const Container = styled.div`
   height: 100%;
@@ -23,9 +25,18 @@ const Header = styled.header`
   border-bottom: 1px ${(props) => props.theme.colours.grey} solid;
 `;
 
-const Main = styled.main`
+interface MainProps {
+  highlight?: boolean
+}
+
+const Main = styled.main<MainProps>`
   grid-area: main;
-  padding: ${(props) => props.theme.outerSpacing.medium}
+  padding: ${(props) => props.theme.outerSpacing.medium};
+  transition: all ease-in-out 150ms;
+  
+  ${(props) => props.highlight && css`
+    box-shadow: inset 0 0 2px 1px ${props.theme.colours.secondary};
+  `};
 `;
 
 const SearchBox = styled.div`
@@ -66,6 +77,8 @@ interface BaseContainerProps {
 }
 
 export default function BaseContainer({ children }: BaseContainerProps) {
+  const editMode = useSelector((state: RootState) => state.system.inEditMode);
+
   return (
     <Container>
       <Nav />
@@ -79,7 +92,7 @@ export default function BaseContainer({ children }: BaseContainerProps) {
           <UserCircle />
         </SecondaryLinks>
       </Header>
-      <Main>
+      <Main highlight={editMode}>
         {children}
       </Main>
     </Container>

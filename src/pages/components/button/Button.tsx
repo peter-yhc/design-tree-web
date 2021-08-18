@@ -2,9 +2,10 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 
 const Button = styled.button<ButtonProps>`
+  display: flex;
   border: 1px ${(props) => props.theme.colours.grey} solid;
   border-radius: 4px;
-  padding: ${(props) => props.theme.innerSpacing.small} ${(props) => props.theme.innerSpacing.medium};
+  padding: 0.4em 0.75em;
   background-color: transparent;
   color: ${(props) => props.theme.colours.black};
   cursor: pointer;
