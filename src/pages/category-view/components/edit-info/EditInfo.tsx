@@ -10,7 +10,8 @@ interface ContainerProps {
 const Container = styled.section<ContainerProps>`
   position: fixed;
   bottom: ${(props) => props.theme.outerSpacing.medium};
-  left: calc((100vw + ${(props) => props.theme.system.sideNavWidth}) / 2);
+  left: calc(100vw / 2);
+  transform: translateX(-50%);
   display: flex;
   justify-content: center;
   transition: bottom ${(props) => props.theme.system.editModeTimings};

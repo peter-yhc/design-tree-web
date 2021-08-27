@@ -35,7 +35,7 @@ const Main = styled.main<MainProps>`
   transition: all ease-in-out 150ms;
   
   ${(props) => props.highlight && css`
-    box-shadow: inset 0 0 2px 1px ${props.theme.colours.secondary};
+    box-shadow: inset 0 0 0 1px ${props.theme.colours.primary};
   `};
 `;
 
