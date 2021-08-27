@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { SearchIcon, UserCircleIcon } from '@heroicons/react/outline';
 import SideNav from './components/side-nav/SideNav';
 import EditDialog from './components/edit-dialog/EditDialog';
+import NavIndicator from './components/nav-indicator/NavIndicator';
 
 const Container = styled.div`
   height: 100%;
@@ -74,6 +75,7 @@ interface BaseContainerProps {
 export default function BaseContainer({ children }: BaseContainerProps) {
   return (
     <Container>
+      <NavIndicator />
       <Nav />
       <Header>
         <SearchBox>

@@ -1,7 +1,7 @@
 import React, { HTMLAttributes } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Logo from 'assets/images/Logo.svg';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useProject } from 'hooks';
 import Button from '../../../button/Button';
 import ProjectSelector from './components/ProjectSelector';
@@ -30,10 +30,15 @@ const Categories = styled.div`
   flex-direction: column;
 `;
 
-const CategoryLink = styled(Link)`
+interface CategoryLinkProps {
+  active: string;
+}
+
+const CategoryLink = styled(Link)<CategoryLinkProps>`
   color: ${(props) => props.theme.colours.black};
   text-decoration: none;
-  padding: ${(props) => `calc(${props.theme.outerSpacing.tiny} / 2)`};
+  margin: 0 -${(props) => props.theme.innerSpacing.large};
+  padding: ${(props) => `calc(${props.theme.outerSpacing.tiny} / 2)`} ${(props) => props.theme.innerSpacing.large};
   
   &:hover {
     background-color: hsl(200,27%,91%)
@@ -47,7 +52,7 @@ const SubCategories = styled.div`
 `;
 
 const SubCategoryLink = styled(CategoryLink)`
-  padding-left: ${(props) => props.theme.outerSpacing.medium};
+  padding-left: calc(${(props) => props.theme.outerSpacing.medium} + ${(props) => props.theme.innerSpacing.large});
   color: ${(props) => props.theme.colours.darkGrey};
 `;
 
@@ -67,15 +72,27 @@ const NewCategoryButton = styled(Button)`
 
 export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
   const { projectId, projectCategories } = useProject();
+  const location = useLocation();
 
   const renderCategories = () => Object.entries(projectCategories).map(([id, category]) => (
     <React.Fragment key={id}>
-      <CategoryLink role="listitem" to={`/${projectId}/${id}`}>{category.name}</CategoryLink>
+      <CategoryLink
+        role="listitem"
+        to={`/${projectId}/${id}`}
+        active={(location.pathname === `/${projectId}/${id}`).toString()}
+      >
+        {category.name}
+      </CategoryLink>
       {Object.keys(category.subCategories).length > 0
         && (
         <SubCategories>
           {Object.entries(category.subCategories).map(([subId, subCategory]) => (
-            <SubCategoryLink role="listitem" to={`/${projectId}/${id}/${subId}`} key={subId}>
+            <SubCategoryLink
+              role="listitem"
+              to={`/${projectId}/${id}/${subId}`}
+              key={subId}
+              active={(location.pathname === `/${projectId}/${id}/${subId}`).toString()}
+            >
               {subCategory.name}
             </SubCategoryLink>
           ))}
