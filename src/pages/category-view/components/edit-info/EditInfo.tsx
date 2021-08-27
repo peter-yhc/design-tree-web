@@ -19,7 +19,7 @@ const Container = styled.section<ContainerProps>`
   border: 1px solid ${(props) => props.theme.colours.white};
   border-radius: 4px;
   background-color: ${(props) => props.theme.colours.white};
-  box-shadow: 0 0 3px 1px hsl(0,0%,80%);
+  border: 1px solid ${(props) => props.theme.colours.grey};
   
   ${(props) => props.hidden && css`
     bottom: -50px;

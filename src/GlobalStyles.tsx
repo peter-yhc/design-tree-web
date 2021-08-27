@@ -62,6 +62,7 @@ const GlobalStyle = createGlobalStyle<{theme: ThemeType}>`
     font-size: inherit;
     font-family: inherit;
     color: ${(props) => props.theme.colours.black};
+    background-color: transparent;
   }
   
   * {

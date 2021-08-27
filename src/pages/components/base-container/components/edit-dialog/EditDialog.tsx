@@ -25,9 +25,8 @@ const EditButton = styled.button`
 `;
 
 const ActionButton = styled(Button)`
-  border: 1px solid ${(props) => props.theme.colours.white};
+  border: 1px solid ${(props) => props.theme.colours.grey};
   background-color: ${(props) => props.theme.colours.white};
-  box-shadow: 0 0 3px 1px hsl(0,0%,80%);
   transition: all linear 150ms;
   margin-bottom: ${(props) => props.theme.outerSpacing.small};
 

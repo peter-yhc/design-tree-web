@@ -10,7 +10,6 @@ const Nav = styled.nav`
   height: 100%;
   border-right: 1px ${(props) => props.theme.colours.grey} solid;
   padding: ${(props) => props.theme.innerSpacing.large};
-  background-color: ${(props) => props.theme.colours.lightGrey};
 `;
 
 const LogoContainer = styled.div`
