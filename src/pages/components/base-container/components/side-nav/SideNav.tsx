@@ -11,7 +11,7 @@ const Nav = styled.nav`
   border-right: 1px ${(props) => props.theme.colours.grey} solid;
   padding: ${(props) => props.theme.innerSpacing.large};
   display: grid;
-  grid-template-rows: 45px 5em;
+  grid-template-rows: 45px 5em min-content;
 `;
 
 const LogoContainer = styled.div`
@@ -70,6 +70,7 @@ const ActiveProjectSelector = styled(ProjectSelector)`
 `;
 
 const NewCategoryButton = styled(Button)`
+  align-self: flex-start;
   margin-top: ${(props) => props.theme.outerSpacing.medium}
 `;
 
