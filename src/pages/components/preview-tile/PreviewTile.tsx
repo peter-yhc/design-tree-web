@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
 
 const Image = styled.img`
   width: 100%;
@@ -8,10 +10,11 @@ const Image = styled.img`
 `;
 
 interface PreviewTileProps {
-  src: string;
+  id: string;
 }
 
-export default function PreviewTile({ src }: PreviewTileProps) {
+export default function PreviewTile({ id }: PreviewTileProps) {
+  const src = useSelector((state: RootState) => state.images.currentImages[id].src);
   return (
     <Image src={src} alt="rectangle" />
   );

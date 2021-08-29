@@ -42,7 +42,7 @@ interface MatchProps {
 export default function CategoryViewPage() {
   const match = useRouteMatch<MatchProps>();
   const location = useLocation();
-  const images = useSelector((state: RootState) => state.images.images);
+  const images = useSelector((state: RootState) => state.images.currentImages);
   const [ready, setReady] = useState(false);
   const dispatch = useDispatch();
 
@@ -65,7 +65,7 @@ export default function CategoryViewPage() {
       <PageTitle />
       <TileContainer>
         {
-          Object.values(images).map((v) => <PreviewTile key={v.hash} src={v.src} />)
+          Object.values(images).map((v) => <PreviewTile key={v.hash} id={v.hash} />)
         }
       </TileContainer>
       <EditInfo />
