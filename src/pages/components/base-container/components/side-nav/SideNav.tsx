@@ -11,7 +11,7 @@ const Nav = styled.nav`
   border-right: 1px ${(props) => props.theme.colours.grey} solid;
   padding: ${(props) => props.theme.innerSpacing.large};
   display: grid;
-  grid-template-rows: 45px 5em min-content;
+  grid-template-rows: calc(60px - ${(props) => props.theme.innerSpacing.large}) 5em min-content;
 `;
 
 const LogoContainer = styled.div`
