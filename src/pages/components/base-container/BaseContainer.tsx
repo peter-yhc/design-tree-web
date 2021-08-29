@@ -6,7 +6,7 @@ import EditDialog from './components/edit-dialog/EditDialog';
 import NavIndicator from './components/nav-indicator/NavIndicator';
 
 const Container = styled.div`
-  height: 100%;
+  min-height: 100vh;
   display: grid;
   grid-template-columns: ${(props) => props.theme.system.sideNavWidth} auto;
   grid-template-rows: 60px auto;

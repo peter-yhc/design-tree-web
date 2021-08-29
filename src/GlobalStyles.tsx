@@ -8,10 +8,11 @@ const GlobalStyle = createGlobalStyle<{theme: ThemeType}>`
     font-family: "Nunito", Arial, sans-serif;
     font-size: 16px;
     height: 100%;
+    background-color: hsl(210,15%,95%);
   }
 
   #app {
-    height: 100%;
+    min-height: 100vh;
   }
 
   h1 {

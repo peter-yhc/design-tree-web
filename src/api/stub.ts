@@ -279,30 +279,6 @@ const imageData: Record<string, ImageInfo[]> = {
   ],
   '/taylor-home/wardrobe': [
     {
-      name: 'nanV',
-      addedDate: new Date(),
-      src: a02,
-      hash: 'nanVpjXn6I',
-    },
-    {
-      name: 'CaIX',
-      addedDate: new Date(),
-      src: a03,
-      hash: 'CaIX8L123e',
-    },
-    {
-      name: 'l9aI',
-      addedDate: new Date(),
-      src: a04,
-      hash: 'l9aILAxWdA',
-    },
-    {
-      name: 'crFB',
-      addedDate: new Date(),
-      src: a05,
-      hash: 'crFB6bqhgl',
-    },
-    {
       name: 'wIFo',
       addedDate: new Date(),
       src: a06,
