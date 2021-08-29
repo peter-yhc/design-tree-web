@@ -1,5 +1,5 @@
 import React, { HTMLAttributes } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import Logo from 'assets/images/Logo.svg';
 import { Link, useLocation } from 'react-router-dom';
 import { useProject } from 'hooks';
@@ -10,6 +10,8 @@ const Nav = styled.nav`
   height: 100%;
   border-right: 1px ${(props) => props.theme.colours.grey} solid;
   padding: ${(props) => props.theme.innerSpacing.large};
+  display: grid;
+  grid-template-rows: 45px 5em;
 `;
 
 const LogoContainer = styled.div`
@@ -39,6 +41,7 @@ const CategoryLink = styled(Link)<CategoryLinkProps>`
   text-decoration: none;
   margin: 0 -${(props) => props.theme.innerSpacing.large};
   padding: ${(props) => `calc(${props.theme.outerSpacing.tiny} / 2)`} ${(props) => props.theme.innerSpacing.large};
+  line-height: 1.35em;
   
   &:hover {
     background-color: hsl(200,27%,91%)
@@ -57,13 +60,13 @@ const SubCategoryLink = styled(CategoryLink)`
 `;
 
 const ProjectLabel = styled.label`
-  display: block;
-  margin-top: ${(props) => props.theme.outerSpacing.medium};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const ActiveProjectSelector = styled(ProjectSelector)`
   font-weight: 600;
-  margin-bottom: ${(props) => props.theme.outerSpacing.medium};
 `;
 
 const NewCategoryButton = styled(Button)`
