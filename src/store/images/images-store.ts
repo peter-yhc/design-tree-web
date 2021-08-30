@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ImageInfo } from 'api/firebase-stub.api';
 import { fetchImages } from './images-store-requests';
+import systemStore from '../system/system-store';
 
 export type InitialState = {
   currentImages: Record<string, ImageInfo>,
@@ -15,6 +16,16 @@ const { actions, reducer } = createSlice({
   } as InitialState,
   reducers: {
     clear: (state) => ({ ...state, images: {} }),
+    toggleSelectedImage: (state, action) => {
+      if (state.selectedImages.includes(action.payload)) {
+        state.selectedImages.filter((imageId) => imageId !== action.payload);
+        return {
+          ...state,
+          selectedImages: state.selectedImages.filter((imageId) => imageId !== action.payload),
+        };
+      }
+      return { ...state, selectedImages: [...state.selectedImages, action.payload] };
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchImages.pending, (state) => ({ ...state, currentImages: {} }));
@@ -24,6 +35,12 @@ const { actions, reducer } = createSlice({
         return acc;
       }, {} as Record<string, ImageInfo>);
       return { ...state, currentImages: imagesMap };
+    });
+    builder.addCase(systemStore.actions.toggleEditMode, (state, action) => {
+      if (!action.payload) {
+        return { ...state, selectedImages: [] };
+      }
+      return state;
     });
   },
 });

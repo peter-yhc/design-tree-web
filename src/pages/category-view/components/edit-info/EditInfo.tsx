@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
@@ -28,9 +28,24 @@ const Container = styled.section<ContainerProps>`
 
 export default function EditInfo() {
   const inEditMode = useSelector((state: RootState) => state.system.inEditMode);
+  const numberTilesSelected = useSelector((state: RootState) => state.images.selectedImages.length);
+  const [memoNumTiles, setMemoNumTimes] = useState(numberTilesSelected);
+
+  useEffect(() => {
+    if (inEditMode) {
+      setMemoNumTimes(numberTilesSelected);
+    }
+  }, [numberTilesSelected, inEditMode]);
+
   return (
     <Container hidden={!inEditMode}>
-      <span>Select a tile</span>
+      <span>
+        {
+          memoNumTiles > 0
+            ? `${memoNumTiles} images selected`
+            : 'Select an image'
+        }
+      </span>
     </Container>
   );
 }

@@ -1,4 +1,6 @@
-import { applyMiddleware, combineReducers, createStore } from 'redux';
+import {
+  applyMiddleware, combineReducers, compose, createStore,
+} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import profileStore from './profile/profile-store';
 import systemStore from './system/system-store';
@@ -10,7 +12,10 @@ const rootReducer = combineReducers({
   images: imagesStore.reducer,
 });
 
-const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
+// @ts-ignore
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMiddleware)));
 
 export default store;
 export type RootState = ReturnType<typeof store.getState>;
