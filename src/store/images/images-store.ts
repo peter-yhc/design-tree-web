@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ImageInfo } from 'api/firebase-stub.api';
 import { fetchImages } from './images-store-requests';
 import systemStore from '../system/system-store';
@@ -26,6 +26,15 @@ const { actions, reducer } = createSlice({
       }
       return { ...state, selectedImages: [...state.selectedImages, action.payload] };
     },
+    addImage: (state, action:PayloadAction<ImageInfo>) => ({
+      ...state,
+      currentImages: {
+        ...state.currentImages,
+        [action.payload.hash]: {
+          ...action.payload,
+        },
+      },
+    }),
   },
   extraReducers: (builder) => {
     builder.addCase(fetchImages.pending, (state) => ({ ...state, currentImages: {} }));

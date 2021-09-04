@@ -35,7 +35,12 @@ const ActionButton = styled(Button)`
   }
 
   &:hover {
-    border: 1px solid ${(props) => props.theme.colours.secondary};
+    //border: 1px solid ${(props) => props.theme.colours.accent};
+    background-color: hsl(210,15%,91%);
+  }
+  
+  &:active {
+    background-color: hsl(210,15%,86%);
   }
   
   &:first-child {

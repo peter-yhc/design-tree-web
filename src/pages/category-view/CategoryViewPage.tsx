@@ -10,6 +10,7 @@ import PreviewTile from '../components/preview-tile/PreviewTile';
 import BreadCrumbs from '../components/bread-crumbs/BreadCrumbs';
 import PageTitle from '../components/page-title/PageTitle';
 import EditInfo from './components/edit-info/EditInfo';
+import FileDropListener from '../../hoc/file-drop-listener/FileDropListener';
 
 const TileContainer = styled.section`
   column-count: 5;
@@ -61,14 +62,16 @@ export default function CategoryViewPage() {
 
   return (
     <BaseContainer>
-      <BreadCrumbs />
-      <PageTitle />
-      <TileContainer>
-        {
+      <FileDropListener>
+        <BreadCrumbs />
+        <PageTitle />
+        <TileContainer>
+          {
           Object.values(images).map((v) => <PreviewTile key={v.hash} id={v.hash} />)
         }
-      </TileContainer>
-      <EditInfo />
+        </TileContainer>
+        <EditInfo />
+      </FileDropListener>
     </BaseContainer>
   );
 }
