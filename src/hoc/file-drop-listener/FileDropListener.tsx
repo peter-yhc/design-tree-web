@@ -22,44 +22,55 @@ export default function FileDropListener({ children }: FileDropListenerProps) {
     event.preventDefault();
     event.stopPropagation();
 
-    if (event.dataTransfer.items) {
-      for (let i = 0; i < event.dataTransfer.items.length; i += 1) {
-        // If dropped items aren't valid html, reject them
-        if (event.dataTransfer.items[i].type === 'text/html') {
-          event.dataTransfer.items[i].getAsString((data) => {
-            const tempDocument = document.createElement('html');
-            tempDocument.innerHTML = data;
-            const imageUrl = tempDocument.getElementsByTagName('img')[0].getAttribute('src');
-            const imageName = imageUrl?.split('/').pop();
+    if (!event.dataTransfer.items) {
+      return;
+    }
 
+    for (let i = 0; i < event.dataTransfer.items.length; i += 1) {
+      // If dropped items aren't valid html, reject them
+      if (event.dataTransfer.items[i].type === 'text/html') {
+        event.dataTransfer.items[i].getAsString((data) => {
+          const tempDocument = document.createElement('html');
+          tempDocument.innerHTML = data;
+          const imageUrl = tempDocument.getElementsByTagName('img')[0].getAttribute('src');
+          const imageName = imageUrl?.split('/').pop();
+
+          if (imageUrl && imageName) {
             dispatch(imageStore.actions.addImage({
               name: imageName,
               hash: b64EncodeUnicode(`${imageName}${imageUrl}`),
               src: imageUrl,
               addedDate: new Date(),
             } as ImageInfo));
-          });
-        }
+          }
+        });
+        break;
       }
     }
   };
 
   const clipboardListener = (event: ClipboardEvent) => {
-    let imageUrl = event?.clipboardData?.getData('text');
-    if (!imageUrl) {
-      imageUrl = event?.clipboardData?.getData('text/html')
-        ?.split(' ')
-        ?.find((el: string) => el.includes('src'))
-        ?.replaceAll('"', '')
-        ?.split('=')[1];
+    let imageUrl;
+
+    if (event?.clipboardData?.getData('text')) {
+      imageUrl = event?.clipboardData?.getData('text');
+    } else if (event?.clipboardData?.getData('text/html')) {
+      const tempDocument = document.createElement('html');
+      tempDocument.innerHTML = event?.clipboardData?.getData('text/html') || '';
+      imageUrl = tempDocument.getElementsByTagName('img')[0].getAttribute('src');
+    } else {
+      return;
     }
+
     const imageName = imageUrl?.split('/').pop();
-    dispatch(imageStore.actions.addImage({
-      name: imageName,
-      hash: b64EncodeUnicode(`${imageName}${imageUrl}`),
-      src: imageUrl,
-      addedDate: new Date(),
-    } as ImageInfo));
+    if (imageUrl && imageName) {
+      dispatch(imageStore.actions.addImage({
+        name: imageName,
+        hash: b64EncodeUnicode(`${imageName}${imageUrl}`),
+        src: imageUrl,
+        addedDate: new Date(),
+      } as ImageInfo));
+    }
   };
 
   useEffect(() => {
@@ -70,7 +81,7 @@ export default function FileDropListener({ children }: FileDropListenerProps) {
   }, []);
   return (
     <div
-      onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+      // onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
       onDrop={dragdropListener}
     >
       {children}
