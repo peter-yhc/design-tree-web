@@ -1,5 +1,7 @@
 const colours = {
   primary: 'hsl(203,80%,56%)',
+  primaryLighest: 'hsl(203,40%,95%)',
+  primaryLighter: 'hsl(203,40%,80%)',
   secondary: 'hsl(168,66%,53%)',
   accent: 'hsl(346,47%,46%)',
   white: '#f5f5fa',
