@@ -1,8 +1,8 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import imageStore from 'store/images/images-store';
-import { ImageInfo } from 'api/firebase-stub.api';
-import { b64EncodeUnicode } from '../../utils';
+import styled from 'styled-components';
+import { UploadIcon } from '@heroicons/react/solid';
+import { createClipboardListener, createDragdropListener } from './utils/listener-functions';
 
 interface FileDropListenerProps {
   children: ReactNode
@@ -15,63 +15,34 @@ declare global {
   }
 }
 
+const Container = styled.div`
+  position: relative;
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  left: -20px;
+  top: -20px;
+  right: -20px;
+  bottom: -20px;
+  filter: blur(5px);
+  background-color: hsl(0,0%,0%,0.3);
+`;
+
+const Upload = styled(UploadIcon)`
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+`;
+
 export default function FileDropListener({ children }: FileDropListenerProps) {
   const dispatch = useDispatch();
+  const [showOverlay, setShowOverlay] = useState(false);
 
-  const dragdropListener = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (!event.dataTransfer.items) {
-      return;
-    }
-
-    for (let i = 0; i < event.dataTransfer.items.length; i += 1) {
-      // If dropped items aren't valid html, reject them
-      if (event.dataTransfer.items[i].type === 'text/html') {
-        event.dataTransfer.items[i].getAsString((data) => {
-          const tempDocument = document.createElement('html');
-          tempDocument.innerHTML = data;
-          const imageUrl = tempDocument.getElementsByTagName('img')[0].getAttribute('src');
-          const imageName = imageUrl?.split('/').pop();
-
-          if (imageUrl && imageName) {
-            dispatch(imageStore.actions.addImage({
-              name: imageName,
-              hash: b64EncodeUnicode(`${imageName}${imageUrl}`),
-              src: imageUrl,
-              addedDate: new Date(),
-            } as ImageInfo));
-          }
-        });
-        break;
-      }
-    }
-  };
-
-  const clipboardListener = (event: ClipboardEvent) => {
-    let imageUrl;
-
-    if (event?.clipboardData?.getData('text')) {
-      imageUrl = event?.clipboardData?.getData('text');
-    } else if (event?.clipboardData?.getData('text/html')) {
-      const tempDocument = document.createElement('html');
-      tempDocument.innerHTML = event?.clipboardData?.getData('text/html') || '';
-      imageUrl = tempDocument.getElementsByTagName('img')[0].getAttribute('src');
-    } else {
-      return;
-    }
-
-    const imageName = imageUrl?.split('/').pop();
-    if (imageUrl && imageName) {
-      dispatch(imageStore.actions.addImage({
-        name: imageName,
-        hash: b64EncodeUnicode(`${imageName}${imageUrl}`),
-        src: imageUrl,
-        addedDate: new Date(),
-      } as ImageInfo));
-    }
-  };
+  const clipboardListener = createClipboardListener(dispatch);
+  const dragdropListener = createDragdropListener(dispatch);
 
   useEffect(() => {
     window.addEventListener('paste', clipboardListener);
@@ -80,11 +51,17 @@ export default function FileDropListener({ children }: FileDropListenerProps) {
     };
   }, []);
   return (
-    <div
-      // onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
-      onDrop={dragdropListener}
+    <Container
+      onDragEnter={() => { console.log('drag enter'); setShowOverlay(true); }}
+      onDragExit={() => { console.log('drag end'); setShowOverlay(false); }}
     >
+      <Overlay
+        hidden={!showOverlay}
+        onDrop={(e) => { dragdropListener(e); setShowOverlay(false); }}
+        onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+      />
+      { showOverlay && <Upload width={200} /> }
       {children}
-    </div>
+    </Container>
   );
 }
