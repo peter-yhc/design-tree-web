@@ -4,7 +4,7 @@ import imageStore from 'store/images/images-store';
 import { b64EncodeUnicode } from 'utils';
 import { ImageInfo } from 'api/firebase-stub.api';
 
-const createDragdropListener = (dispatch: Dispatch<any>) => (event: React.DragEvent<HTMLDivElement>) => {
+const createDragdropListener = (dispatch: Dispatch<any>, successCB: () => void) => (event: React.DragEvent<HTMLDivElement>) => {
   event.preventDefault();
   event.stopPropagation();
 
@@ -28,6 +28,7 @@ const createDragdropListener = (dispatch: Dispatch<any>) => (event: React.DragEv
             src: imageUrl,
             addedDate: new Date(),
           } as ImageInfo));
+          successCB();
         }
       });
       break;

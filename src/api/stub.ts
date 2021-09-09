@@ -135,32 +135,14 @@ const imageData: Record<string, ImageInfo[]> = {
     {
       name: 'l9aI',
       addedDate: new Date(),
-      src: a04,
+      src: a01,
       hash: 'l9aILAxWdA',
     },
     {
       name: 'crFB',
       addedDate: new Date(),
-      src: a05,
+      src: a03,
       hash: 'crFB6bqhgl',
-    },
-    {
-      name: 'wIFo',
-      addedDate: new Date(),
-      src: a06,
-      hash: 'wIFo9GNeBt',
-    },
-    {
-      name: 'JS8A',
-      addedDate: new Date(),
-      src: a07,
-      hash: 'JS8AvUB9rz',
-    },
-    {
-      name: 'YGvP',
-      addedDate: new Date(),
-      src: a08,
-      hash: 'YGvPEQqplP',
     },
   ],
   '/taylor-home/bathroom-1': [
