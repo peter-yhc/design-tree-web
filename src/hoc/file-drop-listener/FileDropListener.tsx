@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled, { css } from 'styled-components';
-import { UploadIcon } from '@heroicons/react/solid';
+import { CheckIcon, CloudUploadIcon } from '@heroicons/react/solid';
 import { createClipboardListener, createDragdropListener } from './utils/listener-functions';
 
 interface FileDropListenerProps {
@@ -40,10 +40,10 @@ const OverlayModal = styled.div`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 485px;
-  height: 300px;
+  width: 100px;
+  height: 100px;
   background-color: ${(props) => props.theme.colours.lightGrey};
-  border-radius: 5px;
+  border-radius: 50%;
   border: 1px solid hsl(210,15%,90%);
   display: flex;
   align-items: center;
@@ -51,35 +51,29 @@ const OverlayModal = styled.div`
   pointer-events: none;
 `;
 
-const DottedRectangle = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: ${(props) => props.theme.innerSpacing.xlarge};
-  width: 425px;
-  height: 240px;
-  border-radius: 35px;
-  border: 2px dashed ${(props) => props.theme.colours.grey};
-  background-color: hsl(203,40%,87%,0.5);
-`;
-
-const UploadText = styled.p`
-  color: ${(props) => props.theme.colours.black};
-  width: 30ch;
-`;
-
-const Upload = styled(UploadIcon)`
+const Check = styled(CheckIcon)`
   fill: ${(props) => props.theme.colours.darkGrey};
-  width: 100px;
+  width: 70px;
 `;
+
+const Upload = styled(CloudUploadIcon)`
+  fill: ${(props) => props.theme.colours.darkGrey};
+  width: 70px;
+`;
+
+const OverlayState = {
+  DRAG: 'drag',
+  DROP: 'drop',
+  FINISHED: 'finished',
+  HIDDEN: 'hidden',
+};
 
 export default function FileDropListener({ children }: FileDropListenerProps) {
   const dispatch = useDispatch();
-  const [showOverlay, setShowOverlay] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(OverlayState.HIDDEN);
 
   const clipboardListener = createClipboardListener(dispatch);
-  const dragdropListener = createDragdropListener(dispatch);
+  const dragdropListener = createDragdropListener(dispatch, () => setShowOverlay(OverlayState.FINISHED));
 
   useEffect(() => {
     window.addEventListener('paste', clipboardListener);
@@ -87,23 +81,28 @@ export default function FileDropListener({ children }: FileDropListenerProps) {
       window.removeEventListener('paste', clipboardListener);
     };
   }, []);
+
+  useEffect(() => {
+    if (showOverlay === OverlayState.FINISHED) {
+      setTimeout(() => setShowOverlay(OverlayState.HIDDEN), 100);
+    }
+  }, [showOverlay]);
+
   return (
     <Container
-      onDragEnter={() => setShowOverlay(true)}
-      onDragExit={() => setShowOverlay(false)}
+      onDragEnter={() => setShowOverlay(OverlayState.DRAG)}
+      onDragExit={() => setShowOverlay(OverlayState.HIDDEN)}
     >
       <Overlay
-        hidden={!showOverlay}
-        onDrop={(e) => { dragdropListener(e); setShowOverlay(false); }}
+        hidden={showOverlay === OverlayState.HIDDEN}
+        onDrop={(e) => { dragdropListener(e); setShowOverlay(OverlayState.HIDDEN); }}
         onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
       />
       {
-        showOverlay && (
+        showOverlay !== OverlayState.HIDDEN && (
         <OverlayModal>
-          <DottedRectangle>
-            <UploadText>Drag an image from another website here to add it to your collection.</UploadText>
-            <Upload />
-          </DottedRectangle>
+          { showOverlay === OverlayState.DRAG && <Upload /> }
+          { showOverlay === OverlayState.FINISHED && <Check /> }
         </OverlayModal>
         )
       }

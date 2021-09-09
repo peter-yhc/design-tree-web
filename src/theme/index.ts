@@ -8,7 +8,7 @@ const colours = {
   black: 'hsl(204,4%,22%)',
   lightGrey: 'hsl(210,15%,95%)',
   grey: 'hsl(0,0%,82%)',
-  darkGrey: 'hsl(0,0%,46%)',
+  darkGrey: 'hsl(0,0%,43%)',
 };
 
 const innerSpacing = {
