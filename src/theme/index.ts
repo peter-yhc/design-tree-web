@@ -29,6 +29,7 @@ const outerSpacing = {
 const system = {
   sideNavWidth: '250px',
   editModeTimings: 'ease-in-out 300ms',
+  borderRadius: '4px',
 };
 
 export default {

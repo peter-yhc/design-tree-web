@@ -25,37 +25,34 @@ const EditButton = styled.button`
 `;
 
 const ActionButton = styled(Button)`
-  border: 1px solid ${(props) => props.theme.colours.grey};
-  background-color: ${(props) => props.theme.colours.white};
-  transition: all linear 150ms;
-  margin-bottom: ${(props) => props.theme.outerSpacing.small};
+  border: none;
 
   & > svg {
     margin-right: ${(props) => props.theme.outerSpacing.small}
   }
 
   &:hover {
-    //border: 1px solid ${(props) => props.theme.colours.accent};
     background-color: hsl(210,15%,91%);
   }
   
   &:active {
     background-color: hsl(210,15%,86%);
   }
-  
-  &:first-child {
-    margin-top: ${(props) => props.theme.outerSpacing.medium};
-  }
 `;
 
 const Dialog = styled.div`
   position: fixed;
-  top: 59px;
+  top: 80px;
   right: ${(props) => props.theme.outerSpacing.medium};
   display: flex;
   flex-direction: column;
+  border: 1px solid ${(props) => props.theme.colours.grey};
+  border-radius: ${(props) => props.theme.system.borderRadius};
+  padding: ${(props) => props.theme.innerSpacing.small} 0;
+  background-color: ${(props) => props.theme.colours.white};
   transition: right ${(props) => props.theme.system.editModeTimings};
-  
+  z-index: 100;
+
   ${(props) => props.hidden && css`
     right: -200px;
   `}
