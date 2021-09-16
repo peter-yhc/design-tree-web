@@ -20,6 +20,7 @@ const Container = styled.div`
 `;
 
 const Overlay = styled.div`
+  z-index: 200;
   position: fixed;
   left: 0;
   top: 0;
@@ -36,6 +37,7 @@ const Overlay = styled.div`
 `;
 
 const OverlayModal = styled.div`
+  z-index: 201;
   position: fixed;
   left: 50%;
   top: 50%;
