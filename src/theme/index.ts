@@ -4,6 +4,7 @@ const colours = {
   primaryLighter: 'hsl(203,40%,80%)',
   secondary: 'hsl(168,66%,53%)',
   accent: 'hsl(346,47%,46%)',
+  highlight: 'hsl(48,100%,70%)',
   white: '#f5f5fa',
   black: 'hsl(204,4%,22%)',
   lightGrey: 'hsl(210,15%,95%)',

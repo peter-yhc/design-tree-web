@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ImageInfo } from 'api/firebase-stub.api';
-import { fetchImages } from './images-store-requests';
+import { FavouriteStatus, fetchImages, toggleImageFavourite } from './images-store-requests';
 import systemStore from '../system/system-store';
 
 export type InitialState = {
@@ -26,6 +26,19 @@ const { actions, reducer } = createSlice({
       }
       return { ...state, selectedImages: [...state.selectedImages, action.payload] };
     },
+    toggleImageFavourite: (state, action) => ({
+      ...state,
+      currentImages: {
+        ...state.currentImages,
+        [action.payload]: {
+          ...state.currentImages[action.payload],
+          metadata: {
+            ...state.currentImages[action.payload].metadata,
+            favourite: !state.currentImages[action.payload].metadata?.favourite || false,
+          },
+        },
+      },
+    }),
     addImage: (state, action:PayloadAction<ImageInfo>) => ({
       ...state,
       currentImages: {
@@ -51,10 +64,23 @@ const { actions, reducer } = createSlice({
       }
       return state;
     });
+    builder.addCase(toggleImageFavourite.fulfilled, (state, action: PayloadAction<FavouriteStatus>) => ({
+      ...state,
+      currentImages: {
+        ...state.currentImages,
+        [action.payload.hash]: {
+          ...state.currentImages[action.payload.hash],
+          metadata: {
+            ...state.currentImages[action.payload.hash].metadata,
+            favourite: !state.currentImages[action.payload.hash].metadata?.favourite || false,
+          },
+        },
+      },
+    }));
   },
 });
 
 export default {
-  actions: { ...actions, fetchImages },
+  actions: { ...actions, fetchImages, toggleImageFavourite },
   reducer,
 };
