@@ -24,8 +24,10 @@ export default function NavIndicator() {
   const location = useLocation();
 
   useEffect(() => {
-    // @ts-ignore
-    setY(document.querySelector('nav a[active=true]').getBoundingClientRect().y + window.scrollY);
+    const activeLink = document.querySelector('nav a[active=true]');
+    if (activeLink) {
+      setY(activeLink.getBoundingClientRect().y + window.scrollY);
+    }
   }, [location]);
 
   return (
