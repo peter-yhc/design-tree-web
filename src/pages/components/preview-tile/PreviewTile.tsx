@@ -4,17 +4,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import imagesStore from 'store/images/images-store';
 import { HeartIcon } from '@heroicons/react/outline';
-
-interface ImageProps {
-  disabled: boolean;
-  selected: boolean;
-}
+import ErrorImage from 'assets/images/Error.png';
 
 const Container = styled.div`
   display: inline-block;
   margin-bottom: ${(props) => props.theme.outerSpacing.tiny};
   position: relative;
 `;
+
+interface ImageProps {
+  disabled: boolean;
+  selected: boolean;
+}
 
 const Image = styled.img<ImageProps>`
   width: 100%;
@@ -102,7 +103,16 @@ export default function PreviewTile({ id }: PreviewTileProps) {
 
   return (
     <Container>
-      <Image src={src} alt="rectangle" disabled={!inEditMode} selected={selected} onClick={selectHandler} />
+      <Image
+        src={src}
+        alt=""
+        disabled={!inEditMode}
+        selected={selected}
+        onClick={selectHandler}
+        onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+          (e.target as HTMLInputElement).src = ErrorImage;
+        }}
+      />
       <FavouriteCircle onClick={favouriteHandler} loading={loading}>
         <Favourite highlight={metadata?.favourite || false} />
       </FavouriteCircle>
