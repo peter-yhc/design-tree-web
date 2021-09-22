@@ -33,7 +33,7 @@ const Image = styled.img<ImageProps>`
 `;
 
 interface FavouriteCircleProps {
-  loading: boolean;
+  $loading: boolean;
 }
 
 const FavouriteCircle = styled.div<FavouriteCircleProps>`
@@ -49,14 +49,14 @@ const FavouriteCircle = styled.div<FavouriteCircleProps>`
   background-color: hsl(210, 15%, 95%, 0.2);
 
 
-  ${(props) => props.loading && css`
+  ${(props) => props.$loading && css`
     cursor: none;
     pointer-events: none;
   `}
 `;
 
 interface FavouriteProps {
-  highlight: boolean;
+  $highlight: boolean;
 }
 
 const Favourite = styled(HeartIcon)<FavouriteProps>`
@@ -70,7 +70,7 @@ const Favourite = styled(HeartIcon)<FavouriteProps>`
     transform: scale(0.9);
   }
 
-  ${(props) => props.highlight && css`
+  ${(props) => props.$highlight && css`
     stroke: ${props.theme.colours.black};
     fill: ${props.theme.colours.highlight};
     opacity: 1;
@@ -113,8 +113,8 @@ export default function PreviewTile({ id }: PreviewTileProps) {
           (e.target as HTMLInputElement).src = ErrorImage;
         }}
       />
-      <FavouriteCircle onClick={favouriteHandler} loading={loading}>
-        <Favourite highlight={metadata?.favourite || false} />
+      <FavouriteCircle onClick={favouriteHandler} $loading={loading}>
+        <Favourite $highlight={metadata?.favourite || false} />
       </FavouriteCircle>
     </Container>
   );
