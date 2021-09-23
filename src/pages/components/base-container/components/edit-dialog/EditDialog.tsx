@@ -67,6 +67,10 @@ export default function EditDialog() {
     dispatch(systemStore.actions.toggleEditMode(false));
   }, [match]);
 
+  const handleClose = () => {
+    dispatch(systemStore.actions.toggleEditMode(false));
+  };
+
   return (
     <Container>
       <EditButton onClick={() => dispatch(systemStore.actions.toggleEditMode(!inEditMode))}>
@@ -85,7 +89,7 @@ export default function EditDialog() {
           <DuplicateIcon width={20} />
           Copy
         </ActionButton>
-        <ActionButton>
+        <ActionButton onClick={handleClose}>
           <XCircleIcon width={20} />
           Close
         </ActionButton>
