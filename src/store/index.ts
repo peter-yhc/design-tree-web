@@ -2,6 +2,7 @@ import {
   applyMiddleware, combineReducers, compose, createStore,
 } from 'redux';
 import thunkMiddleware from 'redux-thunk';
+import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import profileStore from './profile/profile-store';
 import systemStore from './system/system-store';
 import imagesStore from './images/images-store';
@@ -19,3 +20,4 @@ const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMid
 
 export default store;
 export type RootState = ReturnType<typeof store.getState>;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

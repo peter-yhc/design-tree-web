@@ -1,4 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+/* eslint-disable no-param-reassign */
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { fetchProfile } from './profile-store-requests';
+import { Profile } from '../../api/firebase-stub.api';
 
 export interface CategoryType {
   name: string;
@@ -21,53 +24,34 @@ export interface InitialStateType {
 const { actions, reducer } = createSlice({
   name: 'profile',
   initialState: {
-    projects: {
-      'taylor-home': {
-        name: 'Taylor Home',
-        categories: {
-          'bathroom-1': {
-            name: 'Bathroom 1',
-            subCategories: {
-              bathtubs: {
-                name: 'Bathtubs',
-              },
-            },
-          },
-          'bathroom-2': {
-            name: 'Bathroom 2',
-            subCategories: {},
-          },
-          kitchen: {
-            name: 'Kitchen',
-            subCategories: {
-              cabinets: {
-                name: 'Cabinets',
-              },
-              windows: {
-                name: 'Windows',
-              },
-            },
-          },
-          wardrobe: {
-            name: 'Wardrobe',
-            subCategories: {},
-          },
-        },
-      },
-      gardens: {
-        name: 'Gardens',
-        categories: {
-          'front-yard': {
-            name: 'Front Yard',
-            subCategories: {},
-          },
-        },
-      },
-    },
+    projects: {},
   } as InitialStateType,
   reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(fetchProfile.fulfilled, (state, action:PayloadAction<Profile>) => ({
+      ...state,
+      projects: action.payload.projects.reduce((projectAcc, project) => {
+        projectAcc[project.id] = {
+          name: project.name,
+          categories: project.categories?.reduce((categoryAcc, category) => {
+            categoryAcc[category.id] = {
+              name: category.name,
+              subCategories: category.subcategories?.reduce((subCategoryAcc, subcategory) => {
+                subCategoryAcc[subcategory.id] = {
+                  name: subcategory.name,
+                };
+                return subCategoryAcc;
+              }, {} as Record<string, SubCategoryType>) || {},
+            };
+            return categoryAcc;
+          }, {} as Record<string, CategoryType>) || {},
+        };
+        return projectAcc;
+      }, {} as Record<string, ProjectType>),
+    }));
+  },
 });
 
 export default {
-  actions, reducer,
+  actions: { ...actions, fetchProfile }, reducer,
 };

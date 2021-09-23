@@ -32,7 +32,60 @@ async function favouriteImage({ hash, isFavourite }: { hash: string, isFavourite
   });
 }
 
+export interface Category {
+  id: string,
+  name: string,
+  subcategories?: Category[];
+}
+
+export interface Profile {
+  projects: [{
+    id: string,
+    name: string,
+    categories?: Category[]
+  }]
+}
+
+async function getProfile(): Promise<Profile> {
+  return new Promise((resolve) => {
+    setTimeout(
+      () => resolve({
+        projects: [{
+          id: 'taylor-home',
+          name: 'Taylor Home',
+          categories: [{
+            id: 'kitchen',
+            name: 'Kitchen',
+            subcategories: [{
+              id: 'cabinets',
+              name: 'Cabinets',
+            }, {
+              id: 'windows',
+              name: 'Windows',
+            }],
+          }, {
+            id: 'bathroom-1',
+            name: 'Bathroom 1',
+            subcategories: [{
+              id: 'bathtubs',
+              name: 'Bathtubs',
+            }],
+          }, {
+            id: 'bathroom-2',
+            name: 'Bathroom 2',
+          }, {
+            id: 'wardrobe',
+            name: 'Wardrobe',
+          }],
+        }],
+      }),
+      400,
+    );
+  });
+}
+
 export {
   getImages,
   favouriteImage,
+  getProfile,
 };
