@@ -22,6 +22,16 @@ async function getImages(path: string): Promise<ImageInfo[]> {
   });
 }
 
+async function deleteImages(hashes: string[]): Promise<void> {
+  return new Promise((resolve) => {
+    console.log('deleting hashes', hashes);
+    setTimeout(
+      () => resolve(),
+      800,
+    );
+  });
+}
+
 async function favouriteImage({ hash, isFavourite }: { hash: string, isFavourite: boolean }): Promise<void> {
   console.log(hash, isFavourite);
   return new Promise((resolve) => {
@@ -86,6 +96,7 @@ async function getProfile(): Promise<Profile> {
 
 export {
   getImages,
+  deleteImages,
   favouriteImage,
   getProfile,
 };

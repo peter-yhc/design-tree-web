@@ -1,15 +1,47 @@
 import React, { useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import imagesStore from 'store/images/images-store';
 import { HeartIcon } from '@heroicons/react/outline';
 import ErrorImage from 'assets/images/Error.png';
+import Loading from 'assets/images/Loading.svg';
 
 const Container = styled.div`
   display: inline-block;
   margin-bottom: ${(props) => props.theme.outerSpacing.tiny};
   position: relative;
+`;
+
+const PendingActionContainer = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: ${(props) => props.theme.colours.grey};
+  opacity: 0.7;
+`;
+
+const ImageContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+const spin = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const LoadingImage = styled.img`
+  animation: ${spin} 700ms infinite linear;
 `;
 
 interface ImageProps {
@@ -85,6 +117,7 @@ export default function PreviewTile({ id }: PreviewTileProps) {
   const [loading, setLoading] = useState(false);
   const { src, metadata } = useSelector((state: RootState) => state.images.currentImages[id]);
   const selected: boolean = useSelector((state: RootState) => state.images.selectedImages.includes(id));
+  const hasPendingAction: boolean = useSelector((state: RootState) => state.images.pendingImages.includes(id));
   const inEditMode: boolean = useSelector((state: RootState) => state.system.inEditMode);
   const dispatch = useDispatch();
 
@@ -103,6 +136,15 @@ export default function PreviewTile({ id }: PreviewTileProps) {
 
   return (
     <Container>
+      {
+        hasPendingAction && (
+          <PendingActionContainer>
+            <ImageContainer>
+              <LoadingImage alt="" src={Loading} />
+            </ImageContainer>
+          </PendingActionContainer>
+        )
+      }
       <Image
         src={src}
         alt=""

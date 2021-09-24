@@ -1,11 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ImageInfo } from 'api/firebase-stub.api';
-import { FavouriteStatus, fetchImages, toggleImageFavourite } from './images-store-requests';
+import {
+  FavouriteStatus, fetchImages, removeSelectedImages, toggleImageFavourite,
+} from './images-store-requests';
 import systemStore from '../system/system-store';
 
 export type InitialState = {
   currentImages: Record<string, ImageInfo>,
   selectedImages: string[],
+  pendingImages: string[],
 }
 
 const { actions, reducer } = createSlice({
@@ -13,6 +16,7 @@ const { actions, reducer } = createSlice({
   initialState: {
     currentImages: {},
     selectedImages: [],
+    pendingImages: [],
   } as InitialState,
   reducers: {
     clear: (state) => ({ ...state, images: {} }),
@@ -39,7 +43,7 @@ const { actions, reducer } = createSlice({
         },
       },
     }),
-    addImage: (state, action:PayloadAction<ImageInfo>) => ({
+    addImage: (state, action: PayloadAction<ImageInfo>) => ({
       ...state,
       currentImages: {
         ...state.currentImages,
@@ -77,10 +81,29 @@ const { actions, reducer } = createSlice({
         },
       },
     }));
+    builder.addCase(removeSelectedImages.pending, (state) => ({
+      ...state,
+      pendingImages: [...state.selectedImages],
+    }));
+    builder.addCase(removeSelectedImages.fulfilled, (state) => {
+      const newCurrentImages = { ...state.currentImages };
+      for (let i = 0; i < state.selectedImages.length; i += 1) {
+        delete newCurrentImages[state.selectedImages[i]];
+      }
+
+      return {
+        ...state,
+        currentImages: newCurrentImages,
+        selectedImages: [],
+        pendingImages: [],
+      };
+    });
   },
 });
 
 export default {
-  actions: { ...actions, fetchImages, toggleImageFavourite },
+  actions: {
+    ...actions, fetchImages, toggleImageFavourite, removeSelectedImages,
+  },
   reducer,
 };

@@ -8,6 +8,7 @@ import { RootState } from 'store';
 import systemStore from 'store/system/system-store';
 import Button from 'pages/components/button/Button';
 import { useRouteMatch } from 'react-router-dom';
+import { removeSelectedImages } from 'store/images/images-store-requests';
 
 const Container = styled.div`
   position: relative;
@@ -67,6 +68,10 @@ export default function EditDialog() {
     dispatch(systemStore.actions.toggleEditMode(false));
   }, [match]);
 
+  const handleDeleteImage = () => {
+    dispatch(removeSelectedImages());
+  };
+
   const handleClose = () => {
     dispatch(systemStore.actions.toggleEditMode(false));
   };
@@ -81,7 +86,7 @@ export default function EditDialog() {
           <ArrowCircleRightIcon width={20} />
           Move
         </ActionButton>
-        <ActionButton>
+        <ActionButton onClick={handleDeleteImage}>
           <TrashIcon width={20} />
           Delete
         </ActionButton>
