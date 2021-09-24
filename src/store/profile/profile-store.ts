@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { fetchProfile } from './profile-store-requests';
-import { Profile } from '../../api/firebase-stub.api';
+import { createNewCategory, fetchProfile } from './profile-store-requests';
+import { Category, Profile } from '../../api/firebase-stub.api';
 
 export interface CategoryType {
   name: string;
@@ -48,6 +48,18 @@ const { actions, reducer } = createSlice({
         };
         return projectAcc;
       }, {} as Record<string, ProjectType>),
+    }));
+    builder.addCase(createNewCategory.fulfilled, (state, action) => ({
+      ...state,
+      projects: {
+        ...state.projects,
+        [action.meta.arg.projectId]: {
+          ...state.projects[action.meta.arg.projectId],
+          [action.payload.id]: {
+            name: action.payload.name,
+          },
+        },
+      },
     }));
   },
 });

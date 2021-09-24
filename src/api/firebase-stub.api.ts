@@ -1,4 +1,5 @@
 import stub from './stub';
+import { CategoryType } from '../store/profile/profile-store';
 
 export interface ImageMetaInfo {
   favourite?: boolean,
@@ -94,9 +95,19 @@ async function getProfile(): Promise<Profile> {
   });
 }
 
+async function createCategory(projectId: string, categoryName: string): Promise<Category> {
+  return new Promise((resolve) => {
+    console.log(projectId, categoryName);
+    setTimeout(() => {
+      resolve({ name: categoryName, id: 'some-random-id' });
+    }, 500);
+  });
+}
+
 export {
   getImages,
   deleteImages,
   favouriteImage,
   getProfile,
+  createCategory,
 };
