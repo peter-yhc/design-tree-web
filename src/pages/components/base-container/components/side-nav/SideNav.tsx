@@ -14,17 +14,10 @@ const Nav = styled.nav`
   grid-template-rows: calc(60px - ${(props) => props.theme.innerSpacing.large}) 5em min-content;
 `;
 
-const LogoContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: -${(props) => props.theme.innerSpacing.large};
-  height: 60px;
-`;
-
 const LogoImage = styled.img`
   margin-right: ${(props) => props.theme.outerSpacing.small};
-  width: 35px;
-  height: 35px;
+  margin-top: -0.3rem;
+  width: 5.5rem;
 `;
 
 const Categories = styled.div`
@@ -41,7 +34,7 @@ const CategoryLink = styled(Link)<CategoryLinkProps>`
   text-decoration: none;
   margin: 0 -${(props) => props.theme.innerSpacing.large};
   padding: ${(props) => `calc(${props.theme.outerSpacing.tiny} / 2)`} ${(props) => props.theme.innerSpacing.large};
-  line-height: 1.35em;
+  line-height: 1.35rem;
   
   &:hover {
     background-color: hsl(200,27%,91%)
@@ -107,10 +100,7 @@ export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
 
   return (
     <Nav className={className}>
-      <LogoContainer>
-        <LogoImage src={Logo} alt="" />
-        <h3>Design Tree</h3>
-      </LogoContainer>
+      <LogoImage src={Logo} alt="" />
       <ProjectLabel>
         <h6>Current Project:</h6>
         <ActiveProjectSelector />
