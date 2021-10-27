@@ -42,8 +42,8 @@ const OverlayModal = styled.div`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 100px;
-  height: 100px;
+  width: 6rem;
+  height: 6rem;
   background-color: ${(props) => props.theme.colours.lightGrey};
   border-radius: 50%;
   border: 1px solid hsl(210,15%,90%);
@@ -55,12 +55,12 @@ const OverlayModal = styled.div`
 
 const Check = styled(CheckIcon)`
   fill: ${(props) => props.theme.colours.darkGrey};
-  width: 70px;
+  width: 4.5rem;
 `;
 
 const Upload = styled(CloudUploadIcon)`
   fill: ${(props) => props.theme.colours.darkGrey};
-  width: 70px;
+  width: 4.5rem;
 `;
 
 const OverlayState = {
