@@ -1,5 +1,4 @@
 import stub from './stub';
-import { CategoryType } from '../store/profile/profile-store';
 
 export interface ImageMetaInfo {
   favourite?: boolean,
@@ -43,17 +42,17 @@ async function favouriteImage({ hash, isFavourite }: { hash: string, isFavourite
   });
 }
 
-export interface Category {
+export interface Collection {
   id: string,
   name: string,
-  subcategories?: Category[];
+  subcollections?: Collection[];
 }
 
 export interface Profile {
   projects: [{
     id: string,
     name: string,
-    categories?: Category[]
+    collections?: Collection[]
   }]
 }
 
@@ -64,10 +63,10 @@ async function getProfile(): Promise<Profile> {
         projects: [{
           id: 'taylor-home',
           name: 'Taylor Home',
-          categories: [{
+          collections: [{
             id: 'kitchen',
             name: 'Kitchen',
-            subcategories: [{
+            subcollections: [{
               id: 'cabinets',
               name: 'Cabinets',
             }, {
@@ -77,7 +76,7 @@ async function getProfile(): Promise<Profile> {
           }, {
             id: 'bathroom-1',
             name: 'Bathroom 1',
-            subcategories: [{
+            subcollections: [{
               id: 'bathtubs',
               name: 'Bathtubs',
             }],
@@ -95,11 +94,11 @@ async function getProfile(): Promise<Profile> {
   });
 }
 
-async function createCategory(projectId: string, categoryName: string): Promise<Category> {
+async function createCollection(projectId: string, collectionName: string): Promise<Collection> {
   return new Promise((resolve) => {
-    console.log(projectId, categoryName);
+    console.log(projectId, collectionName);
     setTimeout(() => {
-      resolve({ name: categoryName, id: 'some-random-id' });
+      resolve({ name: collectionName, id: 'some-random-id' });
     }, 500);
   });
 }
@@ -109,5 +108,5 @@ export {
   deleteImages,
   favouriteImage,
   getProfile,
-  createCategory,
+  createCollection,
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { RouteValidator } from 'hoc';
-import { CategoryViewPage, Dashboard, PageNotFound } from './pages';
+import { CollectionViewPage, Dashboard, PageNotFound } from './pages';
 import AppLoader from './hoc/app-loader/AppLoader';
 
 export default function App() {
@@ -12,14 +12,14 @@ export default function App() {
           <span>Landing page</span>
         </Route>
         <Route path="/dashboard" exact component={Dashboard} />
-        <Route path="/:project/:category/:subcategory" exact>
+        <Route path="/:project/:collection/:subcollection" exact>
           <RouteValidator>
-            <CategoryViewPage />
+            <CollectionViewPage />
           </RouteValidator>
         </Route>
-        <Route path="/:project/:category" exact>
+        <Route path="/:project/:collection" exact>
           <RouteValidator>
-            <CategoryViewPage />
+            <CollectionViewPage />
           </RouteValidator>
         </Route>
         <Route path="/" component={PageNotFound} />
