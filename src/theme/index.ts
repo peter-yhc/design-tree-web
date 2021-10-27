@@ -7,8 +7,8 @@ const colours = {
   highlight: 'hsl(48,100%,70%)',
   white: '#f5f5fa',
   black: 'hsl(204,4%,22%)',
-  lightGrey: 'hsl(210,15%,95%)',
-  grey: 'hsl(0,0%,82%)',
+  lightGrey: 'hsl(210,15%,97%)',
+  grey: 'hsl(0,0%,87%)',
   darkGrey: 'hsl(0,0%,43%)',
 };
 
