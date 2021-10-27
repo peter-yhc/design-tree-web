@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { useProject } from 'hooks';
 
 interface MatchProps {
-    category: string;
-    subcategory: string;
+    collection: string;
+    subcollection: string;
 }
 
 const BreadCrumbLink = styled(Link)`
@@ -16,15 +16,15 @@ const BreadCrumbLink = styled(Link)`
 export default function BreadCrumbs() {
   const match = useRouteMatch<MatchProps>();
   const { projectId, projectName, projectCategories } = useProject();
-  const [category, subcategory] = [match.params.category, match.params.subcategory];
+  const [collection, subcollection] = [match.params.collection, match.params.subcollection];
 
   return (
     <h5>
       <BreadCrumbLink to="/dashboard">{projectName}</BreadCrumbLink>
       {' > '}
-      <BreadCrumbLink to={`/${projectId}/${category}`}>{projectCategories[category].name}</BreadCrumbLink>
-      {subcategory && ' > '}
-      {subcategory && <BreadCrumbLink to={`/${projectId}/${category}/${subcategory}`}>{projectCategories[category].subCategories[subcategory].name}</BreadCrumbLink>}
+      <BreadCrumbLink to={`/${projectId}/${collection}`}>{projectCategories[collection].name}</BreadCrumbLink>
+      {subcollection && ' > '}
+      {subcollection && <BreadCrumbLink to={`/${projectId}/${collection}/${subcollection}`}>{projectCategories[collection].subCategories[subcollection].name}</BreadCrumbLink>}
     </h5>
   );
 }

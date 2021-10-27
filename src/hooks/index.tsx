@@ -4,14 +4,14 @@ import { RootState } from '../store';
 
 export function useProject() {
   const activeProjectId = useSelector((state: RootState) => state.system.activeProjectId) as string;
-  const { projectName, categories } = useSelector((state: RootState) => ({
+  const { projectName, collections } = useSelector((state: RootState) => ({
     projectName: state.profile.projects[activeProjectId].name,
-    categories: state.profile.projects[activeProjectId].categories,
+    collections: state.profile.projects[activeProjectId].collections,
   }));
 
   return {
     projectId: activeProjectId,
     projectName,
-    projectCategories: categories,
+    projectCategories: collections,
   };
 }

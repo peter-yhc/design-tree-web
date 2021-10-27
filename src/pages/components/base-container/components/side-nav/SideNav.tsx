@@ -25,11 +25,11 @@ const Categories = styled.div`
   flex-direction: column;
 `;
 
-interface CategoryLinkProps {
+interface CollectionLinkProps {
   active: string;
 }
 
-const CategoryLink = styled(Link)<CategoryLinkProps>`
+const CollectionLink = styled(Link)<CollectionLinkProps>`
   color: ${(props) => props.theme.colours.black};
   text-decoration: none;
   margin: 0 -${(props) => props.theme.innerSpacing.large};
@@ -47,7 +47,7 @@ const SubCategories = styled.div`
   padding-bottom: ${(props) => props.theme.outerSpacing.small};
 `;
 
-const SubCategoryLink = styled(CategoryLink)`
+const SubCollectionLink = styled(CollectionLink)`
   padding-left: calc(${(props) => props.theme.outerSpacing.medium} + ${(props) => props.theme.innerSpacing.large});
   color: ${(props) => props.theme.colours.darkGrey};
 `;
@@ -71,27 +71,27 @@ export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
   const { projectId, projectCategories } = useProject();
   const location = useLocation();
 
-  const renderCategories = () => Object.entries(projectCategories).map(([id, category]) => (
+  const renderCategories = () => Object.entries(projectCategories).map(([id, collection]) => (
     <React.Fragment key={id}>
-      <CategoryLink
+      <CollectionLink
         role="listitem"
         to={`/${projectId}/${id}`}
         active={(location.pathname === `/${projectId}/${id}`).toString()}
       >
-        {category.name}
-      </CategoryLink>
-      {Object.keys(category.subCategories).length > 0
+        {collection.name}
+      </CollectionLink>
+      {Object.keys(collection.subCategories).length > 0
         && (
         <SubCategories>
-          {Object.entries(category.subCategories).map(([subId, subCategory]) => (
-            <SubCategoryLink
+          {Object.entries(collection.subCategories).map(([subId, subCollection]) => (
+            <SubCollectionLink
               role="listitem"
               to={`/${projectId}/${id}/${subId}`}
               key={subId}
               active={(location.pathname === `/${projectId}/${id}/${subId}`).toString()}
             >
-              {subCategory.name}
-            </SubCategoryLink>
+              {subCollection.name}
+            </SubCollectionLink>
           ))}
         </SubCategories>
         )}

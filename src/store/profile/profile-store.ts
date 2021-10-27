@@ -1,20 +1,20 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { createNewCategory, fetchProfile } from './profile-store-requests';
-import { Category, Profile } from '../../api/firebase-stub.api';
+import { createNewCollection, fetchProfile } from './profile-store-requests';
+import { Profile } from '../../api/firebase-stub.api';
 
-export interface CategoryType {
+export interface CollectionType {
   name: string;
-  subCategories: Record<string, SubCategoryType>;
+  subCategories: Record<string, SubCollectionType>;
 }
 
-export interface SubCategoryType {
+export interface SubCollectionType {
   name: string;
 }
 
 export interface ProjectType {
   name: string;
-  categories: Record<string, CategoryType>;
+  collections: Record<string, CollectionType>;
 }
 
 export interface InitialStateType {
@@ -33,23 +33,23 @@ const { actions, reducer } = createSlice({
       projects: action.payload.projects.reduce((projectAcc, project) => {
         projectAcc[project.id] = {
           name: project.name,
-          categories: project.categories?.reduce((categoryAcc, category) => {
-            categoryAcc[category.id] = {
-              name: category.name,
-              subCategories: category.subcategories?.reduce((subCategoryAcc, subcategory) => {
-                subCategoryAcc[subcategory.id] = {
-                  name: subcategory.name,
+          collections: project.collections?.reduce((collectionAcc, collection) => {
+            collectionAcc[collection.id] = {
+              name: collection.name,
+              subCategories: collection.subcollections?.reduce((subCollectionAcc, subCollection) => {
+                subCollectionAcc[subCollection.id] = {
+                  name: subCollection.name,
                 };
-                return subCategoryAcc;
-              }, {} as Record<string, SubCategoryType>) || {},
+                return subCollectionAcc;
+              }, {} as Record<string, SubCollectionType>) || {},
             };
-            return categoryAcc;
-          }, {} as Record<string, CategoryType>) || {},
+            return collectionAcc;
+          }, {} as Record<string, CollectionType>) || {},
         };
         return projectAcc;
       }, {} as Record<string, ProjectType>),
     }));
-    builder.addCase(createNewCategory.fulfilled, (state, action) => ({
+    builder.addCase(createNewCollection.fulfilled, (state, action) => ({
       ...state,
       projects: {
         ...state.projects,

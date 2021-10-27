@@ -36,11 +36,11 @@ const TileContainer = styled.section`
 
 interface MatchProps {
   project: string;
-  category: string;
-  subcategory: string;
+  collection: string;
+  subcollection: string;
 }
 
-export default function CategoryViewPage() {
+export default function CollectionViewPage() {
   const match = useRouteMatch<MatchProps>();
   const location = useLocation();
   const images = useSelector((state: RootState) => state.images.currentImages);
