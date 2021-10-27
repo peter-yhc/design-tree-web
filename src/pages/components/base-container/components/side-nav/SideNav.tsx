@@ -37,7 +37,7 @@ const CategoryLink = styled(Link)<CategoryLinkProps>`
   line-height: 1.35rem;
   
   &:hover {
-    background-color: hsl(200,27%,91%)
+    background-color: ${(props) => props.theme.system.sideNavHighlight}
   }
 `;
 

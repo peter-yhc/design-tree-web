@@ -27,6 +27,7 @@ const EditButton = styled.button`
 
 const ActionButton = styled(Button)`
   border: none;
+  border-radius: 0;
 
   & > svg {
     margin-right: ${(props) => props.theme.outerSpacing.small}
