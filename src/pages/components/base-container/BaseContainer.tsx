@@ -9,7 +9,7 @@ const Container = styled.div`
   min-height: 100vh;
   display: grid;
   grid-template-columns: ${(props) => props.theme.system.sideNavWidth} auto;
-  grid-template-rows: 60px auto;
+  grid-template-rows: 3.75rem auto;
   grid-template-areas: "nav header" "nav main";
   background-color: ${(props) => props.theme.colours.lightGrey};
 `;
@@ -43,7 +43,7 @@ const SearchBox = styled.div`
 
 const Search = styled(SearchIcon)`
   color: ${(props) => props.theme.colours.grey};
-  width: 1.6em;
+  width: 1.6rem;
 `;
 
 const SearchField = styled.input`
@@ -65,7 +65,7 @@ const SecondaryLinks = styled.div`
 
 const UserCircle = styled(UserCircleIcon)`
   color: ${(props) => props.theme.colours.black};
-  width: 1.75em;
+  width: 1.75rem;
 `;
 
 interface BaseContainerProps {

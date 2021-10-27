@@ -8,7 +8,7 @@ interface IndicatorProps {
 
 const Indicator = styled.div<IndicatorProps>`
   position: absolute;
-  height: 1.7em;
+  height: 1.7rem;
   width: 4px;
   background-color: ${(props) => props.theme.colours.primary};
   left: calc(${(props) => props.theme.system.sideNavWidth} - 4px);
