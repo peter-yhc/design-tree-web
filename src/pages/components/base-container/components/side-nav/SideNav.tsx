@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import Logo from 'assets/images/Logo.svg';
 import { Link, useLocation } from 'react-router-dom';
 import { useProject } from 'hooks';
-import Button from '../../../button/Button';
 import ProjectSelector from './components/ProjectSelector';
+import NewCollectionAction from './components/NewCollectionAction';
 
 const Nav = styled.nav`
   height: 100%;
@@ -62,8 +62,7 @@ const ActiveProjectSelector = styled(ProjectSelector)`
   font-weight: 600;
 `;
 
-const NewCategoryButton = styled(Button)`
-  align-self: flex-start;
+const NewCollectionContainer = styled.div`
   margin-top: ${(props) => props.theme.outerSpacing.medium}
 `;
 
@@ -108,9 +107,10 @@ export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
       <Categories role="list">
         {renderCategories()}
       </Categories>
-      <NewCategoryButton inline>
-        + New Category
-      </NewCategoryButton>
+      <NewCollectionContainer>
+        <NewCollectionAction />
+      </NewCollectionContainer>
+
     </Nav>
   );
 }

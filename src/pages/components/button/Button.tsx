@@ -15,8 +15,11 @@ const Button = styled.button<ButtonProps>`
     background-color: ${props.theme.colours.primary};
     color: ${props.theme.colours.white};
     
+    &:hover {
+      background-color: ${props.theme.colours.primaryDarker};
+    }
     &:active {
-      background-color: hsl(195,35%,35%);
+      background-color: ${props.theme.colours.primaryDarkest};
     }
   `}
   

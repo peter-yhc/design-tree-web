@@ -1,5 +1,7 @@
 const colours = {
-  primary: 'hsl(203,80%,56%)',
+  primaryDarkest: 'hsl(203,80%,40%)',
+  primaryDarker: 'hsl(203,80%,47%)',
+  primary: 'hsl(203,80%,53%)',
   primaryLighest: 'hsl(203,80%,85%)',
   primaryLighter: 'hsl(203,80%,75%)',
   secondary: 'hsl(302,66%,53%)',

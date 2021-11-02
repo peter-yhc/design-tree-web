@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import { RootState } from '../store';
 
 export function useProject() {
@@ -14,4 +15,18 @@ export function useProject() {
     projectName,
     projectCategories: collections,
   };
+}
+
+export function useAttachModalEscape(cb: () => void) {
+  useEffect(() => {
+    const listener = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        cb();
+      }
+    };
+    window.addEventListener('keydown', listener);
+    return () => {
+      window.removeEventListener('keydown', listener);
+    };
+  }, []);
 }
