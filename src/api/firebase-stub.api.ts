@@ -59,36 +59,7 @@ export interface Profile {
 async function getProfile(): Promise<Profile> {
   return new Promise((resolve) => {
     setTimeout(
-      () => resolve({
-        projects: [{
-          id: 'taylor-home',
-          name: 'Taylor Home',
-          collections: [{
-            id: 'kitchen',
-            name: 'Kitchen',
-            subcollections: [{
-              id: 'cabinets',
-              name: 'Cabinets',
-            }, {
-              id: 'windows',
-              name: 'Windows',
-            }],
-          }, {
-            id: 'bathroom-1',
-            name: 'Bathroom 1',
-            subcollections: [{
-              id: 'bathtubs',
-              name: 'Bathtubs',
-            }],
-          }, {
-            id: 'bathroom-2',
-            name: 'Bathroom 2',
-          }, {
-            id: 'wardrobe',
-            name: 'Wardrobe',
-          }],
-        }],
-      }),
+      () => resolve(stub.projectData),
       400,
     );
   });
@@ -96,7 +67,6 @@ async function getProfile(): Promise<Profile> {
 
 async function createCollection(projectId: string, collectionName: string): Promise<Collection> {
   return new Promise((resolve) => {
-    console.log(projectId, collectionName);
     setTimeout(() => {
       resolve({ name: collectionName, id: 'some-random-id' });
     }, 500);
