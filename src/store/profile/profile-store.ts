@@ -55,8 +55,12 @@ const { actions, reducer } = createSlice({
         ...state.projects,
         [action.meta.arg.projectId]: {
           ...state.projects[action.meta.arg.projectId],
-          [action.payload.id]: {
-            name: action.payload.name,
+          collections: {
+            ...state.projects[action.meta.arg.projectId].collections,
+            [action.payload.id]: {
+              name: action.payload.name,
+              subCategories: {},
+            },
           },
         },
       },
@@ -65,5 +69,5 @@ const { actions, reducer } = createSlice({
 });
 
 export default {
-  actions: { ...actions, fetchProfile }, reducer,
+  actions: { ...actions }, reducer,
 };

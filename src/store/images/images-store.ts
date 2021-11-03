@@ -56,6 +56,9 @@ const { actions, reducer } = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchImages.pending, (state) => ({ ...state, currentImages: {} }));
     builder.addCase(fetchImages.fulfilled, (state, action) => {
+      if (!action.payload) {
+        return { ...state, currentImages: {} };
+      }
       const imagesMap = action.payload.reduce((acc, image: ImageInfo) => {
         acc[image.hash] = image;
         return acc;

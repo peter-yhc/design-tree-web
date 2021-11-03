@@ -10,7 +10,7 @@ import a09 from 'assets/images/9.png';
 import a10 from 'assets/images/10.png';
 import a11 from 'assets/images/11.png';
 import a12 from 'assets/images/12.png';
-import { ImageInfo } from './firebase-stub.api';
+import { ImageInfo, Profile } from './firebase-stub.api';
 
 const imageData: Record<string, ImageInfo[]> = {
   '/taylor-home/kitchen': [
@@ -293,6 +293,38 @@ const imageData: Record<string, ImageInfo[]> = {
   ],
 };
 
+const projectData: Profile = {
+  projects: [{
+    id: 'taylor-home',
+    name: 'Taylor Home',
+    collections: [{
+      id: 'kitchen',
+      name: 'Kitchen',
+      subcollections: [{
+        id: 'cabinets',
+        name: 'Cabinets',
+      }, {
+        id: 'windows',
+        name: 'Windows',
+      }],
+    }, {
+      id: 'bathroom-1',
+      name: 'Bathroom 1',
+      subcollections: [{
+        id: 'bathtubs',
+        name: 'Bathtubs',
+      }],
+    }, {
+      id: 'bathroom-2',
+      name: 'Bathroom 2',
+    }, {
+      id: 'wardrobe',
+      name: 'Wardrobe',
+    }],
+  }],
+};
+
 export default {
   imageData,
+  projectData,
 };

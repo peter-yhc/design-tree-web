@@ -1,8 +1,10 @@
 import React, { ChangeEvent, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 import Button from '../../../../button/Button';
 import Input from '../../../../input/Input';
-import { useAttachModalEscape } from '../../../../../../hooks';
+import { useAttachModalEscape, useProject } from '../../../../../../hooks';
+import { createNewCollection } from '../../../../../../store/profile/profile-store-requests';
 
 const ModalBackground = styled.div`
   position: absolute;
@@ -38,9 +40,11 @@ const ButtonRow = styled.div`
 `;
 
 export default function NewCollectionAction() {
+  const dispatch = useDispatch();
+  const { projectId } = useProject();
   const modalRef = useRef<HTMLDivElement>(null);
   const [modalHidden, setModalHidden] = useState(true);
-  const [inputValue, setInputValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState('');
   useAttachModalEscape(() => setModalHidden(true));
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -71,8 +75,8 @@ export default function NewCollectionAction() {
                 onChange={handleInputChange}
               />
               <ButtonRow>
-                <Button onClick={() => setModalHidden(true)}>Cancel</Button>
-                <Button primary>Save</Button>
+                <Button onClick={() => setModalHidden(true)}><span>Cancel</span></Button>
+                <Button primary onClick={() => dispatch(createNewCollection({ name: inputValue, projectId }))}><span>Save</span></Button>
               </ButtonRow>
             </DialogModal>
           </ModalBackground>
