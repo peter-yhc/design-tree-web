@@ -1,8 +1,12 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
+import React, {
+  ChangeEvent, useEffect, useRef, useState,
+} from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { createNewCollection } from 'store/forms/forms-store-requests';
 import { useAttachModalEscape, useProject } from 'hooks';
+import { useAppSelector } from 'store';
+import formsStore from 'store/forms/forms-store';
 import Button from '../../../../button/Button';
 import Input from '../../../../input/Input';
 
@@ -45,7 +49,16 @@ export default function NewCollectionAction() {
   const modalRef = useRef<HTMLDivElement>(null);
   const [modalHidden, setModalHidden] = useState(true);
   const [inputValue, setInputValue] = useState('');
+  const formState = useAppSelector((state) => state.forms.newCollectionForm.status);
+
   useAttachModalEscape(() => setModalHidden(true));
+
+  useEffect(() => {
+    if (formState === 'DONE') {
+      setModalHidden(true);
+      dispatch(formsStore.actions.resetNewCollectionForm());
+    }
+  }, [formState]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const sanitisedText = e.target.value.match(/[A-Za-z0-9 ]+/);
@@ -53,6 +66,12 @@ export default function NewCollectionAction() {
       setInputValue(e.target.value);
     } else if (!sanitisedText) {
       setInputValue('');
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      dispatch(createNewCollection({ name: inputValue, projectId }));
     }
   };
 
@@ -73,6 +92,7 @@ export default function NewCollectionAction() {
                 pattern="/[A-Za-z0-9 ]/"
                 value={inputValue}
                 onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
               />
               <ButtonRow>
                 <Button onClick={() => setModalHidden(true)}><span>Cancel</span></Button>
