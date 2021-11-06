@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { createNewCollection, fetchProfile } from './profile-store-requests';
+import { fetchProfile } from './profile-store-requests';
 import { Profile } from '../../api/firebase-stub.api';
+import { createNewCollection } from '../forms/forms-store-requests';
 
 export interface CollectionType {
   name: string;
