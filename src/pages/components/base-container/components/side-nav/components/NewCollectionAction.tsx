@@ -95,8 +95,8 @@ export default function NewCollectionAction() {
                 onKeyDown={handleKeyDown}
               />
               <ButtonRow>
-                <Button onClick={() => setModalHidden(true)}><span>Cancel</span></Button>
-                <Button primary onClick={() => dispatch(createNewCollection({ name: inputValue, projectId }))}><span>Save</span></Button>
+                <Button onClick={() => setModalHidden(true)}>Cancel</Button>
+                <Button primary onClick={() => dispatch(createNewCollection({ name: inputValue, projectId }))}>Save</Button>
               </ButtonRow>
             </DialogModal>
           </ModalBackground>
