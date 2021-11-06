@@ -1,10 +1,10 @@
 import React, { ChangeEvent, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
+import { createNewCollection } from 'store/forms/forms-store-requests';
+import { useAttachModalEscape, useProject } from 'hooks';
 import Button from '../../../../button/Button';
 import Input from '../../../../input/Input';
-import { useAttachModalEscape, useProject } from '../../../../../../hooks';
-import { createNewCollection } from '../../../../../../store/profile/profile-store-requests';
 
 const ModalBackground = styled.div`
   position: absolute;

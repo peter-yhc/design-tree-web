@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 
 const Button = styled.button<ButtonProps>`
   display: flex;
+  align-items: center;
   border: 1px ${(props) => props.theme.colours.grey} solid;
   border-radius: 4px;
   padding: 0.4em 0.75em;

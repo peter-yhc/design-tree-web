@@ -6,11 +6,13 @@ import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import profileStore from './profile/profile-store';
 import systemStore from './system/system-store';
 import imagesStore from './images/images-store';
+import formsStore from './forms/forms-store';
 
 const rootReducer = combineReducers({
   profile: profileStore.reducer,
   system: systemStore.reducer,
   images: imagesStore.reducer,
+  forms: formsStore.reducer,
 });
 
 // @ts-ignore
