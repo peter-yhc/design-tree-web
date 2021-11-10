@@ -3,6 +3,8 @@ import { Route, Switch } from 'react-router-dom';
 import { RouteValidator } from 'hoc';
 import { CollectionViewPage, DashboardPage, PageNotFound } from './pages';
 import AppLoader from './hoc/app-loader/AppLoader';
+import LoginPage from './pages/login/LoginPage';
+import PrivateRoute from './hoc/private-route/PrivateRoute';
 
 export default function App() {
   return (
@@ -11,17 +13,18 @@ export default function App() {
         <Route path="/" exact>
           <span>Landing page</span>
         </Route>
-        <Route path="/dashboard" exact component={DashboardPage} />
-        <Route path="/:project/:collection/:subcollection" exact>
+        <Route path="/login" exact component={LoginPage} />
+        <PrivateRoute path="/dashboard" exact component={DashboardPage} />
+        <PrivateRoute path="/:project/:collection/:subcollection" exact>
           <RouteValidator>
             <CollectionViewPage />
           </RouteValidator>
-        </Route>
-        <Route path="/:project/:collection" exact>
+        </PrivateRoute>
+        <PrivateRoute path="/:project/:collection" exact>
           <RouteValidator>
             <CollectionViewPage />
           </RouteValidator>
-        </Route>
+        </PrivateRoute>
         <Route path="/" component={PageNotFound} />
       </Switch>
     </AppLoader>

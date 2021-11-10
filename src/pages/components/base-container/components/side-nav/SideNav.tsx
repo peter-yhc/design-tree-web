@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Logo from 'assets/images/Logo.svg';
 import { Link, useLocation } from 'react-router-dom';
 import { useProject } from 'hooks';
+import { logout } from 'api/firebase-api';
+import Button from 'pages/components/button/Button';
 import ProjectSelector from './components/ProjectSelector';
 import NewCollectionAction from './components/NewCollectionAction';
 
@@ -110,7 +112,7 @@ export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
       <NewCollectionContainer>
         <NewCollectionAction />
       </NewCollectionContainer>
-
+      <Button onClick={() => logout()}>Logout</Button>
     </Nav>
   );
 }
