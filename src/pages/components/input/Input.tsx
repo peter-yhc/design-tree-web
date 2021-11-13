@@ -4,18 +4,19 @@ import styled from 'styled-components';
 const Label = styled.label`
   display: flex;
   flex-direction: column;
-  text-transform: uppercase;
+  text-transform: capitalize;
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   letter-spacing: 0.02rem;
 `;
 
 const InputStyled = styled.input`
-  border: 0;
   outline: 0;
+  border: 1px solid ${(props) => props.theme.colours.grey};
+  border-radius: ${(props) => props.theme.system.borderRadius};
   margin-top: ${(props) => props.theme.innerSpacing.small};
-  border-bottom: 1px solid ${(props) => props.theme.colours.darkGrey};
   font-size: 1rem;
+  padding: ${(props) => props.theme.innerSpacing.small};
 `;
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {

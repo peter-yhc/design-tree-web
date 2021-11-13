@@ -38,10 +38,8 @@ function loginWithGoogle() {
   signInWithRedirect(auth, googleProvider);
 }
 
-async function logout() {
-  console.log('logging out');
-  await signOut(auth);
-  console.log('logging out done');
+function logout() {
+  signOut(auth);
 }
 
 function useAuth() {
