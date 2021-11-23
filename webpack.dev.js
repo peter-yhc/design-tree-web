@@ -37,12 +37,12 @@ module.exports = merge(commons, {
     new webpack.DefinePlugin({
       'process.env': {
         firebaseConfig: {
-          FIREBASE_API_KEY: JSON.stringify('AIzaSyC68OJZAfw0UcFrTEzkzIrYDeDeArCxkhM'),
-          FIREBASE_AUTH_DOMAIN: JSON.stringify('inspire-auth.firebaseapp.com'),
-          FIREBASE_PROJECT_ID: JSON.stringify('inspire-auth'),
-          FIREBASE_STORAGE_BUCKET: JSON.stringify('inspire-auth.appspot.com'),
-          FIREBASE_MESSAGING_SENDER_ID: JSON.stringify('1086049283493'),
-          FIREBASE_APP_ID: JSON.stringify('1:1086049283493:web:da558e18056762e22b0c4c'),
+          FIREBASE_API_KEY: JSON.stringify('AIzaSyC9OpjWap75xpvxrzWEg4G82ttZDg-ZSfA'),
+          FIREBASE_AUTH_DOMAIN: JSON.stringify('inspire-dev-ad92f.firebaseapp.com'),
+          FIREBASE_PROJECT_ID: JSON.stringify('inspire-dev-ad92f'),
+          FIREBASE_STORAGE_BUCKET: JSON.stringify('inspire-dev-ad92f.appspot.com'),
+          FIREBASE_MESSAGING_SENDER_ID: JSON.stringify('626751852'),
+          FIREBASE_APP_ID: JSON.stringify('1:626751852:web:f0ef6e48c3674a7b4e9b49'),
         },
       },
     }),
