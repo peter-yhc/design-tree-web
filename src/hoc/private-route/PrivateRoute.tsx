@@ -1,22 +1,22 @@
 import React from 'react';
 import { Redirect, Route, RouteProps } from 'react-router-dom';
-import { useAuth } from '../../api/firebase-api';
+import { AuthenticationState, useAuth } from '../../api/firebase-api';
 import AppLoader from '../app-loader/AppLoader';
 
 export default function PrivateRoute({ children, ...props }: RouteProps) {
-  const [currentUser] = useAuth();
+  const [authState] = useAuth();
 
-  return (
-    <>
-      {currentUser
-        ? (
-          <AppLoader>
-            <Route {...props}>
-              {children}
-            </Route>
-          </AppLoader>
-        )
-        : <Redirect to="/login" />}
-    </>
-  );
+  if (authState === AuthenticationState.Valid) {
+    return (
+      <AppLoader>
+        <Route {...props}>
+          {children}
+        </Route>
+      </AppLoader>
+    );
+  }
+  if (authState === AuthenticationState.Error) {
+    return (<Redirect to="/login" />);
+  }
+  return (<></>);
 }

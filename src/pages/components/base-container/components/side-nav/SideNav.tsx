@@ -105,7 +105,7 @@ export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
       <LogoImage src={Logo} alt="" />
       <ProjectLabel>
         <h6>Current Project:</h6>
-        <ActiveProjectSelector />
+        { projectId ? <ActiveProjectSelector /> : <span>None available</span> }
       </ProjectLabel>
       {
         projectCategories && (

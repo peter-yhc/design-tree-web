@@ -1,12 +1,13 @@
 import { initializeApp } from 'firebase/app';
 import {
   getAuth, GoogleAuthProvider, signInWithRedirect, signOut,
-  getRedirectResult,
   onAuthStateChanged,
+  setPersistence,
+  browserLocalPersistence,
 } from 'firebase/auth';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import systemStore, { AuthenticationState } from 'store/system/system-store';
+import systemStore from 'store/system/system-store';
 
 declare let process : {
   env: {
@@ -24,18 +25,17 @@ const app = initializeApp({
 });
 const auth = getAuth(app);
 
-interface GoogleUser {
-  uid: string;
-  email: string;
-  displayName: string;
-  metadata: {
-    photoUrl: string;
-  }
+// eslint-disable-next-line no-shadow
+export enum AuthenticationState {
+  // eslint-disable-next-line no-unused-vars
+  Uninitialised, Error, Valid
 }
 
 function loginWithGoogle() {
   const googleProvider = new GoogleAuthProvider();
-  signInWithRedirect(auth, googleProvider);
+  setPersistence(auth, browserLocalPersistence).then(() => {
+    signInWithRedirect(auth, googleProvider);
+  });
 }
 
 function logout() {
@@ -43,18 +43,16 @@ function logout() {
 }
 
 function useAuth() {
-  const dispatch = useDispatch();
-  const [user, setUser] = useState(getAuth().currentUser);
+  const [authState, setAuthState] = useState(AuthenticationState.Uninitialised);
 
   onAuthStateChanged(auth, (authUser) => {
-    dispatch(systemStore.actions.setAuthenticated(AuthenticationState.Working));
-    setUser(authUser);
-  },
-  () => dispatch(systemStore.actions.setAuthenticated(AuthenticationState.Invalid)),
-  () => {
-    dispatch(systemStore.actions.setAuthenticated(AuthenticationState.Valid));
+    if (authUser) {
+      setAuthState(AuthenticationState.Valid);
+    } else {
+      setAuthState(AuthenticationState.Error);
+    }
   });
-  return [user];
+  return [authState];
 }
 
 export {

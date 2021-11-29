@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getProjects } from '../../api/server-api';
 import { IProjectResponse } from '../../api/server-interfaces';
 
@@ -7,14 +7,7 @@ const fetchProjects = createAsyncThunk(
   async () => await getProjects() as IProjectResponse[],
 );
 
-// eslint-disable-next-line no-shadow
-export enum AuthenticationState {
-  // eslint-disable-next-line no-unused-vars
-  Invalid, Valid, Working
-}
-
 interface InitialStateType {
-  isAuthenticated: AuthenticationState;
   activeProjectId?: string;
   inEditMode: boolean;
   ready: boolean;
@@ -23,7 +16,6 @@ interface InitialStateType {
 const { actions, reducer } = createSlice({
   name: 'system',
   initialState: {
-    isAuthenticated: AuthenticationState.Invalid,
     activeProjectId: undefined,
     inEditMode: false,
     ready: false,
@@ -31,10 +23,6 @@ const { actions, reducer } = createSlice({
   reducers: {
     changeActiveProject: (state, action) => ({ ...state, activeProjectId: action.payload }),
     toggleEditMode: ((state, action) => ({ ...state, inEditMode: action.payload })),
-    setAuthenticated: (state, action: PayloadAction<AuthenticationState>) => ({
-      ...state,
-      isAuthenticated: action.payload,
-    }),
   },
   extraReducers: (builder) => {
     builder.addCase(fetchProjects.fulfilled, (state, action) => ({
