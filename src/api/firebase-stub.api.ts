@@ -56,18 +56,8 @@ export interface Profile {
   }]
 }
 
-async function getProfile(): Promise<Profile> {
-  return new Promise((resolve) => {
-    setTimeout(
-      () => resolve(stub.projectData),
-      400,
-    );
-  });
-}
-
 export {
   getImages,
   deleteImages,
   favouriteImage,
-  getProfile,
 };

@@ -107,12 +107,16 @@ export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
         <h6>Current Project:</h6>
         <ActiveProjectSelector />
       </ProjectLabel>
-      <Categories role="list">
-        {renderCategories()}
-      </Categories>
+      {
+        projectCategories && (
+        <Categories role="list">
+          {renderCategories()}
+        </Categories>
+        )
+      }
       <ActionsContainer>
         <NewProjectAction />
-        <NewCollectionAction />
+        {projectId && <NewCollectionAction /> }
       </ActionsContainer>
       <Button onClick={() => logout()}>Logout</Button>
     </Nav>
