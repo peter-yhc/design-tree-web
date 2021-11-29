@@ -1,5 +1,3 @@
-import stub from './stub';
-
 export interface ImageMetaInfo {
   favourite?: boolean,
 }
@@ -11,15 +9,6 @@ export interface ImageInfo {
   description?: string,
   addedDate: Date,
   metadata?: ImageMetaInfo,
-}
-
-async function getImages(path: string): Promise<ImageInfo[]> {
-  return new Promise((resolve) => {
-    setTimeout(
-      () => resolve(stub.imageData[path]),
-      400,
-    );
-  });
 }
 
 async function deleteImages(hashes: string[]): Promise<void> {
@@ -57,7 +46,6 @@ export interface Profile {
 }
 
 export {
-  getImages,
   deleteImages,
   favouriteImage,
 };

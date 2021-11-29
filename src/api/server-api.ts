@@ -1,5 +1,7 @@
 import { getAuth } from './firebase-api';
-import { ICollectionResponse, IFocusResponse, IProjectResponse } from './server-interfaces';
+import {
+  ICollectionResponse, IFocusResponse, IImageResponse, IProjectResponse,
+} from './server-interfaces';
 
 const host = 'http://localhost:8081';
 
@@ -66,9 +68,38 @@ async function createFocus({ name, projectUid, collectionUid }: { name: string, 
   return await response.json() as IFocusResponse;
 }
 
+async function getImages({ projectUid, locationUid }: {projectUid: string, locationUid: string}): Promise<IImageResponse[]> {
+  const token = await getToken();
+  const response = await fetch(`${host}/images/${projectUid}/${locationUid}`, {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return await response.json() as IImageResponse[];
+}
+
+async function createImage(projectUid: string, locationUid: string, src: string): Promise<IImageResponse> {
+  const token = await getToken();
+  const response = await fetch(`${host}/upload-image`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ projectUid, locationUid, src }),
+  });
+  return await response.json() as IImageResponse;
+}
+
 export {
   createProject,
   getProjects,
   createCollection,
   createFocus,
+  getImages,
+  createImage,
 };

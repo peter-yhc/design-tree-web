@@ -53,7 +53,10 @@ export default function CollectionViewPage() {
   }, []);
 
   useEffect(() => {
-    dispatch(imagesStore.actions.fetchImages(location.pathname));
+    dispatch(imagesStore.actions.fetchImages({
+      projectUid: match.params.project,
+      locationUid: match.params.collection,
+    }));
   }, [location]);
 
   if (!ready) {
@@ -67,7 +70,7 @@ export default function CollectionViewPage() {
         <PageTitle />
         <TileContainer>
           {
-          Object.values(images).map((v) => <PreviewTile key={v.hash} id={v.hash} />)
+          Object.values(images).map((v) => <PreviewTile key={v.uid} id={v.uid} />)
         }
         </TileContainer>
         <EditInfo />

@@ -14,3 +14,15 @@ export interface IProjectResponse {
   uid: string;
   collections?: ICollectionResponse[]
 }
+
+export interface IImageResponse {
+  projectUid: string;
+  locationUid: string;
+  src: string;
+  uid: string;
+  addedDate: string;
+  comment?: string;
+  metadata?: {
+    favourite: boolean;
+  }
+}

@@ -1,10 +1,8 @@
 import { Dispatch } from 'redux';
 import React from 'react';
-import imageStore from 'store/images/images-store';
-import { b64EncodeUnicode } from 'utils';
-import { ImageInfo } from 'api/firebase-stub.api';
+import { uploadImage } from '../../../store/images/images-store-requests';
 
-const createDragdropListener = (dispatch: Dispatch<any>, successCB: () => void) => (event: React.DragEvent<HTMLDivElement>) => {
+const createDragdropListener = (dispatch: Dispatch<any>, successCB: () => void, projectUid: string, locationUid: string) => (event: React.DragEvent<HTMLDivElement>) => {
   event.preventDefault();
   event.stopPropagation();
 
@@ -22,12 +20,11 @@ const createDragdropListener = (dispatch: Dispatch<any>, successCB: () => void) 
         const imageName = imageUrl?.split('/').pop();
 
         if (imageUrl && imageName) {
-          dispatch(imageStore.actions.addImage({
-            name: imageName,
-            hash: b64EncodeUnicode(`${imageName}${imageUrl}`),
+          dispatch(uploadImage({
+            projectUid,
+            locationUid,
             src: imageUrl,
-            addedDate: new Date(),
-          } as ImageInfo));
+          }));
           successCB();
         }
       });
@@ -36,7 +33,7 @@ const createDragdropListener = (dispatch: Dispatch<any>, successCB: () => void) 
   }
 };
 
-const createClipboardListener = (dispatch: Dispatch<any>) => (event: ClipboardEvent) => {
+const createClipboardListener = (dispatch: Dispatch<any>, projectUid: string, locationUid: string) => (event: ClipboardEvent) => {
   let imageUrl;
 
   if (event?.clipboardData?.getData('text')) {
@@ -51,12 +48,11 @@ const createClipboardListener = (dispatch: Dispatch<any>) => (event: ClipboardEv
 
   const imageName = imageUrl?.split('/').pop();
   if (imageUrl && imageName) {
-    dispatch(imageStore.actions.addImage({
-      name: imageName,
-      hash: b64EncodeUnicode(`${imageName}${imageUrl}`),
+    dispatch(uploadImage({
+      projectUid,
+      locationUid,
       src: imageUrl,
-      addedDate: new Date(),
-    } as ImageInfo));
+    }));
   }
 };
 

@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ImageInfo } from 'api/firebase-stub.api';
 import {
-  FavouriteStatus, fetchImages, removeSelectedImages, toggleImageFavourite,
+  FavouriteStatus, fetchImages, removeSelectedImages, toggleImageFavourite, uploadImage,
 } from './images-store-requests';
 import systemStore from '../system/system-store';
+import { ImageInfo } from './images-store-interfaces';
 
 export type InitialState = {
   currentImages: Record<string, ImageInfo>,
@@ -43,15 +43,6 @@ const { actions, reducer } = createSlice({
         },
       },
     }),
-    addImage: (state, action: PayloadAction<ImageInfo>) => ({
-      ...state,
-      currentImages: {
-        ...state.currentImages,
-        [action.payload.hash]: {
-          ...action.payload,
-        },
-      },
-    }),
   },
   extraReducers: (builder) => {
     builder.addCase(fetchImages.pending, (state) => ({ ...state, currentImages: {} }));
@@ -60,11 +51,18 @@ const { actions, reducer } = createSlice({
         return { ...state, currentImages: {} };
       }
       const imagesMap = action.payload.reduce((acc, image: ImageInfo) => {
-        acc[image.hash] = image;
+        acc[image.uid] = image;
         return acc;
       }, {} as Record<string, ImageInfo>);
       return { ...state, currentImages: imagesMap };
     });
+    builder.addCase(uploadImage.fulfilled, (state, action) => ({
+      ...state,
+      currentImages: {
+        ...state.currentImages,
+        [action.payload.uid]: action.payload,
+      },
+    }));
     builder.addCase(systemStore.actions.toggleEditMode, (state, action) => {
       if (!action.payload) {
         return { ...state, selectedImages: [] };
