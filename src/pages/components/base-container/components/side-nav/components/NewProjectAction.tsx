@@ -3,8 +3,8 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { createNewCollection } from 'store/forms/forms-store-requests';
-import { useAttachModalEscape, useProject } from 'hooks';
+import { createNewProject } from 'store/forms/forms-store-requests';
+import { useAttachModalEscape } from 'hooks';
 import { useAppSelector } from 'store';
 import formsStore from 'store/forms/forms-store';
 import Button from '../../../../button/Button';
@@ -43,20 +43,19 @@ const ButtonRow = styled.div`
   margin-top: ${(props) => props.theme.outerSpacing.large};
 `;
 
-export default function NewCollectionAction() {
+export default function NewProjectAction() {
   const dispatch = useDispatch();
-  const { projectId } = useProject();
   const modalRef = useRef<HTMLDivElement>(null);
   const [modalHidden, setModalHidden] = useState(true);
   const [inputValue, setInputValue] = useState('');
-  const formState = useAppSelector((state) => state.forms.newCollectionForm.status);
+  const formState = useAppSelector((state) => state.forms.newProjectForm.status);
 
   useAttachModalEscape(() => setModalHidden(true));
 
   useEffect(() => {
     if (formState === 'DONE') {
       setModalHidden(true);
-      dispatch(formsStore.actions.resetNewCollectionForm());
+      dispatch(formsStore.actions.resetNewProjectForm());
     }
   }, [formState]);
 
@@ -71,24 +70,23 @@ export default function NewCollectionAction() {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      dispatch(createNewCollection({ name: inputValue, projectUid: projectId }));
+      dispatch(createNewProject({ name: inputValue }));
     }
   };
 
   return (
     <>
       <Button inline onClick={() => setModalHidden(!modalHidden)}>
-        + New Collection
+        + New Project
       </Button>
       {
         !modalHidden && (
           <ModalBackground>
             <DialogModal ref={modalRef}>
-              <h4>New Collection</h4>
-              <p>A collection is a set of images with a common theme.</p>
+              <h4>New Project</h4>
               <StyledInput
-                label="Name your collection"
-                placeholder="Kitchen"
+                label="Name your project"
+                placeholder="Home Remodel"
                 pattern="/[A-Za-z0-9 ]/"
                 value={inputValue}
                 onChange={handleInputChange}
@@ -96,7 +94,7 @@ export default function NewCollectionAction() {
               />
               <ButtonRow>
                 <Button onClick={() => setModalHidden(true)}>Cancel</Button>
-                <Button primary onClick={() => dispatch(createNewCollection({ name: inputValue, projectUid: projectId }))}>Save</Button>
+                <Button primary onClick={() => dispatch(createNewProject({ name: inputValue }))}>Save</Button>
               </ButtonRow>
             </DialogModal>
           </ModalBackground>

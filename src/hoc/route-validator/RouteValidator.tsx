@@ -10,11 +10,11 @@ interface RouteValidatorProps{
 interface MatchProps {
   project: string;
   collection: string;
-  subcollection: string;
+  focus: string;
 }
 
 export default function RouteValidator({ children }: RouteValidatorProps) {
-  const { project, collection, subcollection } = useRouteMatch<MatchProps>().params;
+  const { project, collection, focus } = useRouteMatch<MatchProps>().params;
   const projects = useSelector((state: RootState) => state.profile.projects);
 
   if (!Object.keys(projects).includes(project)) {
@@ -25,7 +25,7 @@ export default function RouteValidator({ children }: RouteValidatorProps) {
     return <Redirect to="/404" />;
   }
 
-  if (subcollection && !Object.keys(projects[project].collections[collection].subCategories).includes(subcollection)) {
+  if (focus && !Object.keys(projects[project].collections[collection].focuses).includes(focus)) {
     return <Redirect to="/404" />;
   }
 

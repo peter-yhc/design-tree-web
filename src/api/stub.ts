@@ -300,7 +300,7 @@ const projectData: Profile = {
     collections: [{
       id: 'kitchen',
       name: 'Kitchen',
-      subcollections: [{
+      focuss: [{
         id: 'cabinets',
         name: 'Cabinets',
       }, {
@@ -310,7 +310,7 @@ const projectData: Profile = {
     }, {
       id: 'bathroom-1',
       name: 'Bathroom 1',
-      subcollections: [{
+      focuss: [{
         id: 'bathtubs',
         name: 'Bathtubs',
       }],

@@ -37,7 +37,7 @@ const TileContainer = styled.section`
 interface MatchProps {
   project: string;
   collection: string;
-  subcollection: string;
+  focus: string;
 }
 
 export default function CollectionViewPage() {

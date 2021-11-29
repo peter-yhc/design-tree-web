@@ -5,7 +5,7 @@ import { useProject } from 'hooks';
 
 interface MatchProps {
     collection: string;
-    subcollection: string;
+    focus: string;
 }
 
 const BreadCrumbLink = styled(Link)`
@@ -16,15 +16,15 @@ const BreadCrumbLink = styled(Link)`
 export default function BreadCrumbs() {
   const match = useRouteMatch<MatchProps>();
   const { projectId, projectName, projectCategories } = useProject();
-  const [collection, subcollection] = [match.params.collection, match.params.subcollection];
+  const [collection, focus] = [match.params.collection, match.params.focus];
 
   return (
     <h5>
       <BreadCrumbLink to="/dashboard">{projectName}</BreadCrumbLink>
       {' > '}
       <BreadCrumbLink to={`/${projectId}/${collection}`}>{projectCategories[collection].name}</BreadCrumbLink>
-      {subcollection && ' > '}
-      {subcollection && <BreadCrumbLink to={`/${projectId}/${collection}/${subcollection}`}>{projectCategories[collection].subCategories[subcollection].name}</BreadCrumbLink>}
+      {focus && ' > '}
+      {focus && <BreadCrumbLink to={`/${projectId}/${collection}/${focus}`}>{projectCategories[collection].focuses[focus].name}</BreadCrumbLink>}
     </h5>
   );
 }

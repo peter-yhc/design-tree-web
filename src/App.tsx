@@ -15,7 +15,7 @@ export default function App() {
         </Route>
         <Route path="/login" exact component={LoginPage} />
         <PrivateRoute path="/dashboard" exact component={DashboardPage} />
-        <PrivateRoute path="/:project/:collection/:subcollection" exact>
+        <PrivateRoute path="/:project/:collection/:focus" exact>
           <RouteValidator>
             <CollectionViewPage />
           </RouteValidator>

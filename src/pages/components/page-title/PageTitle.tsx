@@ -4,20 +4,20 @@ import { useProject } from 'hooks';
 
 interface MatchProps {
   collection: string;
-  subcollection: string;
+  focus: string;
 }
 
 export default function PageTitle() {
   const { projectName, projectCategories } = useProject();
   const match = useRouteMatch<MatchProps>();
-  const [collection, subcollection] = [match.params.collection, match.params.subcollection];
+  const [collection, focus] = [match.params.collection, match.params.focus];
 
   const render = () => {
-    if (!collection && !subcollection) {
+    if (!collection && !focus) {
       return (<h1>{projectName}</h1>);
     }
-    if (subcollection) {
-      return (<h1>{projectCategories[collection].subCategories[subcollection].name}</h1>);
+    if (focus) {
+      return (<h1>{projectCategories[collection].focuses[focus].name}</h1>);
     }
     return (<h1>{projectCategories[collection].name}</h1>);
   };

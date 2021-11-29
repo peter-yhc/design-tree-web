@@ -2,14 +2,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchProfile } from './profile-store-requests';
 import { Profile } from '../../api/firebase-stub.api';
-import { createNewCollection } from '../forms/forms-store-requests';
+import { createNewCollection, createNewProject } from '../forms/forms-store-requests';
 
 export interface CollectionType {
   name: string;
-  subCategories: Record<string, SubCollectionType>;
+  focuses: Record<string, FocusType>;
 }
 
-export interface SubCollectionType {
+export interface FocusType {
   name: string;
 }
 
@@ -37,12 +37,12 @@ const { actions, reducer } = createSlice({
           collections: project.collections?.reduce((collectionAcc, collection) => {
             collectionAcc[collection.id] = {
               name: collection.name,
-              subCategories: collection.subcollections?.reduce((subCollectionAcc, subCollection) => {
-                subCollectionAcc[subCollection.id] = {
-                  name: subCollection.name,
+              focuses: collection.focuss?.reduce((focusAcc, focus) => {
+                focusAcc[focus.id] = {
+                  name: focus.name,
                 };
-                return subCollectionAcc;
-              }, {} as Record<string, SubCollectionType>) || {},
+                return focusAcc;
+              }, {} as Record<string, FocusType>) || {},
             };
             return collectionAcc;
           }, {} as Record<string, CollectionType>) || {},
@@ -50,17 +50,27 @@ const { actions, reducer } = createSlice({
         return projectAcc;
       }, {} as Record<string, ProjectType>),
     }));
+    builder.addCase(createNewProject.fulfilled, (state, action) => ({
+      ...state,
+      projects: {
+        ...state.projects,
+        [action.payload.uid]: {
+          name: action.payload.name,
+          collections: {},
+        },
+      },
+    }));
     builder.addCase(createNewCollection.fulfilled, (state, action) => ({
       ...state,
       projects: {
         ...state.projects,
-        [action.meta.arg.projectId]: {
-          ...state.projects[action.meta.arg.projectId],
+        [action.meta.arg.projectUid]: {
+          ...state.projects[action.meta.arg.projectUid],
           collections: {
-            ...state.projects[action.meta.arg.projectId].collections,
-            [action.payload.id]: {
+            ...state.projects[action.meta.arg.projectUid].collections,
+            [action.payload.uid]: {
               name: action.payload.name,
-              subCategories: {},
+              focuses: {},
             },
           },
         },

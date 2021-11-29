@@ -1,11 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Collection, createCollection } from '../../api/firebase-stub.api';
+import { createCollection, createProject } from 'api/server-api';
+import { IProjectResponse } from 'api/server-interfaces';
+
+const createNewProject = createAsyncThunk(
+  'profile/createProject',
+  async ({ name }: {name:string}): Promise<IProjectResponse> => createProject({ name }),
+);
 
 const createNewCollection = createAsyncThunk(
   'profile/createCollection',
-  async ({ name, projectId }: {name:string, projectId: string}): Promise<Collection> => createCollection(projectId, name),
+  async ({ name, projectUid }: {name:string, projectUid: string}): Promise<IProjectResponse> => createCollection({ name, projectUid }),
 );
 
 export {
+  createNewProject,
   createNewCollection,
 };

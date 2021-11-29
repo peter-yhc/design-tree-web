@@ -7,13 +7,14 @@ import { logout } from 'api/firebase-api';
 import Button from 'pages/components/button/Button';
 import ProjectSelector from './components/ProjectSelector';
 import NewCollectionAction from './components/NewCollectionAction';
+import NewProjectAction from './components/NewProjectAction';
 
 const Nav = styled.nav`
   height: 100%;
   border-right: 1px ${(props) => props.theme.colours.grey} solid;
   padding: ${(props) => props.theme.innerSpacing.large};
   display: grid;
-  grid-template-rows: calc(60px - ${(props) => props.theme.innerSpacing.large}) 5em min-content;
+  grid-template-rows: calc(60px - ${(props) => props.theme.innerSpacing.large}) 5em min-content auto;
 `;
 
 const LogoImage = styled.img`
@@ -43,13 +44,13 @@ const CollectionLink = styled(Link)<CollectionLinkProps>`
   }
 `;
 
-const SubCategories = styled.div`
+const Focuses = styled.div`
   display: flex;
   flex-direction: column;
   padding-bottom: ${(props) => props.theme.outerSpacing.small};
 `;
 
-const SubCollectionLink = styled(CollectionLink)`
+const FocusLink = styled(CollectionLink)`
   padding-left: calc(${(props) => props.theme.outerSpacing.medium} + ${(props) => props.theme.innerSpacing.large});
   color: ${(props) => props.theme.colours.darkGrey};
 `;
@@ -64,7 +65,7 @@ const ActiveProjectSelector = styled(ProjectSelector)`
   font-weight: 600;
 `;
 
-const NewCollectionContainer = styled.div`
+const ActionsContainer = styled.div`
   margin-top: ${(props) => props.theme.outerSpacing.medium}
 `;
 
@@ -81,20 +82,20 @@ export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
       >
         {collection.name}
       </CollectionLink>
-      {Object.keys(collection.subCategories).length > 0
+      {Object.keys(collection.focuses).length > 0
         && (
-        <SubCategories>
-          {Object.entries(collection.subCategories).map(([subId, subCollection]) => (
-            <SubCollectionLink
+        <Focuses>
+          {Object.entries(collection.focuses).map(([subId, focus]) => (
+            <FocusLink
               role="listitem"
               to={`/${projectId}/${id}/${subId}`}
               key={subId}
               active={(location.pathname === `/${projectId}/${id}/${subId}`).toString()}
             >
-              {subCollection.name}
-            </SubCollectionLink>
+              {focus.name}
+            </FocusLink>
           ))}
-        </SubCategories>
+        </Focuses>
         )}
     </React.Fragment>
   ));
@@ -109,9 +110,10 @@ export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
       <Categories role="list">
         {renderCategories()}
       </Categories>
-      <NewCollectionContainer>
+      <ActionsContainer>
+        <NewProjectAction />
         <NewCollectionAction />
-      </NewCollectionContainer>
+      </ActionsContainer>
       <Button onClick={() => logout()}>Logout</Button>
     </Nav>
   );

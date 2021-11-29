@@ -45,7 +45,7 @@ async function favouriteImage({ hash, isFavourite }: { hash: string, isFavourite
 export interface Collection {
   id: string,
   name: string,
-  subcollections?: Collection[];
+  focuss?: Collection[];
 }
 
 export interface Profile {
@@ -65,18 +65,9 @@ async function getProfile(): Promise<Profile> {
   });
 }
 
-async function createCollection(projectId: string, collectionName: string): Promise<Collection> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ name: collectionName, id: 'some-random-id' });
-    }, 500);
-  });
-}
-
 export {
   getImages,
   deleteImages,
   favouriteImage,
   getProfile,
-  createCollection,
 };
