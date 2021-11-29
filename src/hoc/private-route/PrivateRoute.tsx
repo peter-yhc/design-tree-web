@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect, Route, RouteProps } from 'react-router-dom';
 import { useAuth } from '../../api/firebase-api';
+import AppLoader from '../app-loader/AppLoader';
 
 export default function PrivateRoute({ children, ...props }: RouteProps) {
   const [currentUser] = useAuth();
@@ -9,9 +10,11 @@ export default function PrivateRoute({ children, ...props }: RouteProps) {
     <>
       {currentUser
         ? (
-          <Route {...props}>
-            {children}
-          </Route>
+          <AppLoader>
+            <Route {...props}>
+              {children}
+            </Route>
+          </AppLoader>
         )
         : <Redirect to="/login" />}
     </>

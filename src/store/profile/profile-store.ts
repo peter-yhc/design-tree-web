@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { fetchProfile } from './profile-store-requests';
-import { Profile } from '../../api/firebase-stub.api';
+import { fetchProjects } from './profile-store-requests';
 import { createNewCollection, createNewProject } from '../forms/forms-store-requests';
+import { IProjectResponse } from '../../api/server-interfaces';
 
 export interface CollectionType {
   name: string;
@@ -29,16 +29,16 @@ const { actions, reducer } = createSlice({
   } as InitialStateType,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchProfile.fulfilled, (state, action:PayloadAction<Profile>) => ({
+    builder.addCase(fetchProjects.fulfilled, (state, action: PayloadAction<IProjectResponse[]>) => ({
       ...state,
-      projects: action.payload.projects.reduce((projectAcc, project) => {
-        projectAcc[project.id] = {
+      projects: action.payload.reduce((projectAcc, project) => {
+        projectAcc[project.uid] = {
           name: project.name,
           collections: project.collections?.reduce((collectionAcc, collection) => {
-            collectionAcc[collection.id] = {
+            collectionAcc[collection.uid] = {
               name: collection.name,
-              focuses: collection.focuss?.reduce((focusAcc, focus) => {
-                focusAcc[focus.id] = {
+              focuses: collection.focuses?.reduce((focusAcc, focus) => {
+                focusAcc[focus.uid] = {
                   name: focus.name,
                 };
                 return focusAcc;

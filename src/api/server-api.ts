@@ -3,8 +3,8 @@ import { ICollectionResponse, IFocusResponse, IProjectResponse } from './server-
 
 const host = 'http://localhost:8081';
 
-const getToken = () => {
-  const token = getAuth().currentUser?.getIdToken();
+const getToken = async () => {
+  const token = await getAuth().currentUser?.getIdToken();
   if (!token) {
     throw new Error('Unauthorised');
   }
@@ -12,7 +12,7 @@ const getToken = () => {
 };
 
 async function createProject({ name }: { name: string }): Promise<IProjectResponse> {
-  const token = getToken();
+  const token = await getToken();
   const response = await fetch(`${host}/projects`, {
     method: 'POST',
     mode: 'cors',
@@ -25,8 +25,21 @@ async function createProject({ name }: { name: string }): Promise<IProjectRespon
   return await response.json() as IProjectResponse;
 }
 
+async function getProjects(): Promise<IProjectResponse[]> {
+  const token = await getToken();
+  const response = await fetch(`${host}/projects`, {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return await response.json() as IProjectResponse[];
+}
+
 async function createCollection({ name, projectUid }: { name: string, projectUid: string}): Promise<ICollectionResponse> {
-  const token = getToken();
+  const token = await getToken();
   const response = await fetch(`${host}/projects/${projectUid}/collections`, {
     method: 'POST',
     mode: 'cors',
@@ -40,7 +53,7 @@ async function createCollection({ name, projectUid }: { name: string, projectUid
 }
 
 async function createFocus({ name, projectUid, collectionUid }: { name: string, projectUid: string, collectionUid: string}): Promise<IFocusResponse> {
-  const token = getToken();
+  const token = await getToken();
   const response = await fetch(`${host}/projects/${projectUid}/collections/${collectionUid}`, {
     method: 'GET',
     mode: 'cors',
@@ -55,6 +68,7 @@ async function createFocus({ name, projectUid, collectionUid }: { name: string, 
 
 export {
   createProject,
+  getProjects,
   createCollection,
   createFocus,
 };

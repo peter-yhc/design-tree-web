@@ -1,9 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getProfile, Profile } from '../../api/firebase-stub.api';
+import { getProjects } from '../../api/server-api';
+import { IProjectResponse } from '../../api/server-interfaces';
 
-const fetchProfile = createAsyncThunk('profile/fetch',
-  async () => await getProfile() as Profile);
+const fetchProjects = createAsyncThunk(
+  'profile/fetchProjects',
+  async () => await getProjects() as IProjectResponse[],
+);
 
 export {
-  fetchProfile,
+  fetchProjects,
 };

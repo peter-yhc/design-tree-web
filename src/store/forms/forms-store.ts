@@ -15,6 +15,9 @@ export type InitialState = {
 const { actions, reducer } = createSlice({
   name: 'forms',
   initialState: {
+    newProjectForm: {
+      status: 'READY',
+    },
     newCollectionForm: {
       status: 'READY',
     },
