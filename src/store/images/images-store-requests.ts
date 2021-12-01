@@ -1,8 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { deleteImages, favouriteImage } from 'api/firebase-stub.api';
+import { favouriteImage } from 'api/firebase-stub.api';
 import { RootState } from '../index';
-import { createImage, getImages } from '../../api/server-api';
+import { createImage, getImages, removeImages } from '../../api/server-api';
 import { ImageInfo } from './images-store-interfaces';
 
 const fetchImages = createAsyncThunk(
@@ -24,7 +24,10 @@ const uploadImage = createAsyncThunk(
 
 const removeSelectedImages = createAsyncThunk(
   'images/delete',
-  async (_, { getState }): Promise<void> => deleteImages((getState() as RootState).images.selectedImages),
+  async ({ projectUid, locationUid }: {projectUid: string, locationUid: string}, { getState }): Promise<void> => {
+    const imageUids = (getState() as RootState).images.selectedImages;
+    return removeImages(projectUid, locationUid, imageUids);
+  },
 );
 
 export interface FavouriteStatus {

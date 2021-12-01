@@ -3,7 +3,14 @@ import {
   ICollectionResponse, IFocusResponse, IImageResponse, IProjectResponse,
 } from './server-interfaces';
 
-const host = 'http://localhost:8081';
+declare let process : {
+  env: {
+    serverConfig: any;
+  }
+};
+
+console.log(process.env);
+const host = process.env.serverConfig.HOST;
 
 const getToken = async () => {
   const token = await getAuth().currentUser?.getIdToken();
@@ -19,8 +26,8 @@ async function createProject({ name }: { name: string }): Promise<IProjectRespon
     method: 'POST',
     mode: 'cors',
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ name }),
   });
@@ -33,8 +40,8 @@ async function getProjects(): Promise<IProjectResponse[]> {
     method: 'GET',
     mode: 'cors',
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
     },
   });
   return await response.json() as IProjectResponse[];
@@ -46,8 +53,8 @@ async function createCollection({ name, projectUid }: { name: string, projectUid
     method: 'POST',
     mode: 'cors',
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ name }),
   });
@@ -60,8 +67,8 @@ async function createFocus({ name, projectUid, collectionUid }: { name: string, 
     method: 'GET',
     mode: 'cors',
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ name }),
   });
@@ -74,8 +81,8 @@ async function getImages({ projectUid, locationUid }: {projectUid: string, locat
     method: 'GET',
     mode: 'cors',
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
     },
   });
   return await response.json() as IImageResponse[];
@@ -83,16 +90,29 @@ async function getImages({ projectUid, locationUid }: {projectUid: string, locat
 
 async function createImage(projectUid: string, locationUid: string, src: string): Promise<IImageResponse> {
   const token = await getToken();
-  const response = await fetch(`${host}/upload-image`, {
+  const response = await fetch(`${host}/images`, {
     method: 'POST',
     mode: 'cors',
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ projectUid, locationUid, src }),
   });
   return await response.json() as IImageResponse;
+}
+
+async function removeImages(projectUid: string, locationUid: string, imageUids: string[]): Promise<void> {
+  const token = await getToken();
+  await fetch(`${host}/images/${projectUid}/${locationUid}/delete`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ uids: imageUids }),
+  });
 }
 
 export {
@@ -102,4 +122,5 @@ export {
   createFocus,
   getImages,
   createImage,
+  removeImages,
 };

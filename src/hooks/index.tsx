@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { useRouteMatch } from 'react-router-dom';
 import { RootState } from '../store';
 
 export function useProject() {
@@ -14,6 +15,22 @@ export function useProject() {
     projectId: activeProjectId,
     projectName,
     projectCategories: collections,
+  };
+}
+
+interface MatchProps {
+  project: string;
+  collection: string;
+  focus: string;
+}
+
+export function useRoute() {
+  const match = useRouteMatch<MatchProps>();
+
+  return {
+    projectUid: match.params.project,
+    collectionUid: match.params.collection,
+    focusUid: match.params.focus,
   };
 }
 

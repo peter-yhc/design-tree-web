@@ -7,6 +7,8 @@
     "preinstall": "npx npm-force-resolutions",
     "test": "npm test",
     "dev": "webpack serve --config webpack.dev.js",
+    "dev-firebase": "webpack serve --config webpack.dev-firebase.js",
+    "stg": "webpack serve --config webpack.stg.js",
     "build": "webpack --config webpack.dev.js",
     "lint": "npx eslint . --fix"
   },

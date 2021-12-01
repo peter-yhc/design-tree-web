@@ -9,6 +9,7 @@ import systemStore from 'store/system/system-store';
 import Button from 'pages/components/button/Button';
 import { useRouteMatch } from 'react-router-dom';
 import { removeSelectedImages } from 'store/images/images-store-requests';
+import { useRoute } from '../../../../../hooks';
 
 const Container = styled.div`
   position: relative;
@@ -63,14 +64,14 @@ const Dialog = styled.div`
 export default function EditDialog() {
   const dispatch = useDispatch();
   const inEditMode = useSelector((state: RootState) => state.system.inEditMode);
-  const match = useRouteMatch();
+  const { projectUid, collectionUid, focusUid } = useRoute();
 
   useEffect(() => {
     dispatch(systemStore.actions.toggleEditMode(false));
-  }, [match]);
+  }, [projectUid, collectionUid, focusUid]);
 
   const handleDeleteImage = () => {
-    dispatch(removeSelectedImages());
+    dispatch(removeSelectedImages({ projectUid, locationUid: focusUid || collectionUid }));
   };
 
   const handleClose = () => {

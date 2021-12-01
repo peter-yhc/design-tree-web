@@ -45,7 +45,7 @@ module.exports = merge(commons, {
           FIREBASE_APP_ID: JSON.stringify('1:626751852:web:f0ef6e48c3674a7b4e9b49'),
         },
         serverConfig: {
-          HOST: JSON.stringify('http://localhost:8081'),
+          HOST: JSON.stringify('https://australia-southeast1-inspire-dev-ad92f.cloudfunctions.net/app'),
         },
       },
     }),
