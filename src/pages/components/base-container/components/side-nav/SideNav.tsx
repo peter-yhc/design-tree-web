@@ -115,10 +115,10 @@ export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
         )
       }
       <ActionsContainer>
-        <NewProjectAction />
+        {/* <NewProjectAction /> */}
         {projectId && <NewCollectionAction /> }
       </ActionsContainer>
-      <Button onClick={() => logout()}>Logout</Button>
+      {/* <Button onClick={() => logout()}>Logout</Button> */}
     </Nav>
   );
 }

@@ -13,23 +13,19 @@ import EditInfo from './components/edit-info/EditInfo';
 import FileDropListener from '../../hoc/file-drop-listener/FileDropListener';
 
 const TileContainer = styled.section`
-  column-count: 5;
+  column-count: 4;
   column-gap: ${(props) => props.theme.outerSpacing.small};
   line-height: 0;
 
   @media screen and (max-width: 1440px) {
-    column-count: 4;
-  }
-
-  @media screen and (max-width: 1280px) {
     column-count: 3;
   }
 
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: 1024px) {
     column-count: 2;
   }
 
-  @media screen and (max-width: 720px) {
+  @media screen and (max-width: 800px) {
     column-count: 1;
   }
 `;
