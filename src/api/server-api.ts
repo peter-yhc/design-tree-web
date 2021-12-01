@@ -115,6 +115,20 @@ async function removeImages(projectUid: string, locationUid: string, imageUids: 
   });
 }
 
+async function favouriteImage(projectUid: string, locationUid: string, imageUid: string, isFavourite: boolean): Promise<IImageResponse> {
+  const token = await getToken();
+  const response = await fetch(`${host}/images/${projectUid}/${locationUid}/${imageUid}`, {
+    method: 'PUT',
+    mode: 'cors',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ metadata: { favourite: isFavourite } }),
+  });
+  return await response.json() as IImageResponse;
+}
+
 export {
   createProject,
   getProjects,
@@ -123,4 +137,5 @@ export {
   getImages,
   createImage,
   removeImages,
+  favouriteImage,
 };

@@ -1,9 +1,11 @@
 /* eslint-disable import/prefer-default-export */
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { favouriteImage } from 'api/firebase-stub.api';
 import { RootState } from '../index';
-import { createImage, getImages, removeImages } from '../../api/server-api';
+import {
+  createImage, getImages, removeImages, favouriteImage,
+} from '../../api/server-api';
 import { ImageInfo } from './images-store-interfaces';
+import { IImageResponse } from '../../api/server-interfaces';
 
 const fetchImages = createAsyncThunk(
   'images/fetch',
@@ -30,17 +32,11 @@ const removeSelectedImages = createAsyncThunk(
   },
 );
 
-export interface FavouriteStatus {
-  hash: string;
-  favourite: boolean;
-}
-
 const toggleImageFavourite = createAsyncThunk(
   'images/favourite',
-  async (hash: string, thunkAPI): Promise<FavouriteStatus> => {
-    const favourite: boolean = !(thunkAPI.getState() as RootState).images.currentImages[hash].metadata?.favourite || true;
-    await favouriteImage({ hash, isFavourite: favourite });
-    return { hash, favourite };
+  async ({ projectUid, locationUid, imageUid }: { projectUid: string, locationUid: string, imageUid: string }, thunkAPI): Promise<IImageResponse> => {
+    const isFavourite: boolean = !(thunkAPI.getState() as RootState).images.currentImages[imageUid].metadata?.favourite;
+    return favouriteImage(projectUid, locationUid, imageUid, isFavourite);
   },
 );
 

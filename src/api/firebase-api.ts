@@ -1,15 +1,16 @@
 import { initializeApp } from 'firebase/app';
 import {
-  getAuth, GoogleAuthProvider, signInWithRedirect, signOut,
+  browserLocalPersistence,
+  getAuth,
+  GoogleAuthProvider,
   onAuthStateChanged,
   setPersistence,
-  browserLocalPersistence,
+  signInWithRedirect,
+  signOut,
 } from 'firebase/auth';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import systemStore from 'store/system/system-store';
 
-declare let process : {
+declare let process: {
   env: {
     firebaseConfig: any;
   }

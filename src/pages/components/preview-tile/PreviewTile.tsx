@@ -6,6 +6,8 @@ import imagesStore from 'store/images/images-store';
 import { HeartIcon } from '@heroicons/react/outline';
 import ErrorImage from 'assets/images/Error.png';
 import Loading from 'assets/images/Loading.svg';
+import { toggleImageFavourite } from 'store/images/images-store-requests';
+import { useRoute } from 'hooks';
 
 const Container = styled.div`
   display: inline-block;
@@ -120,6 +122,7 @@ export default function PreviewTile({ id }: PreviewTileProps) {
   const hasPendingAction: boolean = useSelector((state: RootState) => state.images.pendingImages.includes(id));
   const inEditMode: boolean = useSelector((state: RootState) => state.system.inEditMode);
   const dispatch = useDispatch();
+  const { projectUid, collectionUid, focusUid } = useRoute();
 
   useEffect(() => {
     setLoading(false);
@@ -131,7 +134,7 @@ export default function PreviewTile({ id }: PreviewTileProps) {
 
   const favouriteHandler = () => {
     setLoading(true);
-    dispatch(imagesStore.actions.toggleImageFavourite(id));
+    dispatch(toggleImageFavourite({ projectUid, locationUid: focusUid || collectionUid, imageUid: id }));
   };
 
   return (

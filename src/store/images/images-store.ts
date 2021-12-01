@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
-  FavouriteStatus, fetchImages, removeSelectedImages, toggleImageFavourite, uploadImage,
+  fetchImages, removeSelectedImages, toggleImageFavourite, uploadImage,
 } from './images-store-requests';
 import systemStore from '../system/system-store';
 import { ImageInfo } from './images-store-interfaces';
+import { IImageResponse } from '../../api/server-interfaces';
 
 export type InitialState = {
   currentImages: Record<string, ImageInfo>,
@@ -30,19 +31,6 @@ const { actions, reducer } = createSlice({
       }
       return { ...state, selectedImages: [...state.selectedImages, action.payload] };
     },
-    toggleImageFavourite: (state, action) => ({
-      ...state,
-      currentImages: {
-        ...state.currentImages,
-        [action.payload]: {
-          ...state.currentImages[action.payload],
-          metadata: {
-            ...state.currentImages[action.payload].metadata,
-            favourite: !state.currentImages[action.payload].metadata?.favourite || false,
-          },
-        },
-      },
-    }),
   },
   extraReducers: (builder) => {
     builder.addCase(fetchImages.pending, (state) => ({ ...state, currentImages: {} }));
@@ -69,17 +57,11 @@ const { actions, reducer } = createSlice({
       }
       return state;
     });
-    builder.addCase(toggleImageFavourite.fulfilled, (state, action: PayloadAction<FavouriteStatus>) => ({
+    builder.addCase(toggleImageFavourite.fulfilled, (state, action: PayloadAction<IImageResponse>) => ({
       ...state,
       currentImages: {
         ...state.currentImages,
-        [action.payload.hash]: {
-          ...state.currentImages[action.payload.hash],
-          metadata: {
-            ...state.currentImages[action.payload.hash].metadata,
-            favourite: !state.currentImages[action.payload.hash].metadata?.favourite || false,
-          },
-        },
+        [action.payload.uid]: action.payload,
       },
     }));
     builder.addCase(removeSelectedImages.pending, (state) => ({
@@ -104,7 +86,7 @@ const { actions, reducer } = createSlice({
 
 export default {
   actions: {
-    ...actions, fetchImages, toggleImageFavourite, removeSelectedImages,
+    ...actions, fetchImages, removeSelectedImages,
   },
   reducer,
 };
