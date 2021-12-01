@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 import React from 'react';
-import { uploadImage } from '../../../store/images/images-store-requests';
+import { uploadImage } from 'store/images/images-store-requests';
 
 const createDragdropListener = (dispatch: Dispatch<any>, successCB: () => void, projectUid: string, locationUid: string) => (event: React.DragEvent<HTMLDivElement>) => {
   event.preventDefault();
@@ -42,17 +42,23 @@ const createClipboardListener = (dispatch: Dispatch<any>, projectUid: string, lo
     const tempDocument = document.createElement('html');
     tempDocument.innerHTML = event?.clipboardData?.getData('text/html') || '';
     imageUrl = tempDocument.getElementsByTagName('img')[0].getAttribute('src');
+  } else if (event?.clipboardData?.items[0]?.kind === 'file') {
+    const fileItem = event?.clipboardData?.items[0];
+    const reader = new FileReader();
+    const file = fileItem.getAsFile();
+    reader.onload = (fileEvent) => {
+      const dataUrl: string = fileEvent.target?.result as string;
+      dispatch(uploadImage({ projectUid, locationUid, src: dataUrl }));
+    };
+    if (file) {
+      reader.readAsDataURL(file);
+    }
   } else {
     return;
   }
 
-  const imageName = imageUrl?.split('/').pop();
-  if (imageUrl && imageName) {
-    dispatch(uploadImage({
-      projectUid,
-      locationUid,
-      src: imageUrl,
-    }));
+  if (imageUrl) {
+    dispatch(uploadImage({ projectUid, locationUid, src: imageUrl }));
   }
 };
 
