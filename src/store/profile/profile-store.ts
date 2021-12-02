@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchProjects } from './profile-store-requests';
-import { createNewCollection, createNewProject } from '../forms/forms-store-requests';
+import { createNewCollection, createNewFocus, createNewProject } from '../forms/forms-store-requests';
 import { IProjectResponse } from '../../api/server-interfaces';
 
 export interface CollectionType {
@@ -71,6 +71,27 @@ const { actions, reducer } = createSlice({
             [action.payload.uid]: {
               name: action.payload.name,
               focuses: {},
+            },
+          },
+        },
+      },
+    }));
+    builder.addCase(createNewFocus.fulfilled, (state, action) => ({
+      ...state,
+      projects: {
+        ...state.projects,
+        [action.meta.arg.projectUid]: {
+          ...state.projects[action.meta.arg.projectUid],
+          collections: {
+            ...state.projects[action.meta.arg.projectUid].collections,
+            [action.meta.arg.collectionUid]: {
+              ...state.projects[action.meta.arg.projectUid].collections[action.meta.arg.collectionUid],
+              focuses: {
+                ...state.projects[action.meta.arg.projectUid].collections[action.meta.arg.collectionUid].focuses,
+                [action.payload.uid]: {
+                  name: action.payload.name,
+                },
+              },
             },
           },
         },

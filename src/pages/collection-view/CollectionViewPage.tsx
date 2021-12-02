@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useRouteMatch } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import systemStore from 'store/system/system-store';
 import { RootState } from 'store';
 import imagesStore from 'store/images/images-store';
@@ -11,6 +11,7 @@ import BreadCrumbs from '../components/bread-crumbs/BreadCrumbs';
 import PageTitle from '../components/page-title/PageTitle';
 import EditInfo from './components/edit-info/EditInfo';
 import FileDropListener from '../../hoc/file-drop-listener/FileDropListener';
+import { useRoute } from '../../hooks';
 
 const TileContainer = styled.section`
   column-count: 4;
@@ -30,28 +31,22 @@ const TileContainer = styled.section`
   }
 `;
 
-interface MatchProps {
-  project: string;
-  collection: string;
-  focus: string;
-}
-
 export default function CollectionViewPage() {
-  const match = useRouteMatch<MatchProps>();
   const location = useLocation();
   const images = useSelector((state: RootState) => state.images.currentImages);
   const [ready, setReady] = useState(false);
   const dispatch = useDispatch();
+  const { projectUid, collectionUid, focusUid } = useRoute();
 
   useEffect(() => {
-    dispatch(systemStore.actions.changeActiveProject(match.params.project));
+    dispatch(systemStore.actions.changeActiveProject(projectUid));
     setReady(true);
   }, []);
 
   useEffect(() => {
     dispatch(imagesStore.actions.fetchImages({
-      projectUid: match.params.project,
-      locationUid: match.params.collection,
+      projectUid,
+      locationUid: focusUid || collectionUid,
     }));
   }, [location]);
 
@@ -65,9 +60,7 @@ export default function CollectionViewPage() {
         <BreadCrumbs />
         <PageTitle />
         <TileContainer>
-          {
-          Object.values(images).map((v) => <PreviewTile key={v.uid} id={v.uid} />)
-        }
+          {Object.values(images).map((v) => <PreviewTile key={v.uid} id={v.uid} />)}
         </TileContainer>
         <EditInfo />
       </FileDropListener>

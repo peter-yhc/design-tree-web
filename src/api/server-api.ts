@@ -63,8 +63,8 @@ async function createCollection({ name, projectUid }: { name: string, projectUid
 
 async function createFocus({ name, projectUid, collectionUid }: { name: string, projectUid: string, collectionUid: string}): Promise<IFocusResponse> {
   const token = await getToken();
-  const response = await fetch(`${host}/projects/${projectUid}/collections/${collectionUid}`, {
-    method: 'GET',
+  const response = await fetch(`${host}/projects/${projectUid}/collections/${collectionUid}/focuses`, {
+    method: 'POST',
     mode: 'cors',
     headers: {
       'content-type': 'application/json',

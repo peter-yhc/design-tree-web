@@ -3,11 +3,9 @@ import styled from 'styled-components';
 import Logo from 'assets/images/Logo.svg';
 import { Link, useLocation } from 'react-router-dom';
 import { useProject } from 'hooks';
-import { logout } from 'api/firebase-api';
-import Button from 'pages/components/button/Button';
 import ProjectSelector from './components/ProjectSelector';
 import NewCollectionAction from './components/NewCollectionAction';
-import NewProjectAction from './components/NewProjectAction';
+import NewFocusAction from './components/NewFocusAction';
 
 const Nav = styled.nav`
   height: 100%;
@@ -38,7 +36,7 @@ const CollectionLink = styled(Link)<CollectionLinkProps>`
   margin: 0 -${(props) => props.theme.innerSpacing.large};
   padding: ${(props) => `calc(${props.theme.outerSpacing.tiny} / 2)`} ${(props) => props.theme.innerSpacing.large};
   line-height: 1.35rem;
-  
+
   &:hover {
     background-color: ${(props) => props.theme.system.sideNavHighlight}
   }
@@ -83,7 +81,7 @@ export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
         {collection.name}
       </CollectionLink>
       {Object.keys(collection.focuses).length > 0
-        && (
+      && (
         <Focuses>
           {Object.entries(collection.focuses).map(([subId, focus]) => (
             <FocusLink
@@ -96,7 +94,7 @@ export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
             </FocusLink>
           ))}
         </Focuses>
-        )}
+      )}
     </React.Fragment>
   ));
 
@@ -105,18 +103,19 @@ export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
       <LogoImage src={Logo} alt="" />
       <ProjectLabel>
         <h6>Current Project:</h6>
-        { projectId ? <ActiveProjectSelector /> : <span>None available</span> }
+        {projectId ? <ActiveProjectSelector /> : <span>None available</span>}
       </ProjectLabel>
       {
         projectCategories && (
-        <Categories role="list">
-          {renderCategories()}
-        </Categories>
+          <Categories role="list">
+            {renderCategories()}
+          </Categories>
         )
       }
       <ActionsContainer>
         {/* <NewProjectAction /> */}
-        {projectId && <NewCollectionAction /> }
+        {projectId && <NewCollectionAction />}
+        {projectId && <NewFocusAction />}
       </ActionsContainer>
     </Nav>
   );

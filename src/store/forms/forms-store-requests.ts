@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { createCollection, createProject } from 'api/server-api';
-import { IProjectResponse } from 'api/server-interfaces';
+import { createCollection, createFocus, createProject } from 'api/server-api';
+import { ICollectionResponse, IFocusResponse, IProjectResponse } from 'api/server-interfaces';
 
 const createNewProject = createAsyncThunk(
   'profile/createProject',
@@ -9,10 +9,16 @@ const createNewProject = createAsyncThunk(
 
 const createNewCollection = createAsyncThunk(
   'profile/createCollection',
-  async ({ name, projectUid }: {name:string, projectUid: string}): Promise<IProjectResponse> => createCollection({ name, projectUid }),
+  async ({ name, projectUid }: {name:string, projectUid: string}): Promise<ICollectionResponse> => createCollection({ name, projectUid }),
+);
+
+const createNewFocus = createAsyncThunk(
+  'profile/createFocus',
+  async ({ name, projectUid, collectionUid }: {name:string, projectUid: string, collectionUid:string}): Promise<IFocusResponse> => createFocus({ name, projectUid, collectionUid }),
 );
 
 export {
   createNewProject,
   createNewCollection,
+  createNewFocus,
 };

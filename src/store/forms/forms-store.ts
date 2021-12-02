@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createNewCollection, createNewProject } from './forms-store-requests';
+import { createNewCollection, createNewFocus, createNewProject } from './forms-store-requests';
 
 type FormStatus = 'READY' | 'PENDING' | 'FAILED' | 'DONE';
 
@@ -8,6 +8,9 @@ export type InitialState = {
     status: FormStatus
   }
   newCollectionForm: {
+    status: FormStatus
+  }
+  newFocusForm: {
     status: FormStatus
   }
 }
@@ -21,6 +24,9 @@ const { actions, reducer } = createSlice({
     newCollectionForm: {
       status: 'READY',
     },
+    newFocusForm: {
+      status: 'READY',
+    },
   } as InitialState,
   reducers: {
     resetNewProjectForm: (state) => ({
@@ -32,6 +38,12 @@ const { actions, reducer } = createSlice({
     resetNewCollectionForm: (state) => ({
       ...state,
       newCollectionForm: {
+        status: 'READY',
+      },
+    }),
+    resetNewFocusForm: (state) => ({
+      ...state,
+      newFocusForm: {
         status: 'READY',
       },
     }),
@@ -58,6 +70,18 @@ const { actions, reducer } = createSlice({
     builder.addCase(createNewCollection.fulfilled, (state) => ({
       ...state,
       newCollectionForm: {
+        status: 'DONE',
+      },
+    }));
+    builder.addCase(createNewFocus.pending, (state) => ({
+      ...state,
+      newFocusForm: {
+        status: 'PENDING',
+      },
+    }));
+    builder.addCase(createNewFocus.fulfilled, (state) => ({
+      ...state,
+      newFocusForm: {
         status: 'DONE',
       },
     }));
