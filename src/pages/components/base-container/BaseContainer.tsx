@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { SearchIcon, UserCircleIcon } from '@heroicons/react/outline';
+import { SearchIcon } from '@heroicons/react/outline';
 import SideNav from './components/side-nav/SideNav';
 import EditDialog from './components/edit-dialog/EditDialog';
 import NavIndicator from './components/nav-indicator/NavIndicator';
+import UserProfileMenu from './components/user-profile-menu/UserProfileMenu';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -63,11 +64,6 @@ const SecondaryLinks = styled.div`
   padding-right: ${(props) => props.theme.outerSpacing.medium};
 `;
 
-const UserCircle = styled(UserCircleIcon)`
-  color: ${(props) => props.theme.colours.black};
-  width: 1.75rem;
-`;
-
 interface BaseContainerProps {
   children?: React.ReactNode,
 }
@@ -84,7 +80,7 @@ export default function BaseContainer({ children }: BaseContainerProps) {
         </SearchBox>
         <SecondaryLinks>
           <EditDialog />
-          <UserCircle />
+          <UserProfileMenu />
         </SecondaryLinks>
       </Header>
       <Main>

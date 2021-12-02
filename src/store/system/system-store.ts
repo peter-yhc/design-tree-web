@@ -10,6 +10,7 @@ const fetchProjects = createAsyncThunk(
 interface InitialStateType {
   activeProjectId?: string;
   inEditMode: boolean;
+  inUserProfileMode: boolean;
   ready: boolean;
 }
 
@@ -18,11 +19,14 @@ const { actions, reducer } = createSlice({
   initialState: {
     activeProjectId: undefined,
     inEditMode: false,
+    inUserProfileMode: false,
     ready: false,
   } as InitialStateType,
   reducers: {
     changeActiveProject: (state, action) => ({ ...state, activeProjectId: action.payload }),
-    toggleEditMode: ((state, action) => ({ ...state, inEditMode: action.payload })),
+    toggleEditMode: (state) => ({ ...state, inEditMode: !state.inEditMode, inUserProfileMode: false }),
+    toggleUserProfileMode: (state) => ({ ...state, inEditMode: false, inUserProfileMode: !state.inUserProfileMode }),
+    closeAllDialogs: (state) => ({ ...state, inEditMode: false }),
   },
   extraReducers: (builder) => {
     builder.addCase(fetchProjects.fulfilled, (state, action) => ({

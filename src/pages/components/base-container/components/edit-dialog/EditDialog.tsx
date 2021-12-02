@@ -1,15 +1,15 @@
 import {
-  PencilIcon, ArrowCircleRightIcon, DuplicateIcon, TrashIcon, XCircleIcon,
+  ArrowCircleRightIcon, DuplicateIcon, PencilIcon, TrashIcon, XCircleIcon,
 } from '@heroicons/react/outline';
 import React, { useEffect } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import systemStore from 'store/system/system-store';
 import Button from 'pages/components/button/Button';
-import { useRouteMatch } from 'react-router-dom';
 import { removeSelectedImages } from 'store/images/images-store-requests';
-import { useRoute } from '../../../../../hooks';
+import { useRoute } from 'hooks';
+import SideActionButton from '../side-action-button/SideActionButton';
 
 const Container = styled.div`
   position: relative;
@@ -17,13 +17,6 @@ const Container = styled.div`
   height: 100%;
   align-items: center;
   margin-right: ${(props) => props.theme.outerSpacing.small};
-`;
-
-const EditButton = styled.button`
-  display: flex;
-  cursor: pointer;
-  border: 0;
-  background-color: transparent;
 `;
 
 const ActionButton = styled(Button)`
@@ -35,17 +28,17 @@ const ActionButton = styled(Button)`
   }
 
   &:hover {
-    background-color: hsl(210,15%,91%);
+    background-color: hsl(210, 15%, 91%);
   }
-  
+
   &:active {
-    background-color: hsl(210,15%,86%);
+    background-color: hsl(210, 15%, 86%);
   }
 `;
 
 const Dialog = styled.div`
   position: fixed;
-  top: 80px;
+  top: ${(props) => props.theme.system.topCornerDialogHeight};
   right: ${(props) => props.theme.outerSpacing.medium};
   display: flex;
   flex-direction: column;
@@ -53,12 +46,7 @@ const Dialog = styled.div`
   border-radius: ${(props) => props.theme.system.borderRadius};
   padding: ${(props) => props.theme.innerSpacing.small} 0;
   background-color: ${(props) => props.theme.colours.white};
-  transition: right ${(props) => props.theme.system.editModeTimings};
   z-index: 100;
-
-  ${(props) => props.hidden && css`
-    right: -200px;
-  `}
 `;
 
 export default function EditDialog() {
@@ -67,7 +55,7 @@ export default function EditDialog() {
   const { projectUid, collectionUid, focusUid } = useRoute();
 
   useEffect(() => {
-    dispatch(systemStore.actions.toggleEditMode(false));
+    dispatch(systemStore.actions.closeAllDialogs());
   }, [projectUid, collectionUid, focusUid]);
 
   const handleDeleteImage = () => {
@@ -75,32 +63,34 @@ export default function EditDialog() {
   };
 
   const handleClose = () => {
-    dispatch(systemStore.actions.toggleEditMode(false));
+    dispatch(systemStore.actions.closeAllDialogs());
   };
 
   return (
     <Container>
-      <EditButton onClick={() => dispatch(systemStore.actions.toggleEditMode(!inEditMode))}>
-        <PencilIcon width="1.6em" />
-      </EditButton>
-      <Dialog hidden={!inEditMode}>
-        <ActionButton>
-          <ArrowCircleRightIcon width={20} />
-          Move
-        </ActionButton>
-        <ActionButton onClick={handleDeleteImage}>
-          <TrashIcon width={20} />
-          Delete
-        </ActionButton>
-        <ActionButton>
-          <DuplicateIcon width={20} />
-          Copy
-        </ActionButton>
-        <ActionButton onClick={handleClose}>
-          <XCircleIcon width={20} />
-          Close
-        </ActionButton>
-      </Dialog>
+      <SideActionButton onClick={() => dispatch(systemStore.actions.toggleEditMode())} selected={inEditMode}>
+        <PencilIcon width="1.6rem" />
+      </SideActionButton>
+      {inEditMode && (
+        <Dialog>
+          <ActionButton>
+            <ArrowCircleRightIcon width={20} />
+            Move
+          </ActionButton>
+          <ActionButton onClick={handleDeleteImage}>
+            <TrashIcon width={20} />
+            Delete
+          </ActionButton>
+          <ActionButton>
+            <DuplicateIcon width={20} />
+            Copy
+          </ActionButton>
+          <ActionButton onClick={handleClose}>
+            <XCircleIcon width={20} />
+            Close
+          </ActionButton>
+        </Dialog>
+      )}
     </Container>
   );
 }
