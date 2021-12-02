@@ -60,7 +60,7 @@ export default function CollectionViewPage() {
         <BreadCrumbs />
         <PageTitle />
         <TileContainer>
-          {Object.values(images).map((v) => <PreviewTile key={v.uid} id={v.uid} />)}
+          {Object.values(images).map((v) => <PreviewTile key={v.uid} imageUid={v.uid} />)}
         </TileContainer>
         <EditInfo />
       </FileDropListener>

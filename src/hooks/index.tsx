@@ -31,6 +31,7 @@ export function useRoute() {
     projectUid: match.params.project,
     collectionUid: match.params.collection,
     focusUid: match.params.focus,
+    locationUid: match.params.focus || match.params.collection,
   };
 }
 

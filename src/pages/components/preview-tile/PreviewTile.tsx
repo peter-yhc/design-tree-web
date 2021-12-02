@@ -112,29 +112,29 @@ const Favourite = styled(HeartIcon)<FavouriteProps>`
 `;
 
 interface PreviewTileProps {
-  id: string;
+  imageUid: string;
 }
 
-export default function PreviewTile({ id }: PreviewTileProps) {
-  const [loading, setLoading] = useState(false);
-  const { src, metadata } = useSelector((state: RootState) => state.images.currentImages[id]);
-  const selected: boolean = useSelector((state: RootState) => state.images.selectedImages.includes(id));
-  const hasPendingAction: boolean = useSelector((state: RootState) => state.images.pendingImages.includes(id));
+export default function PreviewTile({ imageUid }: PreviewTileProps) {
+  const [favInProgress, setFavInProgress] = useState(false);
+  const { src, metadata } = useSelector((state: RootState) => state.images.currentImages[imageUid]);
+  const selected: boolean = useSelector((state: RootState) => state.images.selectedImages.includes(imageUid));
+  const hasPendingAction: boolean = useSelector((state: RootState) => state.images.pendingImages.includes(imageUid));
   const inEditMode: boolean = useSelector((state: RootState) => state.system.inEditMode);
   const dispatch = useDispatch();
-  const { projectUid, collectionUid, focusUid } = useRoute();
+  const { projectUid, locationUid } = useRoute();
 
   useEffect(() => {
-    setLoading(false);
+    setFavInProgress(false);
   }, [metadata]);
 
   const selectHandler = () => {
-    dispatch(imagesStore.actions.toggleSelectedImage(id));
+    dispatch(imagesStore.actions.toggleSelectedImage(imageUid));
   };
 
   const favouriteHandler = () => {
-    setLoading(true);
-    dispatch(toggleImageFavourite({ projectUid, locationUid: focusUid || collectionUid, imageUid: id }));
+    setFavInProgress(true);
+    dispatch(toggleImageFavourite({ projectUid, locationUid, imageUid }));
   };
 
   return (
@@ -158,7 +158,7 @@ export default function PreviewTile({ id }: PreviewTileProps) {
           (e.target as HTMLInputElement).src = ErrorImage;
         }}
       />
-      <FavouriteCircle onClick={favouriteHandler} $loading={loading}>
+      <FavouriteCircle onClick={favouriteHandler} $loading={favInProgress}>
         <Favourite $highlight={metadata?.favourite || false} />
       </FavouriteCircle>
     </Container>
