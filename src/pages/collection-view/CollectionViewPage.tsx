@@ -6,7 +6,7 @@ import systemStore from 'store/system/system-store';
 import { RootState } from 'store';
 import imagesStore from 'store/images/images-store';
 import BaseContainer from '../components/base-container/BaseContainer';
-import PreviewTile from '../components/preview-tile/PreviewTile';
+import ImageTile from './components/image-tile/ImageTile';
 import BreadCrumbs from '../components/bread-crumbs/BreadCrumbs';
 import PageTitle from '../components/page-title/PageTitle';
 import EditInfo from './components/edit-info/EditInfo';
@@ -60,7 +60,7 @@ export default function CollectionViewPage() {
         <BreadCrumbs />
         <PageTitle />
         <TileContainer>
-          {Object.values(images).map((v) => <PreviewTile key={v.uid} imageUid={v.uid} />)}
+          {Object.values(images).map((v) => <ImageTile key={v.uid} imageUid={v.uid} />)}
         </TileContainer>
         <EditInfo />
       </FileDropListener>

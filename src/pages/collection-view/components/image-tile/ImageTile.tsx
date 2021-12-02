@@ -47,7 +47,6 @@ const LoadingImage = styled.img`
 `;
 
 interface ImageProps {
-  disabled: boolean;
   selected: boolean;
 }
 
@@ -55,11 +54,6 @@ const Image = styled.img<ImageProps>`
   width: 100%;
   height: auto;
   cursor: pointer;
-
-  ${(props) => props.disabled && css`
-    pointer-events: none;
-    cursor: default;
-  `}
 
   ${(props) => props.selected && css`
     box-shadow: 0 0 0 3px ${props.theme.colours.primary};
@@ -111,11 +105,11 @@ const Favourite = styled(HeartIcon)<FavouriteProps>`
   `}
 `;
 
-interface PreviewTileProps {
+interface ImageTileProps {
   imageUid: string;
 }
 
-export default function PreviewTile({ imageUid }: PreviewTileProps) {
+export default function ImageTile({ imageUid }: ImageTileProps) {
   const [favInProgress, setFavInProgress] = useState(false);
   const { src, metadata } = useSelector((state: RootState) => state.images.currentImages[imageUid]);
   const selected: boolean = useSelector((state: RootState) => state.images.selectedImages.includes(imageUid));
@@ -129,7 +123,11 @@ export default function PreviewTile({ imageUid }: PreviewTileProps) {
   }, [metadata]);
 
   const selectHandler = () => {
-    dispatch(imagesStore.actions.toggleSelectedImage(imageUid));
+    if (inEditMode) {
+      dispatch(imagesStore.actions.toggleSelectedImage(imageUid));
+    } else {
+      dispatch(imagesStore.actions.selectPreview(imageUid));
+    }
   };
 
   const favouriteHandler = () => {
@@ -151,7 +149,6 @@ export default function PreviewTile({ imageUid }: PreviewTileProps) {
       <Image
         src={src}
         alt=""
-        disabled={!inEditMode}
         selected={selected}
         onClick={selectHandler}
         onError={(e: React.SyntheticEvent<HTMLImageElement>) => {

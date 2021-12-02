@@ -10,6 +10,7 @@ export type InitialState = {
   currentImages: Record<string, ImageInfo>,
   selectedImages: string[],
   pendingImages: string[],
+  currentPreview?: string,
 }
 
 const { actions, reducer } = createSlice({
@@ -18,6 +19,7 @@ const { actions, reducer } = createSlice({
     currentImages: {},
     selectedImages: [],
     pendingImages: [],
+    currentPreview: undefined,
   } as InitialState,
   reducers: {
     clear: (state) => ({ ...state, images: {} }),
@@ -31,6 +33,10 @@ const { actions, reducer } = createSlice({
       }
       return { ...state, selectedImages: [...state.selectedImages, action.payload] };
     },
+    selectPreview: (state, action) => ({
+      ...state,
+      currentPreview: action.payload,
+    }),
   },
   extraReducers: (builder) => {
     builder.addCase(fetchImages.pending, (state) => ({ ...state, currentImages: {} }));
