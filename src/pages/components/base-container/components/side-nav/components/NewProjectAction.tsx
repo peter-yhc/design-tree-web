@@ -30,7 +30,7 @@ const DialogModal = styled.div`
   background-color: ${(props) => props.theme.colours.white};
   border-radius: ${(props) => props.theme.system.borderRadius};
   padding: ${(props) => props.theme.innerSpacing.large};
-  box-shadow: 2px 2px 16px 0 hsl(0, 0%, 50%);
+  box-shadow: ${(props) => props.theme.system.boxShadow};
 `;
 
 const StyledInput = styled(Input)`

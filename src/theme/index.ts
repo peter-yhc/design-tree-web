@@ -34,6 +34,7 @@ const system = {
   sideNavHighlight: 'hsl(203,80%,93%)',
   topCornerDialogHeight: '5rem',
   borderRadius: '4px',
+  boxShadow: '2px 2px 16px 0 hsl(0, 0%, 50%)',
 };
 
 export default {

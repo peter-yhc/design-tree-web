@@ -2,6 +2,10 @@ import { createGlobalStyle } from 'styled-components';
 import { ThemeType } from './theme';
 
 const GlobalStyle = createGlobalStyle<{theme: ThemeType}>`
+  html {
+    overflow-x: hidden;
+  }
+  
   html, body {
     margin: 0;
     padding: 0;
