@@ -10,7 +10,7 @@ export type InitialState = {
   currentImages: Record<string, ImageInfo>,
   selectedImages: string[],
   pendingImages: string[],
-  currentPreview?: string,
+  currentPreviewUid?: string,
 }
 
 const { actions, reducer } = createSlice({
@@ -19,7 +19,7 @@ const { actions, reducer } = createSlice({
     currentImages: {},
     selectedImages: [],
     pendingImages: [],
-    currentPreview: undefined,
+    currentPreviewUid: undefined,
   } as InitialState,
   reducers: {
     clear: (state) => ({ ...state, images: {} }),
@@ -33,13 +33,27 @@ const { actions, reducer } = createSlice({
       }
       return { ...state, selectedImages: [...state.selectedImages, action.payload] };
     },
-    selectPreview: (state, action) => ({
-      ...state,
-      currentPreview: action.payload,
-    }),
+    selectPreview: (state, action) => ({ ...state, currentPreviewUid: action.payload }),
+    clearPreview: ((state) => ({ ...state, currentPreviewUid: undefined })),
+    selectNextImage: (state) => {
+      const keys = Object.keys(state.currentImages);
+      const location = state.currentPreviewUid ? keys.indexOf(state.currentPreviewUid) : 0;
+      return {
+        ...state,
+        currentPreviewUid: keys[(location + keys.length + 1) % keys.length],
+      };
+    },
+    selectPreviousImage: (state) => {
+      const keys = Object.keys(state.currentImages);
+      const location = state.currentPreviewUid ? keys.indexOf(state.currentPreviewUid) : 0;
+      return {
+        ...state,
+        currentPreviewUid: keys[(location + keys.length - 1) % keys.length],
+      };
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchImages.pending, (state) => ({ ...state, currentImages: {} }));
+    builder.addCase(fetchImages.pending, (state) => ({ ...state, currentImages: {}, currentPreviewUid: undefined }));
     builder.addCase(fetchImages.fulfilled, (state, action) => {
       if (!action.payload) {
         return { ...state, currentImages: {} };
