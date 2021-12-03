@@ -1,10 +1,11 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, {
+  ReactNode, useEffect, useMemo, useState,
+} from 'react';
 import { useDispatch } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { CheckIcon, CloudUploadIcon } from '@heroicons/react/solid';
-import { useRouteMatch } from 'react-router-dom';
+import { useRoute } from 'hooks';
 import { createClipboardListener, createDragdropListener } from './utils/listener-functions';
-import { useProject } from '../../hooks';
 
 interface FileDropListenerProps {
   children: ReactNode
@@ -72,28 +73,20 @@ const OverlayState = {
   HIDDEN: 'hidden',
 };
 
-interface MatchProps {
-  project: string;
-  collection: string;
-  focus: string;
-}
-
 export default function FileDropListener({ children }: FileDropListenerProps) {
-  const match = useRouteMatch<MatchProps>();
-
-  const { projectId } = useProject();
   const dispatch = useDispatch();
+  const { projectUid, locationUid } = useRoute();
   const [showOverlay, setShowOverlay] = useState(OverlayState.HIDDEN);
 
-  const clipboardListener = createClipboardListener(dispatch, projectId, match.params.collection);
-  const dragdropListener = createDragdropListener(dispatch, () => setShowOverlay(OverlayState.FINISHED), projectId, match.params.collection);
+  const clipboardListener = useMemo(() => createClipboardListener(dispatch, projectUid, locationUid), [projectUid, locationUid]);
+  const dragdropListener = useMemo(() => createDragdropListener(dispatch, () => setShowOverlay(OverlayState.FINISHED), projectUid, locationUid), [projectUid, locationUid]);
 
   useEffect(() => {
     window.addEventListener('paste', clipboardListener);
     return () => {
       window.removeEventListener('paste', clipboardListener);
     };
-  }, []);
+  }, [clipboardListener]);
 
   useEffect(() => {
     if (showOverlay === OverlayState.FINISHED) {
