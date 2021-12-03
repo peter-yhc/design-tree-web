@@ -4,7 +4,7 @@ import { useAttachModalEscape } from 'hooks';
 import imageStore from 'store/images/images-store';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'store';
-import { ChevronRightIcon, ChevronLeftIcon } from '@heroicons/react/solid';
+import { ChevronRightIcon, ChevronLeftIcon, XIcon } from '@heroicons/react/solid';
 
 const CarouselContainer = styled.article`
   position: absolute;
@@ -14,7 +14,16 @@ const CarouselContainer = styled.article`
   background-color: ${(props) => props.theme.colours.lightGrey};
   border: 1px solid ${(props) => props.theme.colours.grey};
   box-shadow: ${(props) => props.theme.system.boxShadow};
-  padding: ${(props) => props.theme.innerSpacing.large} 0;
+  padding: 3rem 0;
+  max-width: fit-content;
+  max-height: fit-content;
+
+  @media screen and (max-width: 1280px) {
+    padding: 2.5rem 0;
+  }
+  @media screen and (max-width: 960px) {
+    padding: 2rem 0;
+  }
 `;
 
 const ArticleBody = styled.section`
@@ -22,8 +31,7 @@ const ArticleBody = styled.section`
 `;
 
 const Image = styled.img`
-  width: 100%;
-  aspect-ratio: 3/2;
+  max-height: 75vh;
   max-width: 75vw;
 `;
 
@@ -34,9 +42,46 @@ const ActionContainer = styled.section`
 const NavButton = styled.button`
   border: 0;
   padding: 0;
+  width: 3rem;
   
   &:hover {
     background-color: ${(props) => props.theme.colours.grey};
+  }
+
+  @media screen and (max-width: 1280px) {
+    width: 2.5rem;
+  }
+  @media screen and (max-width: 960px) {
+    width: 2rem;
+  }
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+  border: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  
+  &:hover {
+    background-color: ${(props) => props.theme.colours.grey};
+  }
+
+  @media screen and (max-width: 1280px) {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+
+  @media screen and (max-width: 960px) {
+    top: 0.1rem;
+    right: 0.1rem;
+    width: 1.9rem;
+    height: 1.9rem;
   }
 `;
 
@@ -62,13 +107,14 @@ export default function PreviewCarousel() {
 
   return (
     <CarouselContainer>
+      <CloseButton><XIcon /></CloseButton>
       <ArticleBody>
         <NavButton onClick={() => dispatch(imageStore.actions.selectPreviousImage())}>
-          <ChevronLeftIcon width="3rem" />
+          <ChevronLeftIcon />
         </NavButton>
         <Image src={imageSrc} alt="Preview" />
         <NavButton onClick={() => dispatch(imageStore.actions.selectNextImage())}>
-          <ChevronRightIcon width="3rem" />
+          <ChevronRightIcon />
         </NavButton>
       </ArticleBody>
       <footer>
