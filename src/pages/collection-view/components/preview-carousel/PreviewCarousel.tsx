@@ -4,7 +4,9 @@ import { useAttachModalEscape } from 'hooks';
 import imageStore from 'store/images/images-store';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'store';
-import { ChevronRightIcon, ChevronLeftIcon, XIcon } from '@heroicons/react/solid';
+import { ChevronLeftIcon, ChevronRightIcon, XIcon } from '@heroicons/react/solid';
+import { TrashIcon } from '@heroicons/react/outline';
+import FavouriteButton from '../favourite-button/FavouriteButton';
 
 const CarouselContainer = styled.article`
   position: absolute;
@@ -12,57 +14,58 @@ const CarouselContainer = styled.article`
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: ${(props) => props.theme.colours.lightGrey};
-  border: 1px solid ${(props) => props.theme.colours.grey};
   box-shadow: ${(props) => props.theme.system.boxShadow};
-  padding: 3rem 0;
-  max-width: fit-content;
-  max-height: fit-content;
-
-  @media screen and (max-width: 1280px) {
-    padding: 2.5rem 0;
-  }
-  @media screen and (max-width: 960px) {
-    padding: 2rem 0;
-  }
-`;
-
-const ArticleBody = styled.section`
-  display: flex;
+  
+  display: grid;
+  grid-template-columns: 2.5rem minmax(auto, 65vw) 2.5rem 13rem 2rem;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "left image right actions actions"
+  ;
 `;
 
 const Image = styled.img`
+  grid-area: image;
   max-height: 75vh;
   max-width: 75vw;
+  align-self: center;
 `;
 
 const ActionContainer = styled.section`
-  background-color: red;
+  grid-area: actions;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 4rem 2.5rem 4rem 0;
+`;
+
+const TextArea = styled.textarea`
+  resize: none;
+  width: 100%;
+  margin-top: ${(props) => props.theme.outerSpacing.medium};
+  height: 15rem;
+  border: 1px solid ${(props) => props.theme.colours.grey};
+  outline: 0;
+  border-radius: ${(props) => props.theme.system.borderRadius};
+  padding: ${(props) => props.theme.innerSpacing.small};
 `;
 
 const NavButton = styled.button`
   border: 0;
   padding: 0;
-  width: 3rem;
   
   &:hover {
     background-color: ${(props) => props.theme.colours.grey};
-  }
-
-  @media screen and (max-width: 1280px) {
-    width: 2.5rem;
-  }
-  @media screen and (max-width: 960px) {
-    width: 2rem;
   }
 `;
 
 const CloseButton = styled.button`
   position: absolute;
-  top: 0.3rem;
-  right: 0.3rem;
-  border: 0;
-  width: 2.5rem;
+  top: 0;
+  right: 0;
   height: 2.5rem;
+  width: 2.5rem;
+  border: 0;
   border-radius: 50%;
   display: flex;
   align-content: center;
@@ -71,23 +74,25 @@ const CloseButton = styled.button`
   &:hover {
     background-color: ${(props) => props.theme.colours.grey};
   }
+`;
 
-  @media screen and (max-width: 1280px) {
-    width: 2.2rem;
-    height: 2.2rem;
-  }
+const DeleteButton = styled.button`
+  position: absolute;
+  bottom: 4rem;
+  display: flex;
+  align-items: center;
+  border: 0;
+  cursor: pointer;
 
-  @media screen and (max-width: 960px) {
-    top: 0.1rem;
-    right: 0.1rem;
-    width: 1.9rem;
-    height: 1.9rem;
+  & > span {
+    margin-left: ${(props) => props.theme.innerSpacing.small};
   }
 `;
 
 export default function PreviewCarousel() {
   const dispatch = useDispatch();
-  const imageSrc = useAppSelector((state) => state.images.currentPreviewUid && state.images.currentImages[state.images.currentPreviewUid].src);
+  // @ts-ignore
+  const { src, uid } = useAppSelector((state) => state.images.currentPreviewUid && state.images.currentImages[state.images.currentPreviewUid]);
   useAttachModalEscape(() => dispatch(imageStore.actions.clearPreview()));
 
   useEffect(() => {
@@ -105,21 +110,28 @@ export default function PreviewCarousel() {
     };
   }, []);
 
+  const handleClose = () => dispatch(imageStore.actions.clearPreview());
+
   return (
     <CarouselContainer>
-      <CloseButton><XIcon /></CloseButton>
-      <ArticleBody>
-        <NavButton onClick={() => dispatch(imageStore.actions.selectPreviousImage())}>
-          <ChevronLeftIcon />
-        </NavButton>
-        <Image src={imageSrc} alt="Preview" />
-        <NavButton onClick={() => dispatch(imageStore.actions.selectNextImage())}>
-          <ChevronRightIcon />
-        </NavButton>
-      </ArticleBody>
-      <footer>
-        <ActionContainer />
-      </footer>
+      <CloseButton onClick={handleClose}><XIcon /></CloseButton>
+      <NavButton style={{ gridArea: 'left' }} onClick={() => dispatch(imageStore.actions.selectPreviousImage())}>
+        <ChevronLeftIcon />
+      </NavButton>
+      <Image src={src} alt="Preview" />
+      <NavButton style={{ gridArea: 'right' }} onClick={() => dispatch(imageStore.actions.selectNextImage())}>
+        <ChevronRightIcon />
+      </NavButton>
+      <ActionContainer>
+        <FavouriteButton imageUid={uid}>
+          Favourite
+        </FavouriteButton>
+        <TextArea placeholder="Type notes here..." />
+        <DeleteButton>
+          <TrashIcon width={20} />
+          <span>Delete</span>
+        </DeleteButton>
+      </ActionContainer>
     </CarouselContainer>
   );
 }

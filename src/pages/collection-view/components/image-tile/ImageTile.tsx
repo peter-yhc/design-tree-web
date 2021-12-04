@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import imagesStore from 'store/images/images-store';
-import { HeartIcon } from '@heroicons/react/outline';
 import ErrorImage from 'assets/images/Error.png';
 import Loading from 'assets/images/Loading.svg';
-import { toggleImageFavourite } from 'store/images/images-store-requests';
-import { useRoute } from 'hooks';
+import FavouriteButton from '../favourite-button/FavouriteButton';
 
 const Container = styled.div`
   display: inline-block;
@@ -60,49 +58,12 @@ const Image = styled.img<ImageProps>`
   `}
 `;
 
-interface FavouriteCircleProps {
-  $loading: boolean;
-}
-
-const FavouriteCircle = styled.div<FavouriteCircleProps>`
+const StyledFavouriteButton = styled(FavouriteButton)`
   position: absolute;
   right: 5px;
   bottom: 5px;
   width: 30px;
   height: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 100%;
-  background-color: hsl(210, 15%, 95%, 0.2);
-
-
-  ${(props) => props.$loading && css`
-    cursor: none;
-    pointer-events: none;
-  `}
-`;
-
-interface FavouriteProps {
-  $highlight: boolean;
-}
-
-const Favourite = styled(HeartIcon)<FavouriteProps>`
-  width: 24px;
-  fill: ${(props) => props.theme.colours.grey};
-  stroke-width: 1.5px;
-  opacity: 0.2;
-  transition: all 80ms ease-in-out;
-
-  &:active {
-    transform: scale(0.9);
-  }
-
-  ${(props) => props.$highlight && css`
-    stroke: ${props.theme.colours.black};
-    fill: ${props.theme.colours.highlight};
-    opacity: 1;
-  `}
 `;
 
 interface ImageTileProps {
@@ -110,17 +71,11 @@ interface ImageTileProps {
 }
 
 export default function ImageTile({ imageUid }: ImageTileProps) {
-  const [favInProgress, setFavInProgress] = useState(false);
-  const { src, metadata } = useSelector((state: RootState) => state.images.currentImages[imageUid]);
+  const { src } = useSelector((state: RootState) => state.images.currentImages[imageUid]);
   const selected: boolean = useSelector((state: RootState) => state.images.selectedImages.includes(imageUid));
   const hasPendingAction: boolean = useSelector((state: RootState) => state.images.pendingImages.includes(imageUid));
   const inEditMode: boolean = useSelector((state: RootState) => state.system.inEditMode);
   const dispatch = useDispatch();
-  const { projectUid, locationUid } = useRoute();
-
-  useEffect(() => {
-    setFavInProgress(false);
-  }, [metadata]);
 
   const selectHandler = () => {
     if (inEditMode) {
@@ -128,11 +83,6 @@ export default function ImageTile({ imageUid }: ImageTileProps) {
     } else {
       dispatch(imagesStore.actions.selectPreview(imageUid));
     }
-  };
-
-  const favouriteHandler = () => {
-    setFavInProgress(true);
-    dispatch(toggleImageFavourite({ projectUid, locationUid, imageUid }));
   };
 
   return (
@@ -155,9 +105,7 @@ export default function ImageTile({ imageUid }: ImageTileProps) {
           (e.target as HTMLInputElement).src = ErrorImage;
         }}
       />
-      <FavouriteCircle onClick={favouriteHandler} $loading={favInProgress}>
-        <Favourite $highlight={metadata?.favourite || false} />
-      </FavouriteCircle>
+      <StyledFavouriteButton imageUid={imageUid} />
     </Container>
   );
 }
