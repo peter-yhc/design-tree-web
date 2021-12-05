@@ -18,7 +18,7 @@ const CarouselContainer = styled.article`
   box-shadow: ${(props) => props.theme.system.boxShadow};
 
   display: grid;
-  grid-template-columns: 2.5rem minmax(auto, 65vw) 2.5rem 13rem 2rem;
+  grid-template-columns: 2.5rem 60vw 2.5rem 13rem 2rem;
   grid-template-rows: auto;
   grid-template-areas:
     "left image right actions actions";
@@ -26,8 +26,8 @@ const CarouselContainer = styled.article`
 
 const Image = styled.img`
   grid-area: image;
-  max-height: 75vh;
-  max-width: 75vw;
+  max-height: 100%;
+  max-width: 100%;
   align-self: center;
   justify-self: center;
 `;
