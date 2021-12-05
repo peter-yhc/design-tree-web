@@ -129,6 +129,33 @@ async function favouriteImage(projectUid: string, locationUid: string, imageUid:
   return await response.json() as IImageResponse;
 }
 
+async function putImageComment(projectUid: string, locationUid: string, imageUid: string, comment: string): Promise<IImageResponse> {
+  const token = await getToken();
+  const response = await fetch(`${host}/images/${projectUid}/${locationUid}/${imageUid}`, {
+    method: 'PUT',
+    mode: 'cors',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ comment }),
+  });
+  return await response.json() as IImageResponse;
+}
+
+async function removeImageComment(projectUid: string, locationUid: string, imageUid: string): Promise<IImageResponse> {
+  const token = await getToken();
+  const response = await fetch(`${host}/images/${projectUid}/${locationUid}/${imageUid}/comments`, {
+    method: 'DELETE',
+    mode: 'cors',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+  });
+  return await response.json() as IImageResponse;
+}
+
 export {
   createProject,
   getProjects,
@@ -138,4 +165,6 @@ export {
   createImage,
   removeImages,
   favouriteImage,
+  putImageComment,
+  removeImageComment,
 };

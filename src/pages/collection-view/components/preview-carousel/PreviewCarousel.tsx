@@ -7,6 +7,7 @@ import { useAppSelector } from 'store';
 import { ChevronLeftIcon, ChevronRightIcon, XIcon } from '@heroicons/react/solid';
 import { TrashIcon } from '@heroicons/react/outline';
 import FavouriteButton from '../favourite-button/FavouriteButton';
+import ImageCommentator from '../image-commentator/ImageCommentator';
 
 const CarouselContainer = styled.article`
   position: absolute;
@@ -15,13 +16,12 @@ const CarouselContainer = styled.article`
   transform: translate(-50%, -50%);
   background-color: ${(props) => props.theme.colours.lightGrey};
   box-shadow: ${(props) => props.theme.system.boxShadow};
-  
+
   display: grid;
   grid-template-columns: 2.5rem minmax(auto, 65vw) 2.5rem 13rem 2rem;
   grid-template-rows: auto;
   grid-template-areas:
-    "left image right actions actions"
-  ;
+    "left image right actions actions";
 `;
 
 const Image = styled.img`
@@ -29,6 +29,7 @@ const Image = styled.img`
   max-height: 75vh;
   max-width: 75vw;
   align-self: center;
+  justify-self: center;
 `;
 
 const ActionContainer = styled.section`
@@ -39,21 +40,10 @@ const ActionContainer = styled.section`
   padding: 4rem 2.5rem 4rem 0;
 `;
 
-const TextArea = styled.textarea`
-  resize: none;
-  width: 100%;
-  margin-top: ${(props) => props.theme.outerSpacing.medium};
-  height: 15rem;
-  border: 1px solid ${(props) => props.theme.colours.grey};
-  outline: 0;
-  border-radius: ${(props) => props.theme.system.borderRadius};
-  padding: ${(props) => props.theme.innerSpacing.small};
-`;
-
 const NavButton = styled.button`
   border: 0;
   padding: 0;
-  
+
   &:hover {
     background-color: ${(props) => props.theme.colours.grey};
   }
@@ -70,7 +60,7 @@ const CloseButton = styled.button`
   display: flex;
   align-content: center;
   justify-content: center;
-  
+
   &:hover {
     background-color: ${(props) => props.theme.colours.grey};
   }
@@ -91,9 +81,9 @@ const DeleteButton = styled.button`
 
 export default function PreviewCarousel() {
   const dispatch = useDispatch();
+  useAttachModalEscape(() => dispatch(imageStore.actions.clearPreview()));
   // @ts-ignore
   const { src, uid } = useAppSelector((state) => state.images.currentPreviewUid && state.images.currentImages[state.images.currentPreviewUid]);
-  useAttachModalEscape(() => dispatch(imageStore.actions.clearPreview()));
 
   useEffect(() => {
     const keyListener = (e: KeyboardEvent) => {
@@ -110,11 +100,11 @@ export default function PreviewCarousel() {
     };
   }, []);
 
-  const handleClose = () => dispatch(imageStore.actions.clearPreview());
-
   return (
     <CarouselContainer>
-      <CloseButton onClick={handleClose}><XIcon /></CloseButton>
+      <CloseButton onClick={() => dispatch(imageStore.actions.clearPreview())}>
+        <XIcon />
+      </CloseButton>
       <NavButton style={{ gridArea: 'left' }} onClick={() => dispatch(imageStore.actions.selectPreviousImage())}>
         <ChevronLeftIcon />
       </NavButton>
@@ -123,10 +113,8 @@ export default function PreviewCarousel() {
         <ChevronRightIcon />
       </NavButton>
       <ActionContainer>
-        <FavouriteButton imageUid={uid}>
-          Favourite
-        </FavouriteButton>
-        <TextArea placeholder="Type notes here..." />
+        <FavouriteButton imageUid={uid}>Favourite</FavouriteButton>
+        <ImageCommentator imageUid={uid} />
         <DeleteButton>
           <TrashIcon width={20} />
           <span>Delete</span>

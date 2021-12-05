@@ -1,11 +1,11 @@
 /* eslint-disable import/prefer-default-export */
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { RootState } from '../index';
 import {
-  createImage, getImages, removeImages, favouriteImage,
-} from '../../api/server-api';
+  createImage, getImages, removeImages, favouriteImage, putImageComment, removeImageComment,
+} from 'api/server-api';
+import { IImageResponse } from 'api/server-interfaces';
+import { RootState } from '../index';
 import { ImageInfo } from './images-store-interfaces';
-import { IImageResponse } from '../../api/server-interfaces';
 
 const fetchImages = createAsyncThunk(
   'images/fetch',
@@ -40,9 +40,23 @@ const toggleImageFavourite = createAsyncThunk(
   },
 );
 
+const updateImageComment = createAsyncThunk(
+  'images/comment',
+  async ({
+    projectUid, locationUid, imageUid, comment,
+  }: { projectUid: string, locationUid: string, imageUid: string, comment: string }): Promise<IImageResponse> => putImageComment(projectUid, locationUid, imageUid, comment),
+);
+
+const deleteImageComment = createAsyncThunk(
+  'images/deleteComment',
+  async ({ projectUid, locationUid, imageUid }: { projectUid: string, locationUid: string, imageUid: string }): Promise<IImageResponse> => removeImageComment(projectUid, locationUid, imageUid),
+);
+
 export {
   fetchImages,
   uploadImage,
   removeSelectedImages,
   toggleImageFavourite,
+  updateImageComment,
+  deleteImageComment,
 };

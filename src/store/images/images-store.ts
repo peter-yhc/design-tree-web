@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
-  fetchImages, removeSelectedImages, toggleImageFavourite, uploadImage,
+  deleteImageComment,
+  fetchImages, removeSelectedImages, toggleImageFavourite, updateImageComment, uploadImage,
 } from './images-store-requests';
 import systemStore from '../system/system-store';
 import { ImageInfo } from './images-store-interfaces';
@@ -78,6 +79,20 @@ const { actions, reducer } = createSlice({
       return state;
     });
     builder.addCase(toggleImageFavourite.fulfilled, (state, action: PayloadAction<IImageResponse>) => ({
+      ...state,
+      currentImages: {
+        ...state.currentImages,
+        [action.payload.uid]: action.payload,
+      },
+    }));
+    builder.addCase(updateImageComment.fulfilled, (state, action: PayloadAction<IImageResponse>) => ({
+      ...state,
+      currentImages: {
+        ...state.currentImages,
+        [action.payload.uid]: action.payload,
+      },
+    }));
+    builder.addCase(deleteImageComment.fulfilled, (state, action: PayloadAction<IImageResponse>) => ({
       ...state,
       currentImages: {
         ...state.currentImages,
