@@ -116,6 +116,12 @@ export default function LoginPage() {
       () => setIsWorking(false),
     );
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && credentials.email.length > 0 && credentials.password.length > 0 && loginForm.status === 'READY') {
+      dispatch(passwordLogin(credentials));
+    }
+  };
+
   if (isWorking) {
     return (<span>Working on it...</span>);
   }
@@ -136,6 +142,7 @@ export default function LoginPage() {
           label="Username"
           placeholder="example@email.com"
           value={credentials.email}
+          onKeyDown={handleKeyDown}
           onChange={(e) => setCredentials({ ...credentials, email: (e.target as HTMLInputElement).value })}
         />
         <Input
@@ -143,6 +150,7 @@ export default function LoginPage() {
           placeholder="••••••••"
           type="password"
           value={credentials.password}
+          onKeyDown={handleKeyDown}
           onChange={(e) => setCredentials({ ...credentials, password: (e.target as HTMLInputElement).value })}
         />
         <SignInButton primary onClick={() => dispatch(passwordLogin(credentials))}>Sign in</SignInButton>
