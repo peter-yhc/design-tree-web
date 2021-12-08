@@ -73,7 +73,7 @@ export default function NewFocusAction() {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && focusName.length > 0 && formState === 'READY') {
       setFocusName('');
-      dispatch(createNewCollection({ name: focusName, projectUid: projectId }));
+      dispatch(createNewFocus({ name: focusName, projectUid: projectId, collectionUid: parentCollectionUid }));
     }
   };
 

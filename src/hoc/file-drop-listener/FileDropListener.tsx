@@ -20,6 +20,8 @@ declare global {
 
 const Container = styled.div`
   position: relative;
+  height: 100%;
+  width: 100%;
 `;
 
 const Overlay = styled.div`
