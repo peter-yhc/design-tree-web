@@ -6,7 +6,9 @@ import {
   onAuthStateChanged,
   setPersistence,
   signInWithRedirect,
+  signInWithEmailAndPassword,
   signOut,
+  UserCredential,
 } from 'firebase/auth';
 import { useState } from 'react';
 
@@ -32,6 +34,11 @@ export enum AuthenticationState {
   Uninitialised, Error, Valid
 }
 
+async function loginWithEmailPassword({ email, password }: { email: string, password: string }): Promise<UserCredential> {
+  await setPersistence(auth, browserLocalPersistence);
+  return signInWithEmailAndPassword(auth, email, password);
+}
+
 function loginWithGoogle() {
   const googleProvider = new GoogleAuthProvider();
   setPersistence(auth, browserLocalPersistence).then(() => {
@@ -39,8 +46,8 @@ function loginWithGoogle() {
   });
 }
 
-function logout() {
-  signOut(auth);
+async function logout() {
+  await signOut(auth);
 }
 
 function useAuth() {
@@ -58,6 +65,7 @@ function useAuth() {
 
 export {
   loginWithGoogle,
+  loginWithEmailPassword,
   logout,
   useAuth,
   getAuth,

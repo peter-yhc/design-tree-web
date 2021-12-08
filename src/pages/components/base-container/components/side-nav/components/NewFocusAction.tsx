@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { createNewFocus } from 'store/forms/forms-store-requests';
+import { createNewCollection, createNewFocus } from 'store/forms/forms-store-requests';
 import { useAttachModalEscape, useProject } from 'hooks';
 import { useAppSelector } from 'store';
 import formsStore from 'store/forms/forms-store';
@@ -65,16 +65,15 @@ export default function NewFocusAction() {
     const sanitisedText = e.target.value.match(/[A-Za-z0-9 ]+/);
     if (sanitisedText && e.target.value === sanitisedText[0]) {
       setFocusName(e.target.value);
-      setFocusName(e.target.value);
     } else if (!sanitisedText) {
-      setFocusName('');
       setFocusName('');
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      dispatch(createNewFocus({ name: focusName, projectUid: projectId, collectionUid: parentCollectionUid }));
+    if (e.key === 'Enter' && focusName.length > 0 && formState === 'READY') {
+      setFocusName('');
+      dispatch(createNewCollection({ name: focusName, projectUid: projectId }));
     }
   };
 
@@ -106,7 +105,16 @@ export default function NewFocusAction() {
               />
               <ButtonRow>
                 <Button onClick={() => setModalHidden(true)}>Cancel</Button>
-                <Button primary onClick={() => dispatch(createNewFocus({ name: focusName, projectUid: projectId, collectionUid: parentCollectionUid }))}>Save</Button>
+                <Button
+                  primary
+                  disabled={focusName.length === 0 || formState !== 'READY'}
+                  onClick={() => {
+                    setFocusName('');
+                    dispatch(createNewFocus({ name: focusName, projectUid: projectId, collectionUid: parentCollectionUid }));
+                  }}
+                >
+                  Save
+                </Button>
               </ButtonRow>
             </DialogModal>
           </ModalBackground>

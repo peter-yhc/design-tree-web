@@ -70,7 +70,8 @@ export default function NewCollectionAction() {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && inputValue.length > 0 && formState === 'READY') {
+      setInputValue('');
       dispatch(createNewCollection({ name: inputValue, projectUid: projectId }));
     }
   };
@@ -96,7 +97,16 @@ export default function NewCollectionAction() {
               />
               <ButtonRow>
                 <Button onClick={() => setModalHidden(true)}>Cancel</Button>
-                <Button primary onClick={() => dispatch(createNewCollection({ name: inputValue, projectUid: projectId }))}>Save</Button>
+                <Button
+                  primary
+                  disabled={inputValue.length === 0 || formState !== 'READY'}
+                  onClick={() => {
+                    setInputValue('');
+                    dispatch(createNewCollection({ name: inputValue, projectUid: projectId }));
+                  }}
+                >
+                  Save
+                </Button>
               </ButtonRow>
             </DialogModal>
           </ModalBackground>

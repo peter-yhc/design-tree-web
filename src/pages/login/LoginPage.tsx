@@ -2,12 +2,16 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { getRedirectResult, User } from 'firebase/auth';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import Logo from 'assets/images/Logo.svg';
 import Button from 'pages/components/button/Button';
+import { useDispatch } from 'react-redux';
+import { passwordLogin } from 'store/forms/forms-store-requests';
+import { Credentials } from 'store/forms/forms-store-interfaces';
 import { getAuth, loginWithGoogle } from '../../api/firebase-api';
 import Input from '../components/input/Input';
 import GoogleIcon from './components/GoogleIcon';
+import { useAppSelector } from '../../store';
 
 const Main = styled.main`
   display: flex;
@@ -25,7 +29,7 @@ const Main = styled.main`
         radial-gradient(at 0% 0%, hsla(343,100%,76%,1) 0, transparent 50%);
 `;
 
-const Well = styled.section`
+const ContentContainer = styled.section`
   width: 25rem;
   background-color: hsl(0, 0%, 100%, 0.95);
   border-radius: 25px;
@@ -62,6 +66,29 @@ const LogoImage = styled.img`
   margin: ${(props) => props.theme.outerSpacing.small} 0;
 `;
 
+const SignInButton = styled(Button)`
+  margin: 0 auto;
+`;
+
+const MessageFlash = keyframes`
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const ErrorMessage = styled.p`
+  padding: 0;
+  color: ${(props) => props.theme.colours.error};
+  animation: ${MessageFlash} 1s linear;
+  animation-iteration-count: 3;
+`;
+
 const GoogleSignInButton = styled(Button)`
   position: relative;
   left: 50%;
@@ -74,9 +101,11 @@ const GoogleSignInButton = styled(Button)`
 `;
 
 export default function LoginPage() {
-  // const db = getFirestore(app);
+  const dispatch = useDispatch();
   const [user, setUser] = useState<User | null>(null);
   const [isWorking, setIsWorking] = useState(true);
+  const [credentials, setCredentials] = useState<Credentials>({ email: '', password: '' });
+  const loginForm = useAppSelector((state) => state.forms.loginForm);
 
   getRedirectResult(getAuth())
     .then(
@@ -93,20 +122,37 @@ export default function LoginPage() {
   if (user) {
     return (<Redirect to="/dashboard" />);
   }
+  if (loginForm.status === 'DONE') {
+    return (<Redirect to="/dashboard" />);
+  }
+
   return (
     <Main>
-      <Well>
+      <ContentContainer>
         <LogoImage src={Logo} alt="Inspire" />
         <WellHeading>Login</WellHeading>
-        <Input label="Username" placeholder="example@email.com" />
-        <Input label="Password" placeholder="••••••••" type="password" />
+        { loginForm.error && <ErrorMessage>{loginForm.error}</ErrorMessage>}
+        <Input
+          label="Username"
+          placeholder="example@email.com"
+          value={credentials.email}
+          onChange={(e) => setCredentials({ ...credentials, email: (e.target as HTMLInputElement).value })}
+        />
+        <Input
+          label="Password"
+          placeholder="••••••••"
+          type="password"
+          value={credentials.password}
+          onChange={(e) => setCredentials({ ...credentials, password: (e.target as HTMLInputElement).value })}
+        />
+        <SignInButton primary onClick={() => dispatch(passwordLogin(credentials))}>Sign in</SignInButton>
 
         <WellHeading>or</WellHeading>
         <GoogleSignInButton onClick={loginWithGoogle} type="button">
           <GoogleIcon />
           <span>Login with Google</span>
         </GoogleSignInButton>
-      </Well>
+      </ContentContainer>
       <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800&display=swap" rel="stylesheet" />
     </Main>
   );

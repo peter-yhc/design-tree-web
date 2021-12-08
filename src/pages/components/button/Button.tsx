@@ -16,7 +16,7 @@ const Button = styled.button<ButtonProps>`
     background-color: ${props.theme.colours.primary};
     color: ${props.theme.colours.white};
     
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: ${props.theme.colours.primaryDarker};
     }
     &:active {
@@ -38,6 +38,11 @@ const Button = styled.button<ButtonProps>`
     border: 0;
     padding: 0;
   `}
+  
+  ${(props) => props.disabled && css`
+    background-color: ${props.theme.colours.grey};
+    cursor: not-allowed;
+  `}
 `;
 
 interface ButtonProps {
@@ -45,6 +50,7 @@ interface ButtonProps {
   primary?: boolean,
   secondary?: boolean,
   inline?: boolean,
+  disabled?: boolean,
 }
 
 export default Button;

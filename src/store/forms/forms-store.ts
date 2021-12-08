@@ -1,5 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createNewCollection, createNewFocus, createNewProject } from './forms-store-requests';
+import {
+  createNewCollection, createNewFocus, createNewProject, passwordLogin,
+} from './forms-store-requests';
+import { resetApplication } from '../system/system-store-requests';
 
 type FormStatus = 'READY' | 'PENDING' | 'FAILED' | 'DONE';
 
@@ -13,21 +16,30 @@ export type InitialState = {
   newFocusForm: {
     status: FormStatus
   }
+  loginForm: {
+    status: FormStatus,
+    error?: string,
+  }
 }
+
+const initialState: InitialState = {
+  newProjectForm: {
+    status: 'READY',
+  },
+  newCollectionForm: {
+    status: 'READY',
+  },
+  newFocusForm: {
+    status: 'READY',
+  },
+  loginForm: {
+    status: 'READY',
+  },
+};
 
 const { actions, reducer } = createSlice({
   name: 'forms',
-  initialState: {
-    newProjectForm: {
-      status: 'READY',
-    },
-    newCollectionForm: {
-      status: 'READY',
-    },
-    newFocusForm: {
-      status: 'READY',
-    },
-  } as InitialState,
+  initialState,
   reducers: {
     resetNewProjectForm: (state) => ({
       ...state,
@@ -84,6 +96,22 @@ const { actions, reducer } = createSlice({
       newFocusForm: {
         status: 'DONE',
       },
+    }));
+    builder.addCase(passwordLogin.rejected, (state) => ({
+      ...state,
+      loginForm: {
+        status: 'FAILED',
+        error: 'Bad username or password',
+      },
+    }));
+    builder.addCase(passwordLogin.fulfilled, (state) => ({
+      ...state,
+      loginForm: {
+        status: 'DONE',
+      },
+    }));
+    builder.addCase(resetApplication.fulfilled, () => ({
+      ...initialState,
     }));
   },
 });

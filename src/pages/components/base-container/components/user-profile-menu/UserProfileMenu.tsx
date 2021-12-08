@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { UserCircleIcon } from '@heroicons/react/outline';
-import { logout } from 'api/firebase-api';
 import { useAppSelector } from 'store';
 import systemStore from 'store/system/system-store';
 import { useDispatch } from 'react-redux';
 import Button from '../../../button/Button';
 import SideActionButton from '../side-action-button/SideActionButton';
+import { resetApplication } from '../../../../../store/system/system-store-requests';
 
 const Container = styled.div`
   position: relative;
@@ -40,7 +40,7 @@ export default function UserProfileMenu() {
       </SideActionButton>
       {inUserProfileMode && (
         <UserMenu>
-          <Button onClick={() => logout()}>Logout</Button>
+          <Button onClick={() => dispatch(resetApplication())}>Logout</Button>
         </UserMenu>
       )}
     </Container>

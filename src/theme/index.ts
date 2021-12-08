@@ -12,6 +12,7 @@ const colours = {
   lightGrey: 'hsl(210,15%,97%)',
   grey: 'hsl(0,0%,87%)',
   darkGrey: 'hsl(0,0%,43%)',
+  error: 'hsl(0,72%,50%)',
 };
 
 const innerSpacing = {

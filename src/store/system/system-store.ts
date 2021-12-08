@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getProjects } from '../../api/server-api';
 import { IProjectResponse } from '../../api/server-interfaces';
+import { resetApplication } from './system-store-requests';
 
 const fetchProjects = createAsyncThunk(
   'profile/fetchProjects',
@@ -14,14 +15,16 @@ interface InitialStateType {
   ready: boolean;
 }
 
+const initialState: InitialStateType = {
+  activeProjectId: undefined,
+  inEditMode: false,
+  inUserProfileMode: false,
+  ready: false,
+};
+
 const { actions, reducer } = createSlice({
   name: 'system',
-  initialState: {
-    activeProjectId: undefined,
-    inEditMode: false,
-    inUserProfileMode: false,
-    ready: false,
-  } as InitialStateType,
+  initialState,
   reducers: {
     changeActiveProject: (state, action) => ({ ...state, activeProjectId: action.payload }),
     toggleEditMode: (state) => ({ ...state, inEditMode: !state.inEditMode, inUserProfileMode: false }),
@@ -38,6 +41,9 @@ const { actions, reducer } = createSlice({
       ...state,
       activeProjectId: state.activeProjectId ? state.activeProjectId : undefined,
       ready: true,
+    }));
+    builder.addCase(resetApplication.fulfilled, () => ({
+      ...initialState,
     }));
   },
 });

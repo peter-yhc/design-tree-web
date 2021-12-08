@@ -73,7 +73,7 @@ export default function EditDialog() {
       </SideActionButton>
       {inEditMode && (
         <Dialog>
-          <ActionButton>
+          <ActionButton disabled>
             <ArrowCircleRightIcon width={20} />
             Move
           </ActionButton>
@@ -81,7 +81,7 @@ export default function EditDialog() {
             <TrashIcon width={20} />
             Delete
           </ActionButton>
-          <ActionButton>
+          <ActionButton disabled>
             <DuplicateIcon width={20} />
             Copy
           </ActionButton>
