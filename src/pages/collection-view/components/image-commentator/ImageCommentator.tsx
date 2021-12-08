@@ -9,23 +9,25 @@ import { useRoute } from 'hooks';
 const TextArea = styled.textarea`
   resize: none;
   width: 100%;
-  margin-top: ${(props) => props.theme.outerSpacing.medium};
-  height: 15rem;
   border: 1px solid ${(props) => props.theme.colours.grey};
   outline: 0;
   border-radius: ${(props) => props.theme.system.borderRadius};
   padding: ${(props) => props.theme.innerSpacing.small};
 `;
 
-interface ImageCommentatorProps {
+interface ImageCommentatorProps extends React.HtmlHTMLAttributes<HTMLTextAreaElement> {
   imageUid: string;
 }
 
-export default function ImageCommentator({ imageUid }: ImageCommentatorProps) {
+export default function ImageCommentator({ className, imageUid }: ImageCommentatorProps) {
   const dispatch = useDispatch();
   const { comment } = useAppSelector((state) => state.images.currentImages[imageUid]);
-  const [text, setText] = useState(comment);
+  const [text, setText] = useState<string|undefined>(comment);
   const { projectUid, locationUid } = useRoute();
+
+  useEffect(() => {
+    setText(comment || '');
+  }, [imageUid]);
 
   const commentChangeHandler = (newComment: string) => {
     if (newComment.length === 0) {
@@ -37,14 +39,17 @@ export default function ImageCommentator({ imageUid }: ImageCommentatorProps) {
     }
   };
 
-  const debouncedCallback = useMemo(() => debounce(commentChangeHandler, 300), []);
-  useEffect(() => {
-    if (text !== comment) {
-      debouncedCallback(text || '');
-    }
-  }, [text]);
+  const debouncedCallback = useMemo(() => debounce(commentChangeHandler, 300), [imageUid]);
 
   return (
-    <TextArea placeholder="Type notes here..." onChange={(e) => setText(e.target.value)} value={text} />
+    <TextArea
+      className={className}
+      placeholder="Type notes here..."
+      onChange={(e) => {
+        setText(e.target.value);
+        debouncedCallback(e.target.value || '');
+      }}
+      value={text}
+    />
   );
 }

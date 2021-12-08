@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { RouteValidator } from 'hoc';
 import { CollectionViewPage, DashboardPage, PageNotFound } from './pages';
 import LoginPage from './pages/login/LoginPage';
@@ -9,7 +9,7 @@ export default function App() {
   return (
     <Switch>
       <Route path="/" exact>
-        <span>Landing page</span>
+        <Redirect to="/dashboard" />
       </Route>
       <Route path="/login" exact component={LoginPage} />
       <PrivateRoute path="/dashboard" exact component={DashboardPage} />
