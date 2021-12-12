@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useAttachModalEscape } from 'hooks';
+import { useAttachModalEscape, useRoute } from 'hooks';
 import imageStore from 'store/images/images-store';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'store';
 import { ChevronLeftIcon, ChevronRightIcon, XIcon } from '@heroicons/react/solid';
 import { TrashIcon } from '@heroicons/react/outline';
+import { removeImage } from 'store/images/images-store-requests';
 import FavouriteButton from '../favourite-button/FavouriteButton';
 import ImageCommentator from '../image-commentator/ImageCommentator';
 
@@ -125,6 +126,7 @@ export default function PreviewCarousel() {
   useAttachModalEscape(() => dispatch(imageStore.actions.clearPreview()));
   // @ts-ignore
   const { src, uid } = useAppSelector((state) => state.images.currentPreviewUid && state.images.currentImages[state.images.currentPreviewUid]);
+  const { projectUid, locationUid } = useRoute();
 
   useEffect(() => {
     const keyListener = (e: KeyboardEvent) => {
@@ -154,7 +156,7 @@ export default function PreviewCarousel() {
         <ActionContainer>
           <Favourite imageUid={uid}>Favourite</Favourite>
           <Comments imageUid={uid} />
-          <DeleteButton>
+          <DeleteButton onClick={() => dispatch(removeImage({ projectUid, locationUid, imageUid: uid }))}>
             <TrashIcon width={20} />
             <span>Delete</span>
           </DeleteButton>

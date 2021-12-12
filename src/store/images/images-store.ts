@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   deleteImageComment,
-  fetchImages, removeSelectedImages, toggleImageFavourite, updateImageComment, uploadImage,
+  fetchImages, removeImage, removeSelectedImages, toggleImageFavourite, updateImageComment, uploadImage,
 } from './images-store-requests';
 import systemStore from '../system/system-store';
 import { ImageInfo } from './images-store-interfaces';
@@ -114,6 +114,26 @@ const { actions, reducer } = createSlice({
         currentImages: newCurrentImages,
         selectedImages: [],
         pendingImages: [],
+      };
+    });
+    builder.addCase(removeImage.pending, (state) => {
+      const keys = Object.keys(state.currentImages);
+      const nextKey = keys.indexOf(`${state.currentPreviewUid}`) + 1;
+
+      return {
+        ...state,
+        pendingImages: [`${state.currentPreviewUid}`],
+        currentPreviewUid: keys[nextKey % keys.length],
+      };
+    });
+    builder.addCase(removeImage.fulfilled, (state, action) => {
+      const newCurrentImages = { ...state.currentImages };
+      delete newCurrentImages[action.meta.arg.imageUid];
+
+      return {
+        ...state,
+        pendingImages: [],
+        currentImages: newCurrentImages,
       };
     });
   },

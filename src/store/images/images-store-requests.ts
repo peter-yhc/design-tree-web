@@ -32,6 +32,11 @@ const removeSelectedImages = createAsyncThunk(
   },
 );
 
+const removeImage = createAsyncThunk(
+  'images/deleteSingle',
+  async ({ projectUid, locationUid, imageUid }: {projectUid: string, locationUid: string, imageUid: string}): Promise<void> => removeImages(projectUid, locationUid, [imageUid]),
+);
+
 const toggleImageFavourite = createAsyncThunk(
   'images/favourite',
   async ({ projectUid, locationUid, imageUid }: { projectUid: string, locationUid: string, imageUid: string }, thunkAPI): Promise<IImageResponse> => {
@@ -55,6 +60,7 @@ const deleteImageComment = createAsyncThunk(
 export {
   fetchImages,
   uploadImage,
+  removeImage,
   removeSelectedImages,
   toggleImageFavourite,
   updateImageComment,
