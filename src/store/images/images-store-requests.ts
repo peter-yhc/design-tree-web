@@ -17,10 +17,13 @@ const fetchImages = createAsyncThunk(
 
 const uploadImage = createAsyncThunk(
   'images/upload',
-  async ({ projectUid, locationUid, src }: { projectUid: string, locationUid: string, src: string }) => await createImage(
+  async ({
+    projectUid, locationUid, src, fileName,
+  }: { projectUid: string, locationUid: string, src: string, fileName: string }) => await createImage(
     projectUid,
     locationUid,
     src,
+    fileName,
   ) as ImageInfo,
 );
 

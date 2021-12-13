@@ -88,7 +88,7 @@ async function getImages({ projectUid, locationUid }: {projectUid: string, locat
   return await response.json() as IImageResponse[];
 }
 
-async function createImage(projectUid: string, locationUid: string, src: string): Promise<IImageResponse> {
+async function createImage(projectUid: string, locationUid: string, src: string, fileName: string): Promise<IImageResponse> {
   const token = await getToken();
   const response = await fetch(`${host}/images`, {
     method: 'POST',
@@ -97,7 +97,9 @@ async function createImage(projectUid: string, locationUid: string, src: string)
       'content-type': 'application/json',
       authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ projectUid, locationUid, src }),
+    body: JSON.stringify({
+      projectUid, locationUid, src, fileName,
+    }),
   });
   return await response.json() as IImageResponse;
 }

@@ -1,6 +1,7 @@
 import { Dispatch } from 'redux';
 import React from 'react';
 import { uploadImage } from 'store/images/images-store-requests';
+import { nanoid } from '@reduxjs/toolkit';
 
 const createDragdropListener = (dispatch: Dispatch<any>, successCB: () => void, projectUid: string, locationUid: string) => (event: React.DragEvent<HTMLDivElement>) => {
   event.preventDefault();
@@ -24,6 +25,7 @@ const createDragdropListener = (dispatch: Dispatch<any>, successCB: () => void, 
             projectUid,
             locationUid,
             src: imageUrl,
+            fileName: imageName,
           }));
           successCB();
         }
@@ -48,7 +50,10 @@ const createClipboardListener = (dispatch: Dispatch<any>, projectUid: string, lo
     const file = fileItem.getAsFile();
     reader.onload = (fileEvent) => {
       const dataUrl: string = fileEvent.target?.result as string;
-      dispatch(uploadImage({ projectUid, locationUid, src: dataUrl }));
+      const [type, dataSrc] = dataUrl.split(';');
+      dispatch(uploadImage({
+        projectUid, locationUid, src: dataSrc.split(',')[1], fileName: `${nanoid()}.${type.split('/')[1]}`,
+      }));
     };
     if (file) {
       reader.readAsDataURL(file);
@@ -58,7 +63,10 @@ const createClipboardListener = (dispatch: Dispatch<any>, projectUid: string, lo
   }
 
   if (imageUrl) {
-    dispatch(uploadImage({ projectUid, locationUid, src: imageUrl }));
+    const splitUrl = imageUrl.split('/');
+    dispatch(uploadImage({
+      projectUid, locationUid, src: imageUrl, fileName: splitUrl[splitUrl.length],
+    }));
   }
 };
 
