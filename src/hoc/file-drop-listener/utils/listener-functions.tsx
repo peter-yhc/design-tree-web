@@ -2,6 +2,7 @@ import { Dispatch } from 'redux';
 import React from 'react';
 import { uploadImage } from 'store/images/images-store-requests';
 import { nanoid } from '@reduxjs/toolkit';
+import systemStore from 'store/system/system-store';
 
 const createDragdropListener = (dispatch: Dispatch<any>, successCB: () => void, projectUid: string, locationUid: string) => (event: React.DragEvent<HTMLDivElement>) => {
   event.preventDefault();
@@ -15,19 +16,22 @@ const createDragdropListener = (dispatch: Dispatch<any>, successCB: () => void, 
     // If dropped items aren't valid html, reject them
     if (event.dataTransfer.items[i].type === 'text/html') {
       event.dataTransfer.items[i].getAsString((data) => {
-        const tempDocument = document.createElement('html');
-        tempDocument.innerHTML = data;
-        const imageUrl = tempDocument.getElementsByTagName('img')[0].getAttribute('src');
+        const matches = data.match(/<img(.*)src="(.*?)"/);
+        const imageUrl = (matches && matches[2]) || '';
         const imageName = imageUrl?.split('/').pop();
 
         if (imageUrl && imageName) {
-          dispatch(uploadImage({
-            projectUid,
-            locationUid,
-            src: imageUrl,
-            fileName: imageName,
-          }));
-          successCB();
+          fetch(imageUrl).then(() => {
+            dispatch(uploadImage({
+              projectUid,
+              locationUid,
+              src: imageUrl,
+              fileName: imageName,
+            }));
+            successCB();
+          }, () => {
+            dispatch(systemStore.actions.showBadImageUrlMessage());
+          });
         }
       });
       break;
@@ -36,14 +40,25 @@ const createDragdropListener = (dispatch: Dispatch<any>, successCB: () => void, 
 };
 
 const createClipboardListener = (dispatch: Dispatch<any>, projectUid: string, locationUid: string) => (event: ClipboardEvent) => {
-  let imageUrl;
+  function processImageUrl(imageUrl: string) {
+    return fetch(imageUrl).then(() => {
+      const splitUrl = imageUrl.split('/');
+      dispatch(uploadImage({
+        projectUid, locationUid, src: imageUrl, fileName: splitUrl[splitUrl.length],
+      }));
+    }, () => {
+      dispatch(systemStore.actions.showBadImageUrlMessage());
+    });
+  }
 
   if (event?.clipboardData?.getData('text')) {
-    imageUrl = event?.clipboardData?.getData('text');
+    const imageUrl = event?.clipboardData?.getData('text') as string;
+    processImageUrl(imageUrl);
   } else if (event?.clipboardData?.getData('text/html')) {
-    const tempDocument = document.createElement('html');
-    tempDocument.innerHTML = event?.clipboardData?.getData('text/html') || '';
-    imageUrl = tempDocument.getElementsByTagName('img')[0].getAttribute('src');
+    const data = event?.clipboardData?.getData('text/html');
+    const matches = data.match(/<img(.*)src="(.*?)"/);
+    const imageUrl = (matches && matches[2]) || '';
+    processImageUrl(imageUrl);
   } else if (event?.clipboardData?.items[0]?.kind === 'file') {
     const fileItem = event?.clipboardData?.items[0];
     const reader = new FileReader();
@@ -58,15 +73,6 @@ const createClipboardListener = (dispatch: Dispatch<any>, projectUid: string, lo
     if (file) {
       reader.readAsDataURL(file);
     }
-  } else {
-    return;
-  }
-
-  if (imageUrl) {
-    const splitUrl = imageUrl.split('/');
-    dispatch(uploadImage({
-      projectUid, locationUid, src: imageUrl, fileName: splitUrl[splitUrl.length],
-    }));
   }
 };
 

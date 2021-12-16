@@ -12,6 +12,7 @@ interface InitialStateType {
   activeProjectId?: string;
   inEditMode: boolean;
   inUserProfileMode: boolean;
+  showBadImageUrlError: boolean;
   ready: boolean;
 }
 
@@ -19,6 +20,7 @@ const initialState: InitialStateType = {
   activeProjectId: undefined,
   inEditMode: false,
   inUserProfileMode: false,
+  showBadImageUrlError: false,
   ready: false,
 };
 
@@ -30,6 +32,8 @@ const { actions, reducer } = createSlice({
     toggleEditMode: (state) => ({ ...state, inEditMode: !state.inEditMode, inUserProfileMode: false }),
     toggleUserProfileMode: (state) => ({ ...state, inEditMode: false, inUserProfileMode: !state.inUserProfileMode }),
     closeAllDialogs: (state) => ({ ...state, inEditMode: false }),
+    showBadImageUrlMessage: (state) => ({ ...state, showBadImageUrlError: true }),
+    hideBadImageUrlMessage: (state) => ({ ...state, showBadImageUrlError: false }),
   },
   extraReducers: (builder) => {
     builder.addCase(fetchProjects.fulfilled, (state, action) => ({

@@ -29,6 +29,8 @@ module.exports = {
     'jsx-a11y/label-has-associated-control': [0, {}],
     'max-len': [0, {}],
     'import/prefer-default-export': [0, {}],
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error'],
   },
   settings: {
     'import/resolver': {
