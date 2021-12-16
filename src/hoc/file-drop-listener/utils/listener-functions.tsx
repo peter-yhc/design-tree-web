@@ -4,6 +4,20 @@ import { uploadImage } from 'store/images/images-store-requests';
 import { nanoid } from '@reduxjs/toolkit';
 import systemStore from 'store/system/system-store';
 
+const fileHandlerUpload = (file: File, dispatch:Dispatch<any>, { projectUid, locationUid }: {projectUid:string, locationUid: string}) => {
+  const reader = new FileReader();
+  reader.onload = (fileEvent) => {
+    const dataUrl: string = fileEvent.target?.result as string;
+    const [type, dataSrc] = dataUrl.split(';');
+    dispatch(uploadImage({
+      projectUid, locationUid, src: dataSrc.split(',')[1], fileName: `${nanoid()}.${type.split('/')[1]}`,
+    }));
+  };
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+};
+
 const createDragdropListener = (dispatch: Dispatch<any>, successCB: () => void, projectUid: string, locationUid: string) => (event: React.DragEvent<HTMLDivElement>) => {
   event.preventDefault();
   event.stopPropagation();
@@ -35,6 +49,11 @@ const createDragdropListener = (dispatch: Dispatch<any>, successCB: () => void, 
         }
       });
       break;
+    } else if (event.dataTransfer.items[i].type.includes('image/')) {
+      const file = event.dataTransfer.items[i].getAsFile();
+      if (file) {
+        fileHandlerUpload(file, dispatch, { projectUid, locationUid });
+      }
     }
   }
 };
@@ -61,17 +80,9 @@ const createClipboardListener = (dispatch: Dispatch<any>, projectUid: string, lo
     processImageUrl(imageUrl);
   } else if (event?.clipboardData?.items[0]?.kind === 'file') {
     const fileItem = event?.clipboardData?.items[0];
-    const reader = new FileReader();
     const file = fileItem.getAsFile();
-    reader.onload = (fileEvent) => {
-      const dataUrl: string = fileEvent.target?.result as string;
-      const [type, dataSrc] = dataUrl.split(';');
-      dispatch(uploadImage({
-        projectUid, locationUid, src: dataSrc.split(',')[1], fileName: `${nanoid()}.${type.split('/')[1]}`,
-      }));
-    };
     if (file) {
-      reader.readAsDataURL(file);
+      fileHandlerUpload(file, dispatch, { projectUid, locationUid });
     }
   }
 };
