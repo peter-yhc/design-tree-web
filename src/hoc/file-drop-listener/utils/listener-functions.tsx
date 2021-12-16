@@ -3,6 +3,7 @@ import React from 'react';
 import { uploadImage } from 'store/images/images-store-requests';
 import { nanoid } from '@reduxjs/toolkit';
 import systemStore from 'store/system/system-store';
+import { domains } from './domains';
 
 const fileHandlerUpload = (file: File, dispatch:Dispatch<any>, { projectUid, locationUid }: {projectUid:string, locationUid: string}) => {
   const reader = new FileReader();
@@ -34,18 +35,16 @@ const createDragdropListener = (dispatch: Dispatch<any>, successCB: () => void, 
         const imageUrl = (matches && matches[2]) || '';
         const imageName = imageUrl?.split('/').pop();
 
-        if (imageUrl && imageName) {
-          fetch(imageUrl).then(() => {
-            dispatch(uploadImage({
-              projectUid,
-              locationUid,
-              src: imageUrl,
-              fileName: imageName,
-            }));
-            successCB();
-          }, () => {
-            dispatch(systemStore.actions.showBadImageUrlMessage());
-          });
+        if (imageUrl && imageName && !domains.some((domain) => imageUrl.includes(domain))) {
+          dispatch(uploadImage({
+            projectUid,
+            locationUid,
+            src: imageUrl,
+            fileName: imageName,
+          }));
+          successCB();
+        } else {
+          dispatch(systemStore.actions.showBadImageUrlMessage());
         }
       });
       break;
@@ -60,14 +59,14 @@ const createDragdropListener = (dispatch: Dispatch<any>, successCB: () => void, 
 
 const createClipboardListener = (dispatch: Dispatch<any>, projectUid: string, locationUid: string) => (event: ClipboardEvent) => {
   function processImageUrl(imageUrl: string) {
-    return fetch(imageUrl).then(() => {
+    if (!domains.some((domain) => imageUrl.includes(domain))) {
       const splitUrl = imageUrl.split('/');
       dispatch(uploadImage({
         projectUid, locationUid, src: imageUrl, fileName: splitUrl[splitUrl.length],
       }));
-    }, () => {
+    } else {
       dispatch(systemStore.actions.showBadImageUrlMessage());
-    });
+    }
   }
 
   if (event?.clipboardData?.getData('text')) {
