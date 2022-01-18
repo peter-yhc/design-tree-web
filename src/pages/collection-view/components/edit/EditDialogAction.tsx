@@ -1,5 +1,5 @@
 import {
-  ArrowCircleRightIcon, DuplicateIcon, PencilIcon, TrashIcon, XCircleIcon,
+  ArrowCircleRightIcon, DuplicateIcon, PencilIcon, TrashIcon,
 } from '@heroicons/react/outline';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
@@ -9,14 +9,13 @@ import systemStore from 'store/system/system-store';
 import Button from 'pages/components/button/Button';
 import { removeSelectedImages } from 'store/images/images-store-requests';
 import { useRoute } from 'hooks';
-import SideActionButton from '../side-action-button/SideActionButton';
+import SideActionButton from 'pages/components/base-container/components/side-action-button/SideActionButton';
 
 const Container = styled.div`
   position: relative;
   display: flex;
   height: 100%;
   align-items: center;
-  margin-right: ${(props) => props.theme.outerSpacing.small};
 `;
 
 const ActionButton = styled(Button)`
@@ -37,19 +36,10 @@ const ActionButton = styled(Button)`
 `;
 
 const Dialog = styled.div`
-  position: fixed;
-  top: ${(props) => props.theme.system.topCornerDialogHeight};
-  right: ${(props) => props.theme.outerSpacing.medium};
   display: flex;
-  flex-direction: column;
-  border: 1px solid ${(props) => props.theme.colours.grey};
-  border-radius: ${(props) => props.theme.system.borderRadius};
-  padding: ${(props) => props.theme.innerSpacing.small} 0;
-  background-color: ${(props) => props.theme.colours.white};
-  z-index: 100;
 `;
 
-export default function EditDialog() {
+export default function EditDialogAction() {
   const dispatch = useDispatch();
   const inEditMode = useSelector((state: RootState) => state.system.inEditMode);
   const { projectUid, collectionUid, focusUid } = useRoute();
@@ -62,15 +52,8 @@ export default function EditDialog() {
     dispatch(removeSelectedImages({ projectUid, locationUid: focusUid || collectionUid }));
   };
 
-  const handleClose = () => {
-    dispatch(systemStore.actions.closeAllDialogs());
-  };
-
   return (
     <Container>
-      <SideActionButton onClick={() => dispatch(systemStore.actions.toggleEditMode())} selected={inEditMode}>
-        <PencilIcon width="1.6rem" />
-      </SideActionButton>
       {inEditMode && (
         <Dialog>
           <ActionButton disabled>
@@ -85,12 +68,11 @@ export default function EditDialog() {
             <DuplicateIcon width={20} />
             Copy
           </ActionButton>
-          <ActionButton onClick={handleClose}>
-            <XCircleIcon width={20} />
-            Close
-          </ActionButton>
         </Dialog>
       )}
+      <SideActionButton onClick={() => dispatch(systemStore.actions.toggleEditMode())} selected={inEditMode}>
+        <PencilIcon width="1.6rem" />
+      </SideActionButton>
     </Container>
   );
 }
