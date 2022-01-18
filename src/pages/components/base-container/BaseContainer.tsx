@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { SearchIcon } from '@heroicons/react/outline';
 import SideNav from './components/side-nav/SideNav';
-import EditDialog from './components/edit-dialog/EditDialog';
 import NavIndicator from './components/nav-indicator/NavIndicator';
 import UserProfileMenu from './components/user-profile-menu/UserProfileMenu';
 
@@ -32,14 +31,14 @@ interface MainProps {
 
 const Main = styled.main<MainProps>`
   grid-area: main;
-  padding: ${(props) => props.theme.outerSpacing.medium};
+  padding: ${(props) => props.theme.innerSpacing.large};
   transition: all ease-in-out 150ms;
 `;
 
 const SearchBox = styled.div`
   display: flex;
   align-items: center;
-  padding-left: ${(props) => props.theme.outerSpacing.medium};
+  padding-left: ${(props) => props.theme.innerSpacing.large};
 `;
 
 const Search = styled(SearchIcon)`
@@ -79,7 +78,6 @@ export default function BaseContainer({ children }: BaseContainerProps) {
           <SearchField placeholder="Search..." />
         </SearchBox>
         <SecondaryLinks>
-          <EditDialog />
           <UserProfileMenu />
         </SecondaryLinks>
       </Header>
