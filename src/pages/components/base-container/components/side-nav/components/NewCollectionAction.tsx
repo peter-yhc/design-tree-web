@@ -11,13 +11,14 @@ import Button from '../../../../button/Button';
 import Input from '../../../../input/Input';
 
 const ModalBackground = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
   background-color: hsl(0, 0%, 30%, 0.85);
   z-index: 100;
+  overflow: hidden;
 `;
 
 const DialogModal = styled.div`

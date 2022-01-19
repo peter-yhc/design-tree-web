@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { createNewCollection, createNewFocus } from 'store/forms/forms-store-requests';
+import { createNewFocus } from 'store/forms/forms-store-requests';
 import { useAttachModalEscape, useProject } from 'hooks';
 import { useAppSelector } from 'store';
 import formsStore from 'store/forms/forms-store';
@@ -11,13 +11,14 @@ import Button from '../../../../button/Button';
 import Input from '../../../../input/Input';
 
 const ModalBackground = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
   background-color: hsl(0, 0%, 30%, 0.85);
   z-index: 100;
+  overflow: hidden;
 `;
 
 const DialogModal = styled.div`
@@ -92,7 +93,10 @@ export default function NewFocusAction() {
             <DialogModal ref={modalRef}>
               <h4>New Focus</h4>
               <p>A Focus is a specific area of a collection that you wish to concentrate on.</p>
-              <select onChange={((event) => setParentCollectionUid(event.target.value))} defaultValue={Object.keys(projectCategories)[0]}>
+              <select
+                onChange={((event) => setParentCollectionUid(event.target.value))}
+                defaultValue={Object.keys(projectCategories)[0]}
+              >
                 {renderCollectionSelect()}
               </select>
               <StyledInput
@@ -110,7 +114,11 @@ export default function NewFocusAction() {
                   disabled={focusName.length === 0 || formState !== 'READY'}
                   onClick={() => {
                     setFocusName('');
-                    dispatch(createNewFocus({ name: focusName, projectUid: projectId, collectionUid: parentCollectionUid }));
+                    dispatch(createNewFocus({
+                      name: focusName,
+                      projectUid: projectId,
+                      collectionUid: parentCollectionUid,
+                    }));
                   }}
                 >
                   Save
