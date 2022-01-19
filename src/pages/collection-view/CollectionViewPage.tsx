@@ -59,7 +59,7 @@ const PageHeader = styled.section<PageHeaderProps>`
     left: calc(${props.theme.system.sideNavWidth} + ${props.theme.innerSpacing.large});
     background-color: ${props.theme.colours.lightGrey};
     border-bottom: 3px solid ${props.theme.colours.black};
-    z-index: 100;
+    z-index: 90;
   `}
 `;
 

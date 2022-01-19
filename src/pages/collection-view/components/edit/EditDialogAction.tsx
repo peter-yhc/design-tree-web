@@ -1,5 +1,5 @@
 import {
-  ArrowCircleRightIcon, DuplicateIcon, PencilIcon, TrashIcon,
+  CogIcon, PencilIcon, TrashIcon,
 } from '@heroicons/react/outline';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
@@ -27,11 +27,11 @@ const ActionButton = styled(Button)`
   }
 
   &:hover {
-    background-color: hsl(210, 15%, 91%);
+    text-shadow: 0 0 1px ${(props) => props.theme.colours.darkGrey};
   }
 
   &:active {
-    background-color: hsl(210, 15%, 86%);
+    text-shadow: 0 0 1px ${(props) => props.theme.colours.black};
   }
 `;
 
@@ -56,17 +56,21 @@ export default function EditDialogAction() {
     <Container>
       {inEditMode && (
         <Dialog>
-          <ActionButton disabled>
-            <ArrowCircleRightIcon width={20} />
-            Move
-          </ActionButton>
+          {/* <ActionButton disabled> */}
+          {/*  <ArrowCircleRightIcon width={20} /> */}
+          {/*  Move */}
+          {/* </ActionButton> */}
           <ActionButton onClick={handleDeleteImage}>
             <TrashIcon width={20} />
             Delete
           </ActionButton>
-          <ActionButton disabled>
-            <DuplicateIcon width={20} />
-            Copy
+          {/* <ActionButton disabled> */}
+          {/*  <DuplicateIcon width={20} /> */}
+          {/*  Copy */}
+          {/* </ActionButton> */}
+          <ActionButton onClick={handleDeleteImage}>
+            <CogIcon width={20} />
+            Settings
           </ActionButton>
         </Dialog>
       )}
