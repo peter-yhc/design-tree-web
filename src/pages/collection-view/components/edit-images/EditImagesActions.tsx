@@ -39,7 +39,7 @@ const Dialog = styled.div`
   display: flex;
 `;
 
-export default function EditDialogAction() {
+export default function EditImagesActions() {
   const dispatch = useDispatch();
   const inEditMode = useSelector((state: RootState) => state.system.inEditMode);
   const { projectUid, collectionUid, focusUid } = useRoute();
