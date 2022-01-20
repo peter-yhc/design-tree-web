@@ -16,7 +16,7 @@ const Container = styled.section`
   border: 1px solid ${(props) => props.theme.colours.grey};
 `;
 
-export default function EditInfo() {
+export default function EditImagesInfo() {
   const inEditMode = useSelector((state: RootState) => state.system.inEditMode);
   const numberTilesSelected = useSelector((state: RootState) => state.images.selectedImages.length);
   const [memoNumTiles, setMemoNumTimes] = useState(numberTilesSelected);
