@@ -37,13 +37,15 @@ const ButtonRow = styled.div`
   margin-top: ${(props) => props.theme.outerSpacing.large};
 `;
 
-interface ModalActionProps {
+interface ModalActionProps extends React.HtmlHTMLAttributes<HTMLElement> {
   label: string;
   saveButton: ReactNode;
   children: ReactNode;
 }
 
-export default function ModalAction({ label, saveButton, children }: ModalActionProps) {
+export default function ModalAction({
+  className, label, saveButton, children,
+}: ModalActionProps) {
   const dispatch = useDispatch();
   const modalRef = useRef<HTMLDivElement>(null);
   const [modalHidden, setModalHidden] = useState(true);
@@ -60,7 +62,7 @@ export default function ModalAction({ label, saveButton, children }: ModalAction
 
   return (
     <>
-      <Button inline onClick={() => setModalHidden(!modalHidden)}>
+      <Button className={className} inline onClick={() => setModalHidden(!modalHidden)}>
         {label}
       </Button>
       {
