@@ -36,7 +36,6 @@ const Button = styled.button<ButtonProps>`
   
   ${(props) => props.inline && css`
     border: 0;
-    padding: 0;
   `}
   
   ${(props) => props.disabled && css`
