@@ -39,12 +39,13 @@ const ButtonRow = styled.div`
 
 interface ModalActionProps extends React.HtmlHTMLAttributes<HTMLElement> {
   label: string;
+  disabled?: boolean;
   saveButton: ReactNode;
   children: ReactNode;
 }
 
 export default function ModalAction({
-  className, label, saveButton, children,
+  className, disabled, label, saveButton, children,
 }: ModalActionProps) {
   const dispatch = useDispatch();
   const modalRef = useRef<HTMLDivElement>(null);
@@ -62,7 +63,7 @@ export default function ModalAction({
 
   return (
     <>
-      <Button className={className} inline onClick={() => setModalHidden(!modalHidden)}>
+      <Button className={className} inline onClick={() => setModalHidden(!modalHidden)} disabled={disabled}>
         {label}
       </Button>
       {
