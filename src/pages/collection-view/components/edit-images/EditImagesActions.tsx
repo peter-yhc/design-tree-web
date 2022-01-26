@@ -1,8 +1,8 @@
 import { PencilIcon } from '@heroicons/react/outline';
 import React, { ReactNode, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'store';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from 'store';
 import systemStore from 'store/system/system-store';
 import Button from 'pages/components/button/Button';
 import { removeSelectedImages } from 'store/images/images-store-requests';
@@ -16,6 +16,7 @@ const Container = styled.div`
   display: flex;
   height: 100%;
   align-items: center;
+  column-gap: ${(props) => props.theme.innerSpacing.small};
 `;
 
 const buttonHovers = css`
@@ -35,9 +36,10 @@ const ModalActionButton = styled(ModalAction)`
 export default function EditImagesActions() {
   const dispatch = useDispatch();
   const { projectUid, collectionUid, focusUid } = useRoute();
-  const { inEditMode, collections } = useSelector((state: RootState) => ({
+  const { inEditMode, collections, noSelectedImages } = useAppSelector((state) => ({
     inEditMode: state.system.inEditMode,
     collections: state.profile.projects[projectUid].collections,
+    noSelectedImages: state.images.selectedImages.length === 0,
   }));
   const [selected, setSelected] = useState('');
 
@@ -77,17 +79,17 @@ export default function EditImagesActions() {
     <Container>
       {inEditMode && (
         <>
-          <ModalActionButton label="Move" saveButton={saveMoveImagesButton}>
+          <ModalActionButton label="Move" saveButton={saveMoveImagesButton} disabled={noSelectedImages}>
             <h4>Move Images</h4>
             <p>Select a collection or focus to move the new images to.</p>
             <ListContainer>
               {renderLocationsList()}
             </ListContainer>
           </ModalActionButton>
-          <ActionButton inline onClick={handleDeleteImage}>
+          <ActionButton inline onClick={handleDeleteImage} disabled={noSelectedImages}>
             Copy
           </ActionButton>
-          <ActionButton inline onClick={handleDeleteImage}>
+          <ActionButton inline onClick={handleDeleteImage} disabled={noSelectedImages}>
             Delete
           </ActionButton>
         </>

@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components';
 export const ListContainer = styled.form`
   display: flex;
   flex-direction: column;
+  row-gap: ${(props) => props.theme.innerSpacing.tiny};
 `;
 
 interface ListAccordionProps {
@@ -15,6 +16,7 @@ export const ListAccordion = styled.div<ListAccordionProps>`
   flex-direction: column;
   max-height: 0;
   overflow: hidden;
+  row-gap: ${(props) => props.theme.innerSpacing.tiny};
   
   ${(props) => props.$open && css`
     max-height: max-content;
@@ -27,7 +29,7 @@ interface LabelProps {
 
 const Label = styled.label<LabelProps>`
   ${(props) => props.$sub && css`
-    margin-left: ${props.theme.outerSpacing.medium};
+    margin-left: ${props.theme.outerSpacing.large};
   `}
 `;
 
