@@ -102,10 +102,10 @@ const DeleteButton = styled.button`
 
 const CloseButton = styled.button`
   position: absolute;
-  top: 0;
-  right: 0;
-  height: 3rem;
-  width: 3rem;
+  top: 0.25rem;
+  right: 0.25rem;
+  height: 2.5rem;
+  width: 2.5rem;
   border: 0;
   border-radius: 50%;
   display: flex;
