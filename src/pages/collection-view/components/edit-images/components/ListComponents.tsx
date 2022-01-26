@@ -1,12 +1,6 @@
 import React, { InputHTMLAttributes } from 'react';
 import styled, { css } from 'styled-components';
 
-export const ListContainer = styled.form`
-  display: flex;
-  flex-direction: column;
-  row-gap: ${(props) => props.theme.innerSpacing.tiny};
-`;
-
 interface ListAccordionProps {
   $open?: boolean;
 }
@@ -16,8 +10,7 @@ export const ListAccordion = styled.div<ListAccordionProps>`
   flex-direction: column;
   max-height: 0;
   overflow: hidden;
-  row-gap: ${(props) => props.theme.innerSpacing.tiny};
-  
+
   ${(props) => props.$open && css`
     max-height: max-content;
   `}
@@ -28,9 +21,48 @@ interface LabelProps {
 }
 
 const Label = styled.label<LabelProps>`
+  position: relative;
+  padding-left: 1.5rem;
+
+  &:before {
+    position: absolute;
+    top: 1px;
+    left: 0;
+    content: ' ';
+    height: 16px;
+    width: 16px;
+    border: 1px solid ${(props) => props.theme.colours.primaryDarkest};
+    border-radius: 50%;
+  }
+
+  & > input {
+    display: none;
+  }
+
+  & > input:checked + span {
+    position: absolute;
+    top: 4px;
+    left: 3px;
+    height: 12px;
+    width: 12px;
+    background-color: ${(props) => props.theme.colours.primaryDarkest};
+    border-radius: 50%;
+  }
+
   ${(props) => props.$sub && css`
-    margin-left: ${props.theme.outerSpacing.large};
+    margin-left: ${props.theme.outerSpacing.medium};
   `}
+`;
+
+export const ListContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  margin-left: ${(props) => props.theme.outerSpacing.large};
+  
+  & ${Label} {
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+  }
 `;
 
 interface ListItemProps extends InputHTMLAttributes<HTMLInputElement>{
@@ -46,6 +78,7 @@ export function ListItem({
     <Label $sub={$sub}>
       <input type="radio" value={value} onClick={onSelect} name={name} />
       {value}
+      <span />
     </Label>
   );
 }
