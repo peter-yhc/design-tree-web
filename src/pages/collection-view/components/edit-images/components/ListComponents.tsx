@@ -5,7 +5,7 @@ interface ListAccordionProps {
   $open?: boolean;
 }
 
-export const ListAccordion = styled.div<ListAccordionProps>`
+export const SubList = styled.div<ListAccordionProps>`
   display: flex;
   flex-direction: column;
   max-height: 0;
@@ -54,10 +54,12 @@ const Label = styled.label<LabelProps>`
   `}
 `;
 
-export const ListContainer = styled.form`
+export const ListForm = styled.form`
   display: flex;
   flex-direction: column;
   margin-left: ${(props) => props.theme.outerSpacing.large};
+  max-height: 50vh;
+  overflow-y: auto;
   
   & ${Label} {
     margin-top: 0.2rem;

@@ -9,7 +9,7 @@ import { removeSelectedImages } from 'store/images/images-store-requests';
 import { useRoute } from 'hooks';
 import SideActionButton from 'pages/components/base-container/components/side-action-button/SideActionButton';
 import ModalAction from '../../../components/modal-action/ModalAction';
-import { ListAccordion, ListContainer, ListItem } from './components/ListComponents';
+import { SubList, ListForm, ListItem } from './components/ListComponents';
 
 const Container = styled.div`
   position: relative;
@@ -69,7 +69,7 @@ export default function EditImagesActions() {
             onSelect={() => setSelected(cKey)}
           />
         ));
-        list.push(<ListAccordion $open={cKey === selected}>{subItems}</ListAccordion>);
+        list.push(<SubList $open={cKey === selected}>{subItems}</SubList>);
       }
     });
     return list;
@@ -82,9 +82,9 @@ export default function EditImagesActions() {
           <ModalActionButton label="Move" saveButton={saveMoveImagesButton} disabled={noSelectedImages}>
             <h4>Move Images</h4>
             <p>Select a collection or focus to move the new images to.</p>
-            <ListContainer>
+            <ListForm>
               {renderLocationsList()}
-            </ListContainer>
+            </ListForm>
           </ModalActionButton>
           <ActionButton inline onClick={handleDeleteImage} disabled={noSelectedImages}>
             Copy

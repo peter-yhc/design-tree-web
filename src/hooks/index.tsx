@@ -2,7 +2,7 @@
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useRouteMatch } from 'react-router-dom';
-import { RootState } from '../store';
+import { RootState, useAppSelector } from '../store';
 
 export function useProject() {
   const activeProjectId = useSelector((state: RootState) => state.system.activeProjectId) as string;
@@ -47,4 +47,15 @@ export function useAttachModalEscape(cb: () => void) {
       window.removeEventListener('keydown', listener);
     };
   }, []);
+}
+
+export function useRegisterGlobalScrollHook() {
+  const scrollDisabled = useAppSelector((state) => state.system.globalDisableScroll);
+
+  useEffect(() => {
+    const app = document.getElementById('app');
+    if (app) {
+      app.style.position = scrollDisabled ? 'fixed' : 'relative';
+    }
+  }, [scrollDisabled]);
 }

@@ -4,8 +4,11 @@ import { RouteValidator } from 'hoc';
 import { CollectionViewPage, DashboardPage, PageNotFound } from './pages';
 import LoginPage from './pages/login/LoginPage';
 import PrivateRoute from './hoc/private-route/PrivateRoute';
+import { useRegisterGlobalScrollHook } from './hooks';
 
 export default function App() {
+  useRegisterGlobalScrollHook();
+
   return (
     <Switch>
       <Route path="/" exact>
