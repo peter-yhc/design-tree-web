@@ -13,6 +13,7 @@ interface InitialStateType {
   inEditMode: boolean;
   inUserProfileMode: boolean;
   showBadImageUrlError: boolean;
+  globalDisableScroll: boolean;
   ready: boolean;
 }
 
@@ -21,6 +22,7 @@ const initialState: InitialStateType = {
   inEditMode: false,
   inUserProfileMode: false,
   showBadImageUrlError: false,
+  globalDisableScroll: false,
   ready: false,
 };
 
@@ -34,6 +36,7 @@ const { actions, reducer } = createSlice({
     closeAllDialogs: (state) => ({ ...state, inEditMode: false }),
     showBadImageUrlMessage: (state) => ({ ...state, showBadImageUrlError: true }),
     hideBadImageUrlMessage: (state) => ({ ...state, showBadImageUrlError: false }),
+    setGlobalScrollDisableToggle: (state, action) => ({ ...state, globalDisableScroll: action.payload }),
   },
   extraReducers: (builder) => {
     builder.addCase(fetchProjects.fulfilled, (state, action) => ({

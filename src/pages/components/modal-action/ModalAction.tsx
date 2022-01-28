@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { useAttachModalEscape } from 'hooks';
 import { useAppSelector } from 'store';
 import formsStore from 'store/forms/forms-store';
+import systemStore from 'store/system/system-store';
 import Button from '../button/Button';
 
 const ModalBackground = styled.div`
@@ -26,6 +27,8 @@ const DialogModal = styled.div`
   transform: translate(-50%, -50%);
   z-index: 101;
   width: 24rem;
+  max-height: 50vh;
+  overflow-y: auto;
   background-color: ${(props) => props.theme.colours.white};
   border-radius: ${(props) => props.theme.system.borderRadius};
   padding: ${(props) => props.theme.innerSpacing.large};
@@ -60,6 +63,10 @@ export default function ModalAction({
       dispatch(formsStore.actions.resetNewCollectionForm());
     }
   }, [formState]);
+
+  useEffect(() => {
+    dispatch(systemStore.actions.setGlobalScrollDisableToggle(!modalHidden));
+  }, [modalHidden]);
 
   return (
     <>
