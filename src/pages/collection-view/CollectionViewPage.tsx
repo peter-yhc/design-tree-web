@@ -10,11 +10,11 @@ import BaseContainer from '../components/base-container/BaseContainer';
 import ImageTile from './components/image-tile/ImageTile';
 import BreadCrumbs from '../components/bread-crumbs/BreadCrumbs';
 import PageTitle from '../components/page-title/PageTitle';
-import EditImagesInfo from './components/edit-images/EditImagesInfo';
+import EditImageInfo from './components/edit-images/EditImageInfo';
 import FileDropListener from '../../hoc/file-drop-listener/FileDropListener';
 import { useRoute } from '../../hooks';
 import PreviewCarousel from './components/preview-carousel/PreviewCarousel';
-import EditImagesActions from './components/edit-images/EditImagesActions';
+import EditImageToolbar from './components/edit-images/EditImageToolbar';
 
 interface TileContainerProps {
   fixedMode: boolean;
@@ -111,13 +111,13 @@ export default function CollectionViewPage() {
         <PageHeader fixedMode={fixedMode}>
           <PageTitle />
           <ActionsContainer>
-            <EditImagesActions />
+            <EditImageToolbar />
           </ActionsContainer>
         </PageHeader>
         <TileContainer fixedMode={fixedMode}>
           {Object.values(images).map((v) => <ImageTile key={v.uid} imageUid={v.uid} />)}
         </TileContainer>
-        <EditImagesInfo />
+        <EditImageInfo />
       </FileDropListener>
       {currentPreviewUid && <PreviewCarousel />}
     </BaseContainer>

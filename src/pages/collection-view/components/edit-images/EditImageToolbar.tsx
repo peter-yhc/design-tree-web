@@ -33,7 +33,7 @@ const ModalActionButton = styled(ModalAction)`
   ${buttonHovers}
 `;
 
-export default function EditImagesActions() {
+export default function EditImageToolbar() {
   const dispatch = useDispatch();
   const { projectUid, collectionUid, focusUid } = useRoute();
   const { inEditMode, collections, noSelectedImages } = useAppSelector((state) => ({
