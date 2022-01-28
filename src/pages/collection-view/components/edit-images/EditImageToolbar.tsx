@@ -8,8 +8,10 @@ import Button from 'pages/components/button/Button';
 import { removeSelectedImages } from 'store/images/images-store-requests';
 import { useRoute } from 'hooks';
 import SideActionButton from 'pages/components/base-container/components/side-action-button/SideActionButton';
+import { FormName } from 'store/forms/FormName';
+import { moveSelectedImages } from 'store/forms/forms-store-requests';
 import ModalAction from '../../../components/modal-action/ModalAction';
-import { SubList, ListForm, ListItem } from './components/ListComponents';
+import { ListForm, ListItem, SubList } from './components/ListComponents';
 
 const Container = styled.div`
   position: relative;
@@ -35,30 +37,41 @@ const ModalActionButton = styled(ModalAction)`
 
 export default function EditImageToolbar() {
   const dispatch = useDispatch();
-  const { projectUid, collectionUid, focusUid } = useRoute();
+  const { projectUid, locationUid } = useRoute();
   const { inEditMode, collections, noSelectedImages } = useAppSelector((state) => ({
     inEditMode: state.system.inEditMode,
     collections: state.profile.projects[projectUid].collections,
     noSelectedImages: state.images.selectedImages.length === 0,
   }));
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState<string | null>(null);
+  const [newLocationUid, setNewLocationUid] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(systemStore.actions.closeAllDialogs());
-  }, [projectUid, collectionUid, focusUid]);
+  }, [projectUid, locationUid]);
 
   const handleDeleteImage = () => {
-    dispatch(removeSelectedImages({ projectUid, locationUid: focusUid || collectionUid }));
+    dispatch(removeSelectedImages({ projectUid, locationUid }));
   };
 
-  const saveMoveImagesButton = (
-    <Button primary>Save</Button>
-  );
+  const handleMoveImage = () => {
+    if (newLocationUid) {
+      dispatch(moveSelectedImages({ projectUid, locationUid, newLocationUid }));
+    }
+  };
 
   const renderLocationsList = () => {
     const list: ReactNode[] = [];
     Object.keys(collections).forEach((cKey) => {
-      list.push(<ListItem key={cKey} value={collections[cKey].name} name="location" onSelect={() => setSelected(cKey)} />);
+      list.push(<ListItem
+        key={cKey}
+        value={collections[cKey].name}
+        name="location"
+        onSelect={() => {
+          setSelected(cKey);
+          setNewLocationUid(cKey);
+        }}
+      />);
       if (collections[cKey].focuses) {
         const subItems = Object.keys(collections[cKey].focuses).map((fKey) => (
           <ListItem
@@ -66,7 +79,10 @@ export default function EditImageToolbar() {
             key={fKey}
             value={collections[cKey].focuses[fKey].name}
             name="location"
-            onSelect={() => setSelected(cKey)}
+            onSelect={() => {
+              setSelected(cKey);
+              setNewLocationUid(cKey);
+            }}
           />
         ));
         list.push(<SubList $open={cKey === selected}>{subItems}</SubList>);
@@ -79,7 +95,14 @@ export default function EditImageToolbar() {
     <Container>
       {inEditMode && (
         <>
-          <ModalActionButton label="Move" saveButton={saveMoveImagesButton} disabled={noSelectedImages}>
+          <ModalActionButton
+            label="Move"
+            formName={FormName.MoveImageForm}
+            onSave={handleMoveImage}
+            onCancel={() => setSelected(null)}
+            saveValidity={newLocationUid !== null}
+            disabled={noSelectedImages}
+          >
             <h4>Move Images</h4>
             <p>Select a collection or focus to move the new images to.</p>
             <ListForm>

@@ -1,25 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
-  createNewCollection, createNewFocus, createNewProject, passwordLogin,
+  createNewCollection, createNewFocus, createNewProject, moveSelectedImages, passwordLogin,
 } from './forms-store-requests';
 import { resetApplication } from '../system/system-store-requests';
+import { FormName } from './FormName';
 
 type FormStatus = 'READY' | 'PENDING' | 'FAILED' | 'DONE';
+type FormState = {
+  status: FormStatus;
+  error?: string;
+}
 
 export type InitialState = {
-  newProjectForm: {
-    status: FormStatus
-  }
-  newCollectionForm: {
-    status: FormStatus
-  }
-  newFocusForm: {
-    status: FormStatus
-  }
-  loginForm: {
-    status: FormStatus,
-    error?: string,
-  }
+  [FormName.NewProjectForm]: FormState;
+  [FormName.NewCollectionForm]: FormState;
+  [FormName.NewFocusForm]: FormState;
+  [FormName.LoginForm]: FormState;
+  [FormName.MoveImageForm]: FormState;
 }
 
 const initialState: InitialState = {
@@ -35,27 +32,18 @@ const initialState: InitialState = {
   loginForm: {
     status: 'READY',
   },
+  moveImageForm: {
+    status: 'READY',
+  },
 };
 
 const { actions, reducer } = createSlice({
   name: 'forms',
   initialState,
   reducers: {
-    resetNewProjectForm: (state) => ({
+    resetForm: (state, action: PayloadAction<FormName>) => ({
       ...state,
-      newProjectForm: {
-        status: 'READY',
-      },
-    }),
-    resetNewCollectionForm: (state) => ({
-      ...state,
-      newCollectionForm: {
-        status: 'READY',
-      },
-    }),
-    resetNewFocusForm: (state) => ({
-      ...state,
-      newFocusForm: {
+      [action.payload]: {
         status: 'READY',
       },
     }),
@@ -97,6 +85,18 @@ const { actions, reducer } = createSlice({
         status: 'DONE',
       },
     }));
+    builder.addCase(moveSelectedImages.pending, ((state) => ({
+      ...state,
+      [FormName.MoveImageForm]: {
+        status: 'PENDING',
+      },
+    })));
+    builder.addCase(moveSelectedImages.fulfilled, ((state) => ({
+      ...state,
+      [FormName.MoveImageForm]: {
+        status: 'DONE',
+      },
+    })));
     builder.addCase(passwordLogin.rejected, (state) => ({
       ...state,
       loginForm: {

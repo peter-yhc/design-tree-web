@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { createNewCollection } from 'store/forms/forms-store-requests';
 import { useProject } from 'hooks';
 import { useAppSelector } from 'store';
-import Button from '../../../../button/Button';
+import { FormName } from 'store/forms/FormName';
 import Input from '../../../../input/Input';
 import ModalAction from '../../../../modal-action/ModalAction';
 
@@ -40,21 +40,18 @@ export default function NewCollectionAction() {
     }
   };
 
-  const saveButton = (
-    <Button
-      primary
-      disabled={inputValue.length === 0 || formState !== 'READY'}
-      onClick={() => {
-        setInputValue('');
-        dispatch(createNewCollection({ name: inputValue, projectUid: projectId }));
-      }}
-    >
-      Save
-    </Button>
-  );
+  const handleSave = () => {
+    setInputValue('');
+    dispatch(createNewCollection({ name: inputValue, projectUid: projectId }));
+  };
 
   return (
-    <ModalAction label="+ New Collection" saveButton={saveButton}>
+    <ModalAction
+      label="+ New Collection"
+      formName={FormName.NewCollectionForm}
+      onSave={handleSave}
+      saveValidity={inputValue.length === 0 || formState !== 'READY'}
+    >
       <h4>New Collection</h4>
       <p>A collection is a set of images with a common theme.</p>
       <StyledInput

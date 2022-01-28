@@ -8,6 +8,7 @@ import { useAppSelector } from 'store';
 import formsStore from 'store/forms/forms-store';
 import systemStore from 'store/system/system-store';
 import Button from '../button/Button';
+import { FormName } from '../../../store/forms/FormName';
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -43,24 +44,28 @@ const ButtonRow = styled.div`
 interface ModalActionProps extends React.HtmlHTMLAttributes<HTMLElement> {
   label: string;
   disabled?: boolean;
-  saveButton: ReactNode;
+  saveValidity: boolean;
+  onSave: () => void;
+  onCancel?: () => void;
+  formName: FormName;
   children: ReactNode;
 }
 
 export default function ModalAction({
-  className, disabled, label, saveButton, children,
+  className, disabled, label, onSave, onCancel, saveValidity, formName, children,
 }: ModalActionProps) {
   const dispatch = useDispatch();
   const modalRef = useRef<HTMLDivElement>(null);
   const [modalHidden, setModalHidden] = useState(true);
-  const formState = useAppSelector((state) => state.forms.newCollectionForm.status);
+  const formState = useAppSelector((state) => (state.forms as {[index: string]:any})[formName].status);
 
   useAttachModalEscape(() => setModalHidden(true));
 
   useEffect(() => {
     if (formState === 'DONE') {
+      // TODO hook into this to animate save button
       setModalHidden(true);
-      dispatch(formsStore.actions.resetNewCollectionForm());
+      dispatch(formsStore.actions.resetForm(formName));
     }
   }, [formState]);
 
@@ -79,8 +84,11 @@ export default function ModalAction({
             <DialogModal ref={modalRef}>
               {children}
               <ButtonRow>
-                <Button onClick={() => setModalHidden(true)}>Cancel</Button>
-                {saveButton}
+                {/* eslint-disable-next-line no-unused-expressions */}
+                <Button onClick={() => { setModalHidden(true); onCancel && onCancel(); }}>
+                  Cancel
+                </Button>
+                <Button primary onClick={onSave} disabled={!saveValidity}>Save</Button>
               </ButtonRow>
             </DialogModal>
           </ModalBackground>
