@@ -1,11 +1,11 @@
 import React, { InputHTMLAttributes } from 'react';
 import styled, { css } from 'styled-components';
 
-interface ListAccordionProps {
+interface SubListProps {
   $open?: boolean;
 }
 
-export const SubList = styled.div<ListAccordionProps>`
+export const SubList = styled.div<SubListProps>`
   display: flex;
   flex-direction: column;
   max-height: 0;
