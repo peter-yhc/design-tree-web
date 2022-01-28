@@ -22,7 +22,7 @@ export default function NewCollectionAction() {
   const dispatch = useDispatch();
   const { projectId } = useProject();
   const [inputValue, setInputValue] = useState('');
-  const formState = useAppSelector((state) => state.forms.newCollectionForm.status);
+  const formState = useAppSelector((state) => (state.forms as { [index: string]: any })[FormName.NewCollectionForm].status);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const sanitisedText = e.target.value.match(/[A-Za-z0-9 ]+/);

@@ -8,10 +8,10 @@ import Button from 'pages/components/button/Button';
 import { removeSelectedImages } from 'store/images/images-store-requests';
 import { useRoute } from 'hooks';
 import SideActionButton from 'pages/components/base-container/components/side-action-button/SideActionButton';
-import { FormName } from 'store/forms/FormName';
 import { moveSelectedImages } from 'store/forms/forms-store-requests';
-import ModalAction from '../../../components/modal-action/ModalAction';
+import { FormName } from 'store/forms/FormName';
 import { ListForm, ListItem, SubList } from './components/ListComponents';
+import ModalAction from '../../../components/modal-action/ModalAction';
 
 const Container = styled.div`
   position: relative;
