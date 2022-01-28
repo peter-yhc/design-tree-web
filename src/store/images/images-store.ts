@@ -1,17 +1,31 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   deleteImageComment,
-  fetchImages, removeImage, removeSelectedImages, toggleImageFavourite, updateImageComment, uploadImage,
+  fetchImages,
+  removeImage,
+  removeSelectedImages,
+  toggleImageFavourite,
+  updateImageComment,
+  uploadImage,
 } from './images-store-requests';
 import systemStore from '../system/system-store';
 import { ImageInfo } from './images-store-interfaces';
 import { IImageResponse } from '../../api/server-interfaces';
+import { moveSelectedImages } from '../forms/forms-store-requests';
 
 export type InitialState = {
   currentImages: Record<string, ImageInfo>,
   selectedImages: string[],
   pendingImages: string[],
   currentPreviewUid?: string,
+}
+
+function getCurrentMinusSelectedImages(state: InitialState) {
+  const newCurrentImages = { ...state.currentImages };
+  for (let i = 0; i < state.selectedImages.length; i += 1) {
+    delete newCurrentImages[state.selectedImages[i]];
+  }
+  return newCurrentImages;
 }
 
 const { actions, reducer } = createSlice({
@@ -99,23 +113,26 @@ const { actions, reducer } = createSlice({
         [action.payload.uid]: action.payload,
       },
     }));
+    builder.addCase(moveSelectedImages.pending, (state) => ({
+      ...state,
+      pendingImages: [...state.selectedImages],
+    }));
+    builder.addCase(moveSelectedImages.fulfilled, (state) => ({
+      ...state,
+      currentImages: getCurrentMinusSelectedImages(state),
+      pendingImages: [],
+      selectedImages: [],
+    }));
     builder.addCase(removeSelectedImages.pending, (state) => ({
       ...state,
       pendingImages: [...state.selectedImages],
     }));
-    builder.addCase(removeSelectedImages.fulfilled, (state) => {
-      const newCurrentImages = { ...state.currentImages };
-      for (let i = 0; i < state.selectedImages.length; i += 1) {
-        delete newCurrentImages[state.selectedImages[i]];
-      }
-
-      return {
-        ...state,
-        currentImages: newCurrentImages,
-        selectedImages: [],
-        pendingImages: [],
-      };
-    });
+    builder.addCase(removeSelectedImages.fulfilled, (state) => ({
+      ...state,
+      currentImages: getCurrentMinusSelectedImages(state),
+      selectedImages: [],
+      pendingImages: [],
+    }));
     builder.addCase(removeImage.pending, (state) => {
       const keys = Object.keys(state.currentImages);
       const nextKey = keys.indexOf(`${state.currentPreviewUid}`) + 1;

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { createNewFocus } from 'store/forms/forms-store-requests';
 import { useProject } from 'hooks';
 import { useAppSelector } from 'store';
-import Button from '../../../../button/Button';
+import { FormName } from 'store/forms/FormName';
 import Input from '../../../../input/Input';
 import ModalAction from '../../../../modal-action/ModalAction';
 
@@ -39,25 +39,22 @@ export default function NewFocusAction() {
     <option value={key}>{projectCategories[key].name}</option>
   ));
 
-  const saveButton = (
-    <Button
-      primary
-      disabled={focusName.length === 0 || formState !== 'READY'}
-      onClick={() => {
-        setFocusName('');
-        dispatch(createNewFocus({
-          name: focusName,
-          projectUid: projectId,
-          collectionUid: parentCollectionUid,
-        }));
-      }}
-    >
-      Save
-    </Button>
-  );
+  const handleSave = () => {
+    setFocusName('');
+    dispatch(createNewFocus({
+      name: focusName,
+      projectUid: projectId,
+      collectionUid: parentCollectionUid,
+    }));
+  };
 
   return (
-    <ModalAction label="+ New Focus" saveButton={saveButton}>
+    <ModalAction
+      label="+ New Focus"
+      formName={FormName.NewFocusForm}
+      onSave={handleSave}
+      saveValidity={focusName.length === 0 || formState !== 'READY'}
+    >
       <h4>New Focus</h4>
       <p>A Focus is a specific area of a collection that you wish to concentrate on.</p>
       <select

@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { createNewProject } from 'store/forms/forms-store-requests';
 import { useAttachModalEscape } from 'hooks';
 import { useAppSelector } from 'store';
+import { FormName } from 'store/forms/FormName';
 import formsStore from 'store/forms/forms-store';
 import Button from '../../../../button/Button';
 import Input from '../../../../input/Input';
@@ -55,7 +56,7 @@ export default function NewProjectAction() {
   useEffect(() => {
     if (formState === 'DONE') {
       setModalHidden(true);
-      dispatch(formsStore.actions.resetNewProjectForm());
+      dispatch(formsStore.actions.resetForm(FormName.NewProjectForm));
     }
   }, [formState]);
 

@@ -104,6 +104,19 @@ async function createImage(projectUid: string, locationUid: string, src: string,
   return await response.json() as IImageResponse;
 }
 
+async function moveImages(projectUid: string, locationUid: string, imageUids: string[], newLocationUid: string): Promise<void> {
+  const token = await getToken();
+  await fetch(`${host}/images/${projectUid}/${locationUid}`, {
+    method: 'PUT',
+    mode: 'cors',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ imageUids, newLocationUid }),
+  });
+}
+
 async function removeImages(projectUid: string, locationUid: string, imageUids: string[]): Promise<void> {
   const token = await getToken();
   await fetch(`${host}/images/${projectUid}/${locationUid}/delete`, {
@@ -165,6 +178,7 @@ export {
   createFocus,
   getImages,
   createImage,
+  moveImages,
   removeImages,
   favouriteImage,
   putImageComment,
