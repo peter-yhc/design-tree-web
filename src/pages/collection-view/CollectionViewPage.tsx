@@ -29,15 +29,15 @@ const TileContainer = styled.section<TileContainerProps>`
     margin-top: 4.2rem;
   `};
 
-  @media screen and (max-width: 1440px) {
+  @media screen and (max-width: 1920px) {
     column-count: 3;
   }
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 1366px) {
     column-count: 2;
   }
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 1024px) {
     column-count: 1;
   }
 `;
