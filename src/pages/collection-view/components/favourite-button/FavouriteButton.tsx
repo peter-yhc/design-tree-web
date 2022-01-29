@@ -17,7 +17,7 @@ const FavouriteCircle = styled.button<FavouriteCircleProps>`
   border: 0;
   border-radius: 100%;
   padding: 2px;
-  background-color: hsl(210, 15%, 95%, 0.2);
+  background-color: hsl(210, 15%, 95%, 0.5);
   cursor: pointer;
 
   ${(props) => props.$loading && css`
@@ -34,7 +34,7 @@ const Favourite = styled(HeartIcon)<FavouriteProps>`
   width: 24px;
   fill: ${(props) => props.theme.colours.grey};
   stroke-width: 1.5px;
-  opacity: 0.2;
+  opacity: 0.4;
   transition: all 80ms ease-in-out;
 
   &:active {

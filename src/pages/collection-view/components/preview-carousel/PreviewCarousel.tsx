@@ -78,7 +78,7 @@ const ActionContainer = styled.section`
   }
 `;
 
-const Favourite = styled(FavouriteButton)`
+const FavButton = styled(FavouriteButton)`
   grid-area: fav;
   display: flex;
   justify-content: flex-start;
@@ -154,7 +154,9 @@ export default function PreviewCarousel() {
       <Content>
         <Image src={src} alt="Preview" />
         <ActionContainer>
-          <Favourite imageUid={uid}>Favourite</Favourite>
+          <div>
+            <FavButton imageUid={uid}>Favourite</FavButton>
+          </div>
           <Comments imageUid={uid} />
           <DeleteButton onClick={() => dispatch(removeImage({ projectUid, locationUid, imageUid: uid }))}>
             <TrashIcon width={20} />
