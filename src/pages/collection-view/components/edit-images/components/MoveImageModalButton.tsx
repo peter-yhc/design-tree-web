@@ -45,7 +45,7 @@ export default function MoveImageModalButton({ className }: React.HtmlHTMLAttrib
               key={fKey}
               value={collections[cKey].focuses[fKey].name}
               name="location"
-              onSelect={createHandleSelect(cKey)}
+              onSelect={createHandleSelect(fKey)}
             />
           ));
         list.push(<SubList $open={cKey === selected}>{subItems}</SubList>);
