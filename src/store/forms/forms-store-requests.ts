@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
+  copyImages,
   createCollection, createFocus, createProject, moveImages,
 } from 'api/server-api';
 import { ICollectionResponse, IFocusResponse, IProjectResponse } from 'api/server-interfaces';
@@ -30,6 +31,14 @@ const moveSelectedImages = createAsyncThunk(
   },
 );
 
+const copySelectedImages = createAsyncThunk(
+  'images/copy',
+  async ({ projectUid, locationUid, toLocationUid }: {projectUid: string, locationUid: string, toLocationUid: string}, { getState }): Promise<void> => {
+    const imageUids = (getState() as RootState).images.selectedImages;
+    return copyImages(projectUid, locationUid, imageUids, toLocationUid);
+  },
+);
+
 const passwordLogin = createAsyncThunk(
   'system/passwordLogin',
   async (credentials: Credentials) => loginWithEmailPassword(credentials),
@@ -40,5 +49,6 @@ export {
   createNewCollection,
   createNewFocus,
   moveSelectedImages,
+  copySelectedImages,
   passwordLogin,
 };

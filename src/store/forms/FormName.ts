@@ -5,4 +5,5 @@ export enum FormName {
   NewFocusForm = 'newFocusForm',
   LoginForm = 'loginForm',
   MoveImageForm = 'moveImageForm',
+  CopyImageForm = 'copyImageForm',
 }

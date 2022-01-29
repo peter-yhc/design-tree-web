@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
+  copySelectedImages,
   createNewCollection, createNewFocus, createNewProject, moveSelectedImages, passwordLogin,
 } from './forms-store-requests';
 import { resetApplication } from '../system/system-store-requests';
@@ -17,24 +18,16 @@ export type InitialState = {
   [FormName.NewFocusForm]: FormState;
   [FormName.LoginForm]: FormState;
   [FormName.MoveImageForm]: FormState;
+  [FormName.CopyImageForm]: FormState;
 }
 
 const initialState: InitialState = {
-  newProjectForm: {
-    status: 'READY',
-  },
-  newCollectionForm: {
-    status: 'READY',
-  },
-  newFocusForm: {
-    status: 'READY',
-  },
-  loginForm: {
-    status: 'READY',
-  },
-  moveImageForm: {
-    status: 'READY',
-  },
+  [FormName.NewProjectForm]: { status: 'READY' },
+  [FormName.NewCollectionForm]: { status: 'READY' },
+  [FormName.NewFocusForm]: { status: 'READY' },
+  [FormName.LoginForm]: { status: 'READY' },
+  [FormName.MoveImageForm]: { status: 'READY' },
+  [FormName.CopyImageForm]: { status: 'READY' },
 };
 
 const { actions, reducer } = createSlice({
@@ -94,6 +87,18 @@ const { actions, reducer } = createSlice({
     builder.addCase(moveSelectedImages.fulfilled, ((state) => ({
       ...state,
       [FormName.MoveImageForm]: {
+        status: 'DONE',
+      },
+    })));
+    builder.addCase(copySelectedImages.pending, ((state) => ({
+      ...state,
+      [FormName.CopyImageForm]: {
+        status: 'PENDING',
+      },
+    })));
+    builder.addCase(copySelectedImages.fulfilled, ((state) => ({
+      ...state,
+      [FormName.CopyImageForm]: {
         status: 'DONE',
       },
     })));

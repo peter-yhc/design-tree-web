@@ -11,7 +11,7 @@ import {
 import systemStore from '../system/system-store';
 import { ImageInfo } from './images-store-interfaces';
 import { IImageResponse } from '../../api/server-interfaces';
-import { moveSelectedImages } from '../forms/forms-store-requests';
+import { copySelectedImages, moveSelectedImages } from '../forms/forms-store-requests';
 
 export type InitialState = {
   currentImages: Record<string, ImageInfo>,
@@ -120,6 +120,15 @@ const { actions, reducer } = createSlice({
     builder.addCase(moveSelectedImages.fulfilled, (state) => ({
       ...state,
       currentImages: getCurrentMinusSelectedImages(state),
+      pendingImages: [],
+      selectedImages: [],
+    }));
+    builder.addCase(copySelectedImages.pending, (state) => ({
+      ...state,
+      pendingImages: [...state.selectedImages],
+    }));
+    builder.addCase(copySelectedImages.fulfilled, (state) => ({
+      ...state,
       pendingImages: [],
       selectedImages: [],
     }));

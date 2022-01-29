@@ -9,6 +9,7 @@ import { removeSelectedImages } from 'store/images/images-store-requests';
 import { useRoute } from 'hooks';
 import SideActionButton from 'pages/components/base-container/components/side-action-button/SideActionButton';
 import MoveImageModalButton from './components/MoveImageModalButton';
+import CopyImageModalButton from './components/CopyImageModalButton';
 
 const Container = styled.div`
   position: relative;
@@ -29,6 +30,10 @@ const ActionButton = styled(Button)`
 `;
 
 const MoveImageButton = styled(MoveImageModalButton)`
+  ${buttonHovers}
+`;
+
+const CopyImageButton = styled(CopyImageModalButton)`
   ${buttonHovers}
 `;
 
@@ -53,9 +58,7 @@ export default function EditImageToolbar() {
       {inEditMode && (
         <>
           <MoveImageButton />
-          <ActionButton inline onClick={handleDeleteImage} disabled={noSelectedImages}>
-            Copy
-          </ActionButton>
+          <CopyImageButton />
           <ActionButton inline onClick={handleDeleteImage} disabled={noSelectedImages}>
             Delete
           </ActionButton>

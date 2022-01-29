@@ -117,6 +117,19 @@ async function moveImages(projectUid: string, locationUid: string, imageUids: st
   });
 }
 
+async function copyImages(projectUid: string, locationUid: string, imageUids: string[], toLocationUid: string): Promise<void> {
+  const token = await getToken();
+  await fetch(`${host}/images/${projectUid}/${locationUid}/clone`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ imageUids, toLocationUid }),
+  });
+}
+
 async function removeImages(projectUid: string, locationUid: string, imageUids: string[]): Promise<void> {
   const token = await getToken();
   await fetch(`${host}/images/${projectUid}/${locationUid}/delete`, {
@@ -179,6 +192,7 @@ export {
   getImages,
   createImage,
   moveImages,
+  copyImages,
   removeImages,
   favouriteImage,
   putImageComment,
