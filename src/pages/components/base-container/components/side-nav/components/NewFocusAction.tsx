@@ -36,7 +36,7 @@ export default function NewFocusAction() {
   };
 
   const renderCollectionSelect = () => Object.keys(projectCategories).map((key) => (
-    <option value={key}>{projectCategories[key].name}</option>
+    <option key={key} value={key}>{projectCategories[key].name}</option>
   ));
 
   const handleSave = () => {
