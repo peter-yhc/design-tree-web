@@ -23,9 +23,9 @@ export default function MoveImageModalButton({ className }: React.HtmlHTMLAttrib
     }
   };
 
-  const createHandleSelect = (cKey: string) => () => {
-    setSelected(cKey);
-    setNewLocationUid(cKey);
+  const createHandleSelect = (collectionKey: string, locationKey: string) => () => {
+    setSelected(collectionKey);
+    setNewLocationUid(locationKey);
   };
 
   const renderLocationsList = () => {
@@ -35,7 +35,7 @@ export default function MoveImageModalButton({ className }: React.HtmlHTMLAttrib
         key={cKey}
         value={collections[cKey].name}
         name="location"
-        onSelect={createHandleSelect(cKey)}
+        onSelect={createHandleSelect(cKey, cKey)}
       />);
       if (collections[cKey].focuses) {
         const subItems = Object.keys(collections[cKey].focuses)
@@ -45,7 +45,7 @@ export default function MoveImageModalButton({ className }: React.HtmlHTMLAttrib
               key={fKey}
               value={collections[cKey].focuses[fKey].name}
               name="location"
-              onSelect={createHandleSelect(fKey)}
+              onSelect={createHandleSelect(cKey, fKey)}
             />
           ));
         list.push(<SubList $open={cKey === selected}>{subItems}</SubList>);
