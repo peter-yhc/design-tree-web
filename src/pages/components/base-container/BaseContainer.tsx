@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { SearchIcon } from '@heroicons/react/outline';
+import { Link } from 'react-router-dom';
 import SideNav from './components/side-nav/SideNav';
 import NavIndicator from './components/nav-indicator/NavIndicator';
 import UserProfileMenu from './components/user-profile-menu/UserProfileMenu';
@@ -60,7 +61,14 @@ const SearchField = styled.input`
 const SecondaryLinks = styled.div`
   display: flex;
   align-items: center;
+  column-gap: ${(props) => props.theme.innerSpacing.small};
   padding-right: ${(props) => props.theme.outerSpacing.medium};
+`;
+
+const SecondaryLink = styled(Link)`
+  color: ${(props) => props.theme.colours.black};
+  text-decoration: none;
+  font-weight: 500;
 `;
 
 interface BaseContainerProps {
@@ -78,6 +86,7 @@ export default function BaseContainer({ children }: BaseContainerProps) {
           <SearchField placeholder="Search..." />
         </SearchBox>
         <SecondaryLinks>
+          <SecondaryLink to="/project/settings">Project Settings</SecondaryLink>
           <UserProfileMenu />
         </SecondaryLinks>
       </Header>
