@@ -6,11 +6,17 @@ import { IProjectResponse } from '../../api/server-interfaces';
 
 export interface CollectionType {
   name: string;
+  imageCount: number;
+  createdAt: Date;
+  lastActive: Date | null;
   focuses: Record<string, FocusType>;
 }
 
 export interface FocusType {
   name: string;
+  imageCount: number;
+  createdAt: Date;
+  lastActive: Date | null;
 }
 
 export interface ProjectType {
@@ -36,10 +42,10 @@ const { actions, reducer } = createSlice({
           name: project.name,
           collections: project.collections?.reduce((collectionAcc, collection) => {
             collectionAcc[collection.uid] = {
-              name: collection.name,
+              ...collection,
               focuses: collection.focuses?.reduce((focusAcc, focus) => {
                 focusAcc[focus.uid] = {
-                  name: focus.name,
+                  ...focus,
                 };
                 return focusAcc;
               }, {} as Record<string, FocusType>) || {},
@@ -69,7 +75,7 @@ const { actions, reducer } = createSlice({
           collections: {
             ...state.projects[action.meta.arg.projectUid].collections,
             [action.payload.uid]: {
-              name: action.payload.name,
+              ...action.payload,
               focuses: {},
             },
           },
@@ -89,7 +95,7 @@ const { actions, reducer } = createSlice({
               focuses: {
                 ...state.projects[action.meta.arg.projectUid].collections[action.meta.arg.collectionUid].focuses,
                 [action.payload.uid]: {
-                  name: action.payload.name,
+                  ...action.payload,
                 },
               },
             },

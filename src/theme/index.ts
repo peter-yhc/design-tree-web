@@ -16,7 +16,6 @@ const colours = {
 };
 
 const innerSpacing = {
-  tiny: '0.25rem',
   small: '0.5rem',
   medium: '0.75rem',
   large: '1.5rem',

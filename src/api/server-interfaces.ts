@@ -1,11 +1,17 @@
 export interface IFocusResponse {
   name: string;
   uid: string;
+  imageCount: number;
+  createdAt: Date;
+  lastActive: Date | null;
 }
 
 export interface ICollectionResponse {
   name: string;
   uid: string;
+  imageCount: number;
+  createdAt: Date;
+  lastActive: Date | null;
   focuses?: IFocusResponse[];
 }
 
