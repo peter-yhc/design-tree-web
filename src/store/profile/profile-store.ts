@@ -6,6 +6,7 @@ import { IProjectResponse } from '../../api/server-interfaces';
 
 export interface CollectionType {
   name: string;
+  uid: string;
   imageCount: number;
   createdAt: Date;
   lastActive: Date | null;
@@ -14,6 +15,7 @@ export interface CollectionType {
 
 export interface FocusType {
   name: string;
+  uid: string;
   imageCount: number;
   createdAt: Date;
   lastActive: Date | null;
