@@ -37,6 +37,10 @@ const system = {
   borderRadius: '4px',
   boxShadow: '2px 2px 16px 0 hsl(0, 0%, 50%)',
   editDialogFloatHeight: 100,
+  zIndex: {
+    previewCarousel: 100,
+    pageHeaderFixMode: 90,
+  },
 };
 
 export default {
