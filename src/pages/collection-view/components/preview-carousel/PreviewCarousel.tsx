@@ -19,7 +19,7 @@ const CarouselContainer = styled.div`
   display: flex;
   justify-content: space-between;
   overflow: hidden;
-  
+  z-index: ${(props) => props.theme.system.zIndex.previewCarousel};
   background-color: ${(props) => props.theme.colours.black};
 `;
 
