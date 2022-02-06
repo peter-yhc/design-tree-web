@@ -12,7 +12,7 @@ import BreadCrumbs from '../components/bread-crumbs/BreadCrumbs';
 import PageTitle from '../components/page-title/PageTitle';
 import EditImageInfo from './components/edit-images/EditImageInfo';
 import FileDropListener from '../../hoc/file-drop-listener/FileDropListener';
-import { useRoute } from '../../hooks';
+import { useResponsiveMode, useRoute } from '../../hooks';
 import PreviewCarousel from './components/preview-carousel/PreviewCarousel';
 import EditImageToolbar from './components/edit-images/EditImageToolbar';
 
@@ -44,6 +44,7 @@ const TileContainer = styled.section<TileContainerProps>`
 
 interface PageHeaderProps {
   fixedMode: boolean;
+  responsiveMode: boolean;
 }
 
 const PageHeader = styled.section<PageHeaderProps>`
@@ -58,8 +59,12 @@ const PageHeader = styled.section<PageHeaderProps>`
     right: ${props.theme.innerSpacing.large};
     left: calc(${props.theme.system.sideNavWidth} + ${props.theme.innerSpacing.large});
     background-color: ${props.theme.colours.lightGrey};
-    border-bottom: 3px solid ${props.theme.colours.black};
+    border-bottom: 3px solid ${props.theme.colours.secondary};
     z-index: ${props.theme.system.zIndex.pageHeaderFixMode};
+  `}
+  
+  ${(props) => props.responsiveMode && css`
+    left: ${props.theme.innerSpacing.large};
   `}
 `;
 
@@ -75,6 +80,7 @@ export default function CollectionViewPage() {
   const { projectUid, locationUid } = useRoute();
   const currentPreviewUid = useAppSelector((state) => state.images.currentPreviewUid);
   const [fixedMode, setFixedMode] = useState(false);
+  const responsiveMode = useResponsiveMode();
 
   const scrollListener = () => {
     if (window.pageYOffset > theme.system.editDialogFloatHeight) {
@@ -108,7 +114,7 @@ export default function CollectionViewPage() {
     <BaseContainer>
       <FileDropListener>
         <BreadCrumbs />
-        <PageHeader fixedMode={fixedMode}>
+        <PageHeader fixedMode={fixedMode} responsiveMode={responsiveMode}>
           <PageTitle />
           <ActionsContainer>
             <EditImageToolbar />

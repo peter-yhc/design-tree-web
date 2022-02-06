@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import { RootState, useAppSelector } from '../store';
 
@@ -58,4 +58,19 @@ export function useRegisterGlobalScrollHook() {
       app.style.position = scrollDisabled ? 'fixed' : 'relative';
     }
   }, [scrollDisabled]);
+}
+
+export function useResponsiveMode() {
+  const [isResponsiveMode, setResponsiveMode] = useState(false);
+
+  useLayoutEffect(() => {
+    const resizeListener = () => {
+      setResponsiveMode(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', resizeListener);
+    return () => {
+      window.removeEventListener('resize', resizeListener);
+    };
+  }, []);
+  return isResponsiveMode;
 }

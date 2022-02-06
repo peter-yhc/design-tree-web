@@ -1,21 +1,26 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { SearchIcon } from '@heroicons/react/outline';
 import { Link } from 'react-router-dom';
 import SideNav from './components/side-nav/SideNav';
-import NavIndicator from './components/nav-indicator/NavIndicator';
 import UserProfileMenu from './components/user-profile-menu/UserProfileMenu';
+import { useResponsiveMode } from '../../../hooks';
 
-const Container = styled.div`
+const Container = styled.div<{responsiveMode: boolean}>`
   min-height: 100vh;
   display: grid;
   grid-template-columns: ${(props) => props.theme.system.sideNavWidth} auto;
   grid-template-rows: 3.75rem auto;
   grid-template-areas: "nav header" "nav main";
   background-color: ${(props) => props.theme.colours.lightGrey};
+  
+  ${(props) => props.responsiveMode && css`
+    grid-template-columns: 100vw;
+    grid-template-areas: "header" "main";
+  `}
 `;
 
-const Nav = styled(SideNav)`
+const SideNavigation = styled(SideNav)`
   grid-area: nav;
 `;
 
@@ -76,10 +81,10 @@ interface BaseContainerProps {
 }
 
 export default function BaseContainer({ children }: BaseContainerProps) {
+  const responsiveMode = useResponsiveMode();
   return (
-    <Container>
-      <NavIndicator />
-      <Nav />
+    <Container responsiveMode={responsiveMode}>
+      <SideNavigation />
       <Header>
         <SearchBox>
           <Search />

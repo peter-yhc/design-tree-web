@@ -6,6 +6,7 @@ import { useProject } from 'hooks';
 import ProjectSelector from './components/ProjectSelector';
 import NewCollectionAction from './components/NewCollectionAction';
 import NewFocusAction from './components/NewFocusAction';
+import NavIndicator from './components/NavIndicator';
 
 const Nav = styled.nav`
   height: 100%;
@@ -117,6 +118,7 @@ export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
         {projectId && <NewCollectionAction />}
         {projectId && <NewFocusAction />}
       </ActionsContainer>
+      <NavIndicator />
     </Nav>
   );
 }
