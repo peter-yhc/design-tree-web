@@ -43,11 +43,20 @@ const system = {
   },
 };
 
+const screenSize = {
+  xs: '420px',
+  sm: '810px',
+  md: '1024px',
+  lg: '1366px',
+  xl: '1920px',
+};
+
 export default {
   colours,
   innerSpacing,
   outerSpacing,
   system,
+  screenSize,
 };
 
 export interface ThemeType {
@@ -55,4 +64,5 @@ export interface ThemeType {
   innerSpacing: any;
   outerSpacing: any;
   system: any;
+  screenSize: any;
 }

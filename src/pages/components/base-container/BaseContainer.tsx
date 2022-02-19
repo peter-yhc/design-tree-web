@@ -2,9 +2,9 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { SearchIcon } from '@heroicons/react/outline';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from 'store';
 import SideNav from './components/side-nav/SideNav';
 import UserProfileMenu from './components/user-profile-menu/UserProfileMenu';
-import { useResponsiveMode } from '../../../hooks';
 
 const Container = styled.div<{responsiveMode: boolean}>`
   min-height: 100vh;
@@ -81,7 +81,7 @@ interface BaseContainerProps {
 }
 
 export default function BaseContainer({ children }: BaseContainerProps) {
-  const responsiveMode = useResponsiveMode();
+  const responsiveMode = useAppSelector((state) => state.system.responsiveMode);
   return (
     <Container responsiveMode={responsiveMode}>
       <SideNavigation />

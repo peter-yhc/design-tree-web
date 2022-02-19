@@ -1,7 +1,8 @@
 /* eslint-disable import/prefer-default-export */
-import { useSelector } from 'react-redux';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useLayoutEffect } from 'react';
 import { useRouteMatch } from 'react-router-dom';
+import systemStore from 'store/system/system-store';
 import { RootState, useAppSelector } from '../store';
 
 export function useProject() {
@@ -60,17 +61,23 @@ export function useRegisterGlobalScrollHook() {
   }, [scrollDisabled]);
 }
 
-export function useResponsiveMode() {
-  const [isResponsiveMode, setResponsiveMode] = useState(false);
+export function useRegisterResponsiveListener() {
+  const dispatch = useDispatch();
+  const isResponsive = useAppSelector((state) => state.system.responsiveMode);
+
+  useEffect(() => {
+    dispatch(systemStore.actions.setResponsiveMode(window.innerWidth <= 810));
+  }, []);
 
   useLayoutEffect(() => {
     const resizeListener = () => {
-      setResponsiveMode(window.innerWidth < 768);
+      if (window.innerWidth <= 810 !== isResponsive) {
+        dispatch(systemStore.actions.setResponsiveMode(window.innerWidth <= 810));
+      }
     };
     window.addEventListener('resize', resizeListener);
     return () => {
       window.removeEventListener('resize', resizeListener);
     };
-  }, []);
-  return isResponsiveMode;
+  }, [isResponsive]);
 }

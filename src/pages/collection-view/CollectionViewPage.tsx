@@ -12,7 +12,7 @@ import BreadCrumbs from '../components/bread-crumbs/BreadCrumbs';
 import PageTitle from '../components/page-title/PageTitle';
 import EditImageInfo from './components/edit-images/EditImageInfo';
 import FileDropListener from '../../hoc/file-drop-listener/FileDropListener';
-import { useResponsiveMode, useRoute } from '../../hooks';
+import { useRoute } from '../../hooks';
 import PreviewCarousel from './components/preview-carousel/PreviewCarousel';
 import EditImageToolbar from './components/edit-images/EditImageToolbar';
 
@@ -29,15 +29,15 @@ const TileContainer = styled.section<TileContainerProps>`
     margin-top: 4.2rem;
   `};
 
-  @media screen and (max-width: 1920px) {
+  @media screen and (max-width: ${(props) => props.theme.screenSize.xl}) {
     column-count: 3;
   }
 
-  @media screen and (max-width: 1366px) {
+  @media screen and (max-width: ${(props) => props.theme.screenSize.lg}) {
     column-count: 2;
   }
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: ${(props) => props.theme.screenSize.md}) {
     column-count: 1;
   }
 `;
@@ -79,8 +79,8 @@ export default function CollectionViewPage() {
   const dispatch = useDispatch();
   const { projectUid, locationUid } = useRoute();
   const currentPreviewUid = useAppSelector((state) => state.images.currentPreviewUid);
+  const responsiveMode = useAppSelector((state) => state.system.responsiveMode);
   const [fixedMode, setFixedMode] = useState(false);
-  const responsiveMode = useResponsiveMode();
 
   const scrollListener = () => {
     if (window.pageYOffset > theme.system.editDialogFloatHeight) {

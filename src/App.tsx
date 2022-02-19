@@ -6,10 +6,11 @@ import {
 } from './pages';
 import LoginPage from './pages/login/LoginPage';
 import PrivateRoute from './hoc/private-route/PrivateRoute';
-import { useRegisterGlobalScrollHook } from './hooks';
+import { useRegisterGlobalScrollHook, useRegisterResponsiveListener } from './hooks';
 
 export default function App() {
   useRegisterGlobalScrollHook();
+  useRegisterResponsiveListener();
 
   return (
     <Switch>
