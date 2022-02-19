@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import systemStore from 'store/system/system-store';
 import { RootState, useAppSelector } from '../store';
@@ -61,23 +61,22 @@ export function useRegisterGlobalScrollHook() {
   }, [scrollDisabled]);
 }
 
-export function useRegisterResponsiveListener() {
+export const useRegisterResponsiveListener = (query: string) => {
   const dispatch = useDispatch();
-  const isResponsive = useAppSelector((state) => state.system.responsiveMode);
+  const mediaQueryList = window.matchMedia(query);
+
+  const mediaQueryHandler = () => {
+    dispatch(systemStore.actions.setResponsiveMode(mediaQueryList.matches));
+  };
 
   useEffect(() => {
-    dispatch(systemStore.actions.setResponsiveMode(window.innerWidth <= 810));
+    mediaQueryHandler();
   }, []);
 
-  useLayoutEffect(() => {
-    const resizeListener = () => {
-      if (window.innerWidth <= 810 !== isResponsive) {
-        dispatch(systemStore.actions.setResponsiveMode(window.innerWidth <= 810));
-      }
-    };
-    window.addEventListener('resize', resizeListener);
+  useEffect(() => {
+    mediaQueryList.addEventListener('change', mediaQueryHandler);
     return () => {
-      window.removeEventListener('resize', resizeListener);
+      mediaQueryList.removeEventListener('change', mediaQueryHandler);
     };
-  }, [isResponsive]);
-}
+  }, [query]);
+};
