@@ -10,7 +10,7 @@ import { useRegisterGlobalScrollHook, useRegisterResponsiveListener } from './ho
 
 export default function App() {
   useRegisterGlobalScrollHook();
-  useRegisterResponsiveListener();
+  useRegisterResponsiveListener('(max-width: 810px)');
 
   return (
     <Switch>
