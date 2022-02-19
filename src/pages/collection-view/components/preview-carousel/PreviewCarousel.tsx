@@ -33,7 +33,7 @@ const Content = styled.article`
   grid-template-columns: auto 20rem;
   background-color: ${(props) => props.theme.colours.lightGrey};
   
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: ${(props) => props.theme.screenSize.md}) {
     grid-template-columns: 1fr;
     grid-template-rows: auto 10rem;
   }
@@ -43,7 +43,7 @@ const Image = styled.img`
   max-height: 85vh;
   max-width: calc(85vw - 20rem);
 
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: ${(props) => props.theme.screenSize.md}) {
     max-width: 85vw;
   }
 `;
@@ -71,7 +71,7 @@ const ActionContainer = styled.section`
   grid-template-rows: 2rem auto 2rem;
   grid-template-areas: "fav" "comment" "delete";
 
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: ${(props) => props.theme.screenSize.md}) {
     grid-template-columns: auto 8rem;
     grid-template-rows: 1fr 1fr;
     grid-template-areas: "comment fav" "comment delete";

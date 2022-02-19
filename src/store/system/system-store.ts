@@ -14,6 +14,7 @@ interface InitialStateType {
   inUserProfileMode: boolean;
   showBadImageUrlError: boolean;
   globalDisableScroll: boolean;
+  responsiveMode: boolean;
   ready: boolean;
 }
 
@@ -24,6 +25,7 @@ const initialState: InitialStateType = {
   showBadImageUrlError: false,
   globalDisableScroll: false,
   ready: false,
+  responsiveMode: window.innerWidth < 768,
 };
 
 const { actions, reducer } = createSlice({
@@ -31,12 +33,13 @@ const { actions, reducer } = createSlice({
   initialState,
   reducers: {
     changeActiveProject: (state, action) => ({ ...state, activeProjectId: action.payload }),
-    toggleEditMode: (state) => ({ ...state, inEditMode: !state.inEditMode, inUserProfileMode: false }),
-    toggleUserProfileMode: (state) => ({ ...state, inEditMode: false, inUserProfileMode: !state.inUserProfileMode }),
     closeAllDialogs: (state) => ({ ...state, inEditMode: false }),
-    showBadImageUrlMessage: (state) => ({ ...state, showBadImageUrlError: true }),
     hideBadImageUrlMessage: (state) => ({ ...state, showBadImageUrlError: false }),
     setGlobalScrollDisableToggle: (state, action) => ({ ...state, globalDisableScroll: action.payload }),
+    setResponsiveMode: (state, action) => ({ ...state, responsiveMode: action.payload }),
+    showBadImageUrlMessage: (state) => ({ ...state, showBadImageUrlError: true }),
+    toggleEditMode: (state) => ({ ...state, inEditMode: !state.inEditMode, inUserProfileMode: false }),
+    toggleUserProfileMode: (state) => ({ ...state, inEditMode: false, inUserProfileMode: !state.inUserProfileMode }),
   },
   extraReducers: (builder) => {
     builder.addCase(fetchProjects.fulfilled, (state, action) => ({
