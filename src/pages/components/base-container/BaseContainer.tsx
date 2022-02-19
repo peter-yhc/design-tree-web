@@ -29,6 +29,7 @@ const Header = styled.header`
   display: flex;
   justify-content: space-between;
   border-bottom: 1px ${(props) => props.theme.colours.grey} solid;
+  padding: ${(props) => props.theme.innerSpacing.large};
 `;
 
 interface MainProps {
@@ -41,39 +42,20 @@ const Main = styled.main<MainProps>`
   transition: all ease-in-out 150ms;
 `;
 
-const SearchBox = styled.div`
-  display: flex;
-  align-items: center;
-  padding-left: ${(props) => props.theme.innerSpacing.large};
-`;
-
-const Search = styled(SearchIcon)`
-  color: ${(props) => props.theme.colours.grey};
-  width: 1.6rem;
-`;
-
-const SearchField = styled.input`
-  border: 0;
-  outline: none;
-  color: ${(props) => props.theme.colours.black};
-  margin-left: ${(props) => props.theme.outerSpacing.tiny};
-
-  &::placeholder {
-    color: ${(props) => props.theme.colours.darkGrey};
-  }
-`;
-
 const SecondaryLinks = styled.div`
   display: flex;
   align-items: center;
   column-gap: ${(props) => props.theme.innerSpacing.small};
-  padding-right: ${(props) => props.theme.outerSpacing.medium};
 `;
 
 const SecondaryLink = styled(Link)`
-  color: ${(props) => props.theme.colours.black};
+  color: ${(props) => props.theme.colours.primary};
   text-decoration: none;
   font-weight: 500;
+  
+  &:hover {
+    color: ${(props) => props.theme.colours.primaryDarkest};
+  }
 `;
 
 interface BaseContainerProps {
@@ -86,14 +68,10 @@ export default function BaseContainer({ children }: BaseContainerProps) {
     <Container responsiveMode={responsiveMode}>
       <SideNavigation />
       <Header>
-        <SearchBox>
-          <Search />
-          <SearchField placeholder="Search..." />
-        </SearchBox>
         <SecondaryLinks>
           <SecondaryLink to="/project/settings">Project Settings</SecondaryLink>
-          <UserProfileMenu />
         </SecondaryLinks>
+        <UserProfileMenu />
       </Header>
       <Main>
         {children}
