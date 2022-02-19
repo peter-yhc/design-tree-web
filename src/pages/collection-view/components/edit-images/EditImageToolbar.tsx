@@ -7,7 +7,7 @@ import systemStore from 'store/system/system-store';
 import Button from 'pages/components/button/Button';
 import { removeSelectedImages } from 'store/images/images-store-requests';
 import { useRoute } from 'hooks';
-import SideActionButton from 'pages/components/base-container/components/side-action-button/SideActionButton';
+import CircleActionButton from 'pages/components/base-container/components/circle-action-button/CircleActionButton';
 import MoveImageModalButton from './components/MoveImageModalButton';
 import CopyImageModalButton from './components/CopyImageModalButton';
 
@@ -64,9 +64,9 @@ export default function EditImageToolbar() {
           </ActionButton>
         </>
       )}
-      <SideActionButton onClick={() => dispatch(systemStore.actions.toggleEditMode())} selected={inEditMode}>
+      <CircleActionButton onClick={() => dispatch(systemStore.actions.toggleEditMode())} selected={inEditMode}>
         <PencilIcon width="1.6rem" />
-      </SideActionButton>
+      </CircleActionButton>
     </Container>
   );
 }
