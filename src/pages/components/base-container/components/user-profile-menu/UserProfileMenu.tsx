@@ -4,9 +4,9 @@ import { UserCircleIcon } from '@heroicons/react/outline';
 import { useAppSelector } from 'store';
 import systemStore from 'store/system/system-store';
 import { useDispatch } from 'react-redux';
+import { resetApplication } from 'store/system/system-store-requests';
 import Button from '../../../button/Button';
-import SideActionButton from '../side-action-button/SideActionButton';
-import { resetApplication } from '../../../../../store/system/system-store-requests';
+import CircleActionButton from '../circle-action-button/CircleActionButton';
 
 const Container = styled.div`
   position: relative;
@@ -32,12 +32,12 @@ export default function UserProfileMenu() {
 
   return (
     <Container>
-      <SideActionButton
+      <CircleActionButton
         onClick={() => dispatch(systemStore.actions.toggleUserProfileMode())}
         selected={inUserProfileMode}
       >
         <UserCircle width="1.6rem" />
-      </SideActionButton>
+      </CircleActionButton>
       {inUserProfileMode && (
         <UserMenu>
           <Button onClick={() => dispatch(resetApplication())}>Logout</Button>

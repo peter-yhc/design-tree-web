@@ -1,10 +1,10 @@
 import styled, { css } from 'styled-components';
 
 interface SideActionButtonProps {
-  selected: boolean;
+  selected?: boolean;
 }
 
-const SideActionButton = styled.button<SideActionButtonProps>`
+const CircleActionButton = styled.button<SideActionButtonProps>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,4 +32,4 @@ const SideActionButton = styled.button<SideActionButtonProps>`
   `}
 `;
 
-export default SideActionButton;
+export default CircleActionButton;

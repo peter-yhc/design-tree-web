@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { SearchIcon } from '@heroicons/react/outline';
-import { Link } from 'react-router-dom';
+import { MenuIcon, XIcon } from '@heroicons/react/outline';
+import { Link, useLocation } from 'react-router-dom';
 import { useAppSelector } from 'store';
 import SideNav from './components/side-nav/SideNav';
 import UserProfileMenu from './components/user-profile-menu/UserProfileMenu';
+import CircleActionButton from './components/circle-action-button/CircleActionButton';
 
 const Container = styled.div<{responsiveMode: boolean}>`
   min-height: 100vh;
@@ -24,6 +25,18 @@ const SideNavigation = styled(SideNav)`
   grid-area: nav;
 `;
 
+const ResponsiveSideNavContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: ${(props) => props.theme.colours.white};
+  width: ${(props) => props.theme.system.sideNavWidth};
+  z-index: ${(props) => props.theme.system.zIndex.responsiveNav};
+  overflow-y: auto;
+  overflow-x: hidden;
+`;
+
 const Header = styled.header`
   grid-area: header;
   display: flex;
@@ -32,11 +45,7 @@ const Header = styled.header`
   padding: ${(props) => props.theme.innerSpacing.large};
 `;
 
-interface MainProps {
-  highlight?: boolean
-}
-
-const Main = styled.main<MainProps>`
+const Main = styled.main<{ highlight?: boolean }>`
   grid-area: main;
   padding: ${(props) => props.theme.innerSpacing.large};
   transition: all ease-in-out 150ms;
@@ -58,17 +67,48 @@ const SecondaryLink = styled(Link)`
   }
 `;
 
+const AdjustedCircleActionButton = styled(CircleActionButton)`
+  margin-left: -0.65rem;
+`;
+
+const ResponsiveNavCloseButton = styled(CircleActionButton)`
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0.8rem;
+`;
+
 interface BaseContainerProps {
   children?: React.ReactNode,
 }
 
 export default function BaseContainer({ children }: BaseContainerProps) {
   const responsiveMode = useAppSelector((state) => state.system.responsiveMode);
+  const [showPopupNav, setShowPopupNav] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    setShowPopupNav(false);
+  }, [location.pathname, responsiveMode]);
+
   return (
     <Container responsiveMode={responsiveMode}>
-      <SideNavigation />
+      { !responsiveMode && <SideNavigation /> }
+      { responsiveMode && showPopupNav && (
+        <ResponsiveSideNavContainer>
+          <SideNavigation />
+          <ResponsiveNavCloseButton onClick={() => setShowPopupNav(false)}>
+            <XIcon width="1.4rem" />
+          </ResponsiveNavCloseButton>
+        </ResponsiveSideNavContainer>
+      ) }
       <Header>
         <SecondaryLinks>
+          { responsiveMode && (
+            <AdjustedCircleActionButton onClick={() => setShowPopupNav(true)}>
+              <MenuIcon width="1.6rem" />
+            </AdjustedCircleActionButton>
+          )}
           <SecondaryLink to="/project/settings">Project Settings</SecondaryLink>
         </SecondaryLinks>
         <UserProfileMenu />

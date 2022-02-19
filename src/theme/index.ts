@@ -39,6 +39,7 @@ const system = {
   editDialogFloatHeight: 100,
   zIndex: {
     previewCarousel: 100,
+    responsiveNav: 99,
     pageHeaderFixMode: 90,
   },
 };
