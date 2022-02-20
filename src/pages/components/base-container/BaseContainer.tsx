@@ -16,7 +16,7 @@ const Container = styled.div<{responsiveMode: boolean}>`
   background-color: ${(props) => props.theme.colours.lightGrey};
   
   ${(props) => props.responsiveMode && css`
-    grid-template-columns: 100vw;
+    grid-template-columns: minmax(375px,100vw);
     grid-template-areas: "header" "main";
   `}
 `;
