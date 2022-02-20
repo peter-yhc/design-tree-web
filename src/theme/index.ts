@@ -7,7 +7,7 @@ const colours = {
   secondary: 'hsl(302,66%,53%)',
   accent: 'hsl(0,83%,75%)',
   highlight: 'hsl(48,100%,70%)',
-  white: '#f5f5fa',
+  white: 'hsl(210,15%,99%)',
   black: 'hsl(204,4%,22%)',
   lightGrey: 'hsl(210,15%,97%)',
   grey: 'hsl(0,0%,87%)',
