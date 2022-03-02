@@ -4,12 +4,11 @@ import { Redirect } from 'react-router-dom';
 import { getRedirectResult, User } from 'firebase/auth';
 import styled, { keyframes } from 'styled-components';
 import Logo from 'assets/images/Logo.svg';
-import Button from 'pages/components/button/Button';
+import { Button, Input } from 'common-components';
 import { useDispatch } from 'react-redux';
 import { passwordLogin } from 'store/forms/forms-store-requests';
 import { Credentials } from 'store/forms/forms-store-interfaces';
 import { getAuth, loginWithGoogle } from '../../api/firebase-api';
-import Input from '../components/input/Input';
 import GoogleIcon from './components/GoogleIcon';
 import { useAppSelector } from '../../store';
 

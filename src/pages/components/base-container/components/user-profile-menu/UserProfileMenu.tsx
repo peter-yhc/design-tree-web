@@ -5,7 +5,7 @@ import { useAppSelector } from 'store';
 import systemStore from 'store/system/system-store';
 import { useDispatch } from 'react-redux';
 import { resetApplication } from 'store/system/system-store-requests';
-import Button from '../../../button/Button';
+import { Button } from 'common-components';
 import CircleActionButton from '../circle-action-button/CircleActionButton';
 
 const Container = styled.div`

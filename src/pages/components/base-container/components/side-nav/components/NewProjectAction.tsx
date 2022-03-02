@@ -8,8 +8,7 @@ import { useAttachModalEscape } from 'hooks';
 import { useAppSelector } from 'store';
 import { FormName } from 'store/forms/FormName';
 import formsStore from 'store/forms/forms-store';
-import Button from '../../../../button/Button';
-import Input from '../../../../input/Input';
+import { Button, Input } from 'common-components';
 
 const ModalBackground = styled.div`
   position: absolute;

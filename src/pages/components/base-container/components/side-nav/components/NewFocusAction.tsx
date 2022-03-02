@@ -5,7 +5,7 @@ import { createNewFocus } from 'store/forms/forms-store-requests';
 import { useProject } from 'hooks';
 import { useAppSelector } from 'store';
 import { FormName } from 'store/forms/FormName';
-import Input from '../../../../input/Input';
+import { Input } from 'common-components';
 import ModalAction from '../../../../modal-action/ModalAction';
 
 const StyledInput = styled(Input)`

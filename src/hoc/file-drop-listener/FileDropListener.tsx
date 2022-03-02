@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { CheckIcon, CloudUploadIcon } from '@heroicons/react/solid';
 import { useRoute } from 'hooks';
-import Button from 'pages/components/button/Button';
+import { Button } from 'common-components';
 import systemStore from 'store/system/system-store';
 import { useAppSelector } from 'store';
 import { createClipboardListener, createDragdropListener } from './utils/listener-functions';

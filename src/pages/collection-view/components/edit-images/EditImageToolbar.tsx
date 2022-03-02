@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'store';
 import systemStore from 'store/system/system-store';
-import Button from 'pages/components/button/Button';
+import { Button } from 'common-components';
 import { removeSelectedImages } from 'store/images/images-store-requests';
 import { useRoute } from 'hooks';
 import CircleActionButton from 'pages/components/base-container/components/circle-action-button/CircleActionButton';

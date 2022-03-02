@@ -7,7 +7,7 @@ import { useAttachModalEscape } from 'hooks';
 import { useAppSelector } from 'store';
 import formsStore from 'store/forms/forms-store';
 import systemStore from 'store/system/system-store';
-import Button from '../button/Button';
+import { Button } from 'common-components';
 import { FormName } from '../../../store/forms/FormName';
 
 const ModalBackground = styled.div`
