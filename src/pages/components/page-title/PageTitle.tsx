@@ -9,7 +9,8 @@ interface MatchProps {
 }
 
 const H1 = styled.h1`
-  margin: 0;
+  margin-top: ${(props) => props.theme.outerSpacing.small};
+  margin-bottom: ${(props) => props.theme.outerSpacing.medium};
 `;
 
 export default function PageTitle() {
