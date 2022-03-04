@@ -14,8 +14,8 @@ const InputStyled = styled.input`
   outline: 0;
   border: 1px solid ${(props) => props.theme.colours.grey};
   border-radius: ${(props) => props.theme.system.borderRadius};
-  margin-top: ${(props) => props.theme.innerSpacing.small};
-  font-size: 1rem;
+  margin-top: ${(props) => props.theme.outerSpacing.tiny};
+  font-size: 0.875rem;
   padding: ${(props) => props.theme.innerSpacing.small};
 `;
 

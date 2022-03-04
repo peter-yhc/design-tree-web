@@ -13,11 +13,12 @@ const colours = {
   grey: 'hsl(0,0%,87%)',
   darkGrey: 'hsl(0,0%,43%)',
   error: 'hsl(0,72%,50%)',
+  modalBackground: 'hsl(204,4%,22%, 0.8)',
 };
 
 const innerSpacing = {
   small: '0.5rem',
-  medium: '0.75rem',
+  medium: '0.9rem',
   large: '1.5rem',
   xlarge: '2.25rem',
 };
@@ -34,7 +35,7 @@ const system = {
   sideNavWidth: '15.625rem',
   sideNavHighlight: 'hsl(203,80%,93%)',
   topCornerDialogHeight: '5rem',
-  borderRadius: '4px',
+  borderRadius: '10px',
   boxShadow: '2px 2px 16px 0 hsl(0, 0%, 50%)',
   editDialogFloatHeight: 100,
   zIndex: {

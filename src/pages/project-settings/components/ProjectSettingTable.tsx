@@ -3,6 +3,7 @@ import { ProjectType } from 'store/profile/profile-store';
 import dayjs from 'dayjs';
 import { ChevronRightIcon, PencilIcon, TrashIcon } from '@heroicons/react/outline';
 import styled, { css } from 'styled-components';
+import EditNameModal from './EditNameModal';
 
 const Table = styled.table`
   text-align: left;
@@ -131,6 +132,7 @@ interface ProjectSettingTableProps {
 
 export default function ProjectSettingTable({ project }: ProjectSettingTableProps) {
   const [openCollections, setOpenCollections] = useState<string[]>([]);
+  const [showEditName, setShowEditName] = useState(false);
 
   const handleSubToggle = (collectionKey: string) => () => {
     if (openCollections.includes(collectionKey)) {
@@ -154,7 +156,7 @@ export default function ProjectSettingTable({ project }: ProjectSettingTableProp
       <Td $center>{imageCount}</Td>
       <Td>
         <ActionContainer>
-          <ActionButton><PencilIcon width="1.125rem" /></ActionButton>
+          <ActionButton onClick={() => setShowEditName(true)}><PencilIcon width="1.125rem" /></ActionButton>
           <ActionButton><TrashIcon width="1.125rem" /></ActionButton>
         </ActionContainer>
       </Td>
@@ -165,34 +167,37 @@ export default function ProjectSettingTable({ project }: ProjectSettingTableProp
   const { collections } = project;
 
   return (
-    <Table>
-      <Thead>
-        <Tr>
-          <Th><h5>Name</h5></Th>
-          <Th><h5>Created at</h5></Th>
-          <Th><h5>Last active</h5></Th>
-          <Th $center><h5>Image count</h5></Th>
-          <Th />
-        </Tr>
-      </Thead>
-      <tbody>
-        {Object.keys(collections).map((cKey) => {
-          const { focuses } = collections[cKey];
-          const hasChildren = Object.keys(focuses).length > 0;
-          return (
-            <>
-              { renderRow({ ...collections[cKey], options: { hasChildren } })}
-              {
+    <>
+      <Table>
+        <Thead>
+          <Tr>
+            <Th><h5>Name</h5></Th>
+            <Th><h5>Created at</h5></Th>
+            <Th><h5>Last active</h5></Th>
+            <Th $center><h5>Image count</h5></Th>
+            <Th />
+          </Tr>
+        </Thead>
+        <tbody>
+          {Object.keys(collections).map((cKey) => {
+            const { focuses } = collections[cKey];
+            const hasChildren = Object.keys(focuses).length > 0;
+            return (
+              <>
+                { renderRow({ ...collections[cKey], options: { hasChildren } })}
+                {
                 hasChildren && openCollections.includes(cKey) && (
                   <>
                     { Object.values(focuses).map((focus) => renderRow({ ...focus, options: { sub: true } })) }
                   </>
                 )
               }
-            </>
-          );
-        })}
-      </tbody>
-    </Table>
+              </>
+            );
+          })}
+        </tbody>
+      </Table>
+      <EditNameModal active={showEditName} onTriggerClose={() => setShowEditName(false)} />
+    </>
   );
 }
