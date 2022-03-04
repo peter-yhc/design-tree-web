@@ -10,7 +10,7 @@ const Container = styled.article`
 `;
 
 const Card = styled.section`
-  margin: 0 auto;
+  margin: ${(props) => props.theme.outerSpacing.large} auto;
 `;
 
 export default function ProjectSettingsPage() {

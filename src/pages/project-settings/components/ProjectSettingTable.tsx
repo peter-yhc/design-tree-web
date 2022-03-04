@@ -7,7 +7,7 @@ import EditNameModal from './EditNameModal';
 
 const Table = styled.table`
   text-align: left;
-  width: 50vw;
+  width: 70rem;
   border-collapse: collapse;
 `;
 
