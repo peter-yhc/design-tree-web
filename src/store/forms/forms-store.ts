@@ -1,7 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   copySelectedImages,
-  createNewCollection, createNewFocus, createNewProject, moveSelectedImages, passwordLogin,
+  createNewCollection,
+  createNewFocus,
+  createNewProject,
+  moveSelectedImages,
+  passwordLogin,
+  renameCollectionAction,
+  renameFocusAction,
 } from './forms-store-requests';
 import { resetApplication } from '../system/system-store-requests';
 import { FormName } from './FormName';
@@ -16,6 +22,7 @@ export type InitialState = {
   [FormName.NewProjectForm]: FormState;
   [FormName.NewCollectionForm]: FormState;
   [FormName.NewFocusForm]: FormState;
+  [FormName.RenameFolderForm]: FormState;
   [FormName.LoginForm]: FormState;
   [FormName.MoveImageForm]: FormState;
   [FormName.CopyImageForm]: FormState;
@@ -25,6 +32,7 @@ const initialState: InitialState = {
   [FormName.NewProjectForm]: { status: 'READY' },
   [FormName.NewCollectionForm]: { status: 'READY' },
   [FormName.NewFocusForm]: { status: 'READY' },
+  [FormName.RenameFolderForm]: { status: 'READY' },
   [FormName.LoginForm]: { status: 'READY' },
   [FormName.MoveImageForm]: { status: 'READY' },
   [FormName.CopyImageForm]: { status: 'READY' },
@@ -66,6 +74,12 @@ const { actions, reducer } = createSlice({
         status: 'DONE',
       },
     }));
+    builder.addCase(renameCollectionAction.pending, (state) => {
+      state[FormName.RenameFolderForm].status = 'PENDING';
+    });
+    builder.addCase(renameCollectionAction.fulfilled, (state) => {
+      state[FormName.RenameFolderForm].status = 'DONE';
+    });
     builder.addCase(createNewFocus.pending, (state) => ({
       ...state,
       newFocusForm: {
@@ -78,6 +92,12 @@ const { actions, reducer } = createSlice({
         status: 'DONE',
       },
     }));
+    builder.addCase(renameFocusAction.pending, (state) => {
+      state[FormName.RenameFolderForm].status = 'PENDING';
+    });
+    builder.addCase(renameFocusAction.fulfilled, (state) => {
+      state[FormName.RenameFolderForm].status = 'DONE';
+    });
     builder.addCase(moveSelectedImages.pending, ((state) => ({
       ...state,
       [FormName.MoveImageForm]: {

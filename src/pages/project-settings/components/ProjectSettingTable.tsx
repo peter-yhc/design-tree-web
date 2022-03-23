@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { ProjectType } from 'store/profile/profile-store';
 import dayjs from 'dayjs';
 import { ChevronRightIcon, PencilIcon, TrashIcon } from '@heroicons/react/outline';
 import styled, { css } from 'styled-components';
 import EditNameModal from './EditNameModal';
+import DeleteFolderModal from './DeleteFolderModal';
+import { DeleteModalTargetType, EditModalTargetType } from './ModalTypes';
 
 const Table = styled.table`
   text-align: left;
@@ -119,7 +121,8 @@ const RotatingActionButton = styled(ActionButton)<{$rotate: boolean}>`
 
 interface RenderRowProps {
   name: string,
-  uid: string,
+  cuid: string,
+  fuid?: string,
   createdAt: Date,
   lastActive: Date | null,
   imageCount: number,
@@ -127,12 +130,16 @@ interface RenderRowProps {
 }
 
 interface ProjectSettingTableProps {
-  project: ProjectType
+  project: ProjectType & {uid: string};
 }
 
 export default function ProjectSettingTable({ project }: ProjectSettingTableProps) {
   const [openCollections, setOpenCollections] = useState<string[]>([]);
-  const [showEditName, setShowEditName] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const [editTarget, setEditTarget] = useState<EditModalTargetType>();
+  const [deleteTarget, setDeleteTarget] = useState<DeleteModalTargetType>();
 
   const handleSubToggle = (collectionKey: string) => () => {
     if (openCollections.includes(collectionKey)) {
@@ -144,25 +151,44 @@ export default function ProjectSettingTable({ project }: ProjectSettingTableProp
     }
   };
 
+  const handleEditClick = (target : EditModalTargetType) => () => {
+    setShowEditModal(true);
+    setEditTarget(target);
+  };
+
+  const handleDeleteClick = (target : DeleteModalTargetType) => () => {
+    setShowDeleteModal(true);
+    setDeleteTarget(target);
+  };
+
   const renderRow = ({
-    name, uid, createdAt, lastActive, imageCount, options,
-  }: RenderRowProps) => (
-    <Tr $sub={options.sub}>
-      <Td $openChildren={openCollections.includes(uid)}>
-        {name}
-      </Td>
-      <Td $mono>{dayjs(createdAt).format('DD MMM YYYY')}</Td>
-      <Td $mono>{lastActive ? dayjs(lastActive).format('DD MMM YYYY') : 'Never used'}</Td>
-      <Td $center>{imageCount}</Td>
-      <Td>
-        <ActionContainer>
-          <ActionButton onClick={() => setShowEditName(true)}><PencilIcon width="1.125rem" /></ActionButton>
-          <ActionButton><TrashIcon width="1.125rem" /></ActionButton>
-        </ActionContainer>
-      </Td>
-      <Td>{options.hasChildren && <RotatingActionButton $rotate={openCollections.includes(uid)} onClick={handleSubToggle(uid)}><ChevronRightIcon width="1.125rem" /></RotatingActionButton>}</Td>
-    </Tr>
-  );
+    name, cuid, fuid, createdAt, lastActive, imageCount, options,
+  }: RenderRowProps) => {
+    const target = {
+      name, puid: project.uid, cuid, fuid,
+    };
+    return (
+      <Tr $sub={options.sub} key={`${cuid}${fuid}`}>
+        <Td $openChildren={openCollections.includes(cuid)}>
+          {name}
+        </Td>
+        <Td $mono>{dayjs(createdAt).format('DD MMM YYYY')}</Td>
+        <Td $mono>{lastActive ? dayjs(lastActive).format('DD MMM YYYY') : 'Never used'}</Td>
+        <Td $center>{imageCount}</Td>
+        <Td>
+          <ActionContainer>
+            <ActionButton onClick={handleEditClick(target)}>
+              <PencilIcon width="1.125rem" />
+            </ActionButton>
+            <ActionButton onClick={handleDeleteClick(target)}>
+              <TrashIcon width="1.125rem" />
+            </ActionButton>
+          </ActionContainer>
+        </Td>
+        <Td>{options.hasChildren && <RotatingActionButton $rotate={openCollections.includes(cuid)} onClick={handleSubToggle(cuid)}><ChevronRightIcon width="1.125rem" /></RotatingActionButton>}</Td>
+      </Tr>
+    );
+  };
 
   const { collections } = project;
 
@@ -180,24 +206,31 @@ export default function ProjectSettingTable({ project }: ProjectSettingTableProp
         </Thead>
         <tbody>
           {Object.keys(collections).map((cKey) => {
+            const collection = collections[cKey];
             const { focuses } = collections[cKey];
             const hasChildren = Object.keys(focuses).length > 0;
+
             return (
-              <>
-                { renderRow({ ...collections[cKey], options: { hasChildren } })}
+              <Fragment key={cKey}>
+                { renderRow({
+                  ...collection, cuid: collection.uid, options: { hasChildren },
+                })}
                 {
                 hasChildren && openCollections.includes(cKey) && (
                   <>
-                    { Object.values(focuses).map((focus) => renderRow({ ...focus, options: { sub: true } })) }
+                    { Object.values(focuses).map((focus) => renderRow({
+                      ...focus, cuid: collection.uid, fuid: focus.uid, options: { sub: true },
+                    })) }
                   </>
                 )
               }
-              </>
+              </Fragment>
             );
           })}
         </tbody>
       </Table>
-      <EditNameModal active={showEditName} onTriggerClose={() => setShowEditName(false)} />
+      <EditNameModal active={showEditModal} onTriggerClose={() => setShowEditModal(false)} target={editTarget!!} />
+      <DeleteFolderModal active={showDeleteModal} onTriggerClose={() => setShowDeleteModal(false)} target={deleteTarget!!} />
     </>
   );
 }

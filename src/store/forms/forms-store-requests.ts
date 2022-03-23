@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   copyImages,
-  createCollection, createFocus, createProject, moveImages,
+  createCollection, createFocus, createProject, moveImages, renameCollection, renameFocus,
 } from 'api/server-api';
 import { ICollectionResponse, IFocusResponse, IProjectResponse } from 'api/server-interfaces';
 import { loginWithEmailPassword } from '../../api/firebase-api';
@@ -18,9 +18,32 @@ const createNewCollection = createAsyncThunk(
   async ({ name, projectUid }: {name:string, projectUid: string}): Promise<ICollectionResponse> => createCollection({ name, projectUid }),
 );
 
+interface RenameCollectionActionProps {
+  projectUid: string;
+  collectionUid: string;
+  name: string;
+}
+
+const renameCollectionAction = createAsyncThunk<ICollectionResponse, RenameCollectionActionProps>(
+  'profile/renameCollection',
+  async (params) => renameCollection(params),
+);
+
 const createNewFocus = createAsyncThunk(
   'profile/createFocus',
   async ({ name, projectUid, collectionUid }: {name:string, projectUid: string, collectionUid:string}): Promise<IFocusResponse> => createFocus({ name, projectUid, collectionUid }),
+);
+
+interface RenameFocusActionProps {
+  projectUid: string;
+  collectionUid: string;
+  focusUid: string;
+  name: string;
+}
+
+const renameFocusAction = createAsyncThunk<ICollectionResponse, RenameFocusActionProps>(
+  'profile/renameFocus',
+  async (params) => renameFocus(params),
 );
 
 const moveSelectedImages = createAsyncThunk(
@@ -47,7 +70,9 @@ const passwordLogin = createAsyncThunk(
 export {
   createNewProject,
   createNewCollection,
+  renameCollectionAction,
   createNewFocus,
+  renameFocusAction,
   moveSelectedImages,
   copySelectedImages,
   passwordLogin,

@@ -17,6 +17,10 @@ const InputStyled = styled.input`
   margin-top: ${(props) => props.theme.outerSpacing.tiny};
   font-size: 0.875rem;
   padding: ${(props) => props.theme.innerSpacing.small};
+  
+  &:focus {
+    border: 1px solid ${(props) => props.theme.colours.primary};
+  }  
 `;
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {

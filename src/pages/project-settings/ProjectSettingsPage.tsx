@@ -22,9 +22,9 @@ export default function ProjectSettingsPage() {
       <Container>
         {
           Object.keys(projects).map((key) => (
-            <Card>
+            <Card key={key}>
               <h2>{projects[key].name}</h2>
-              <ProjectSettingTable project={projects[key]} />
+              <ProjectSettingTable project={{ uid: key, ...projects[key] }} />
             </Card>
           ))
         }

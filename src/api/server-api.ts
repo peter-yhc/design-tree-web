@@ -61,10 +61,40 @@ async function createCollection({ name, projectUid }: { name: string, projectUid
   return await response.json() as ICollectionResponse;
 }
 
+async function renameCollection({ projectUid, collectionUid, name }: { projectUid: string, collectionUid: string, name: string}): Promise<ICollectionResponse> {
+  const token = await getToken();
+  const response = await fetch(`${host}/projects/${projectUid}/collections/${collectionUid}`, {
+    method: 'PUT',
+    mode: 'cors',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ name }),
+  });
+  return await response.json() as ICollectionResponse;
+}
+
 async function createFocus({ name, projectUid, collectionUid }: { name: string, projectUid: string, collectionUid: string}): Promise<IFocusResponse> {
   const token = await getToken();
   const response = await fetch(`${host}/projects/${projectUid}/collections/${collectionUid}/focuses`, {
     method: 'POST',
+    mode: 'cors',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ name }),
+  });
+  return await response.json() as IFocusResponse;
+}
+
+async function renameFocus({
+  projectUid, collectionUid, focusUid, name,
+}: { projectUid: string, collectionUid: string, focusUid: string, name: string}): Promise<IFocusResponse> {
+  const token = await getToken();
+  const response = await fetch(`${host}/projects/${projectUid}/collections/${collectionUid}/focuses/${focusUid}`, {
+    method: 'PUT',
     mode: 'cors',
     headers: {
       'content-type': 'application/json',
@@ -188,7 +218,9 @@ export {
   createProject,
   getProjects,
   createCollection,
+  renameCollection,
   createFocus,
+  renameFocus,
   getImages,
   createImage,
   moveImages,
