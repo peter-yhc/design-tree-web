@@ -50,94 +50,62 @@ const { actions, reducer } = createSlice({
     }),
   },
   extraReducers: (builder) => {
-    builder.addCase(createNewProject.pending, (state) => ({
-      ...state,
-      newProjectForm: {
-        status: 'PENDING',
-      },
-    }));
-    builder.addCase(createNewProject.fulfilled, (state) => ({
-      ...state,
-      newProjectForm: {
-        status: 'DONE',
-      },
-    }));
-    builder.addCase(createNewCollection.pending, (state) => ({
-      ...state,
-      newCollectionForm: {
-        status: 'PENDING',
-      },
-    }));
-    builder.addCase(createNewCollection.fulfilled, (state) => ({
-      ...state,
-      newCollectionForm: {
-        status: 'DONE',
-      },
-    }));
-    builder.addCase(renameCollectionAction.pending, (state) => {
-      state[FormName.RenameFolderForm].status = 'PENDING';
-    });
-    builder.addCase(renameCollectionAction.fulfilled, (state) => {
-      state[FormName.RenameFolderForm].status = 'DONE';
-    });
-    builder.addCase(createNewFocus.pending, (state) => ({
-      ...state,
-      newFocusForm: {
-        status: 'PENDING',
-      },
-    }));
-    builder.addCase(createNewFocus.fulfilled, (state) => ({
-      ...state,
-      newFocusForm: {
-        status: 'DONE',
-      },
-    }));
-    builder.addCase(renameFocusAction.pending, (state) => {
-      state[FormName.RenameFolderForm].status = 'PENDING';
-    });
-    builder.addCase(renameFocusAction.fulfilled, (state) => {
-      state[FormName.RenameFolderForm].status = 'DONE';
-    });
-    builder.addCase(moveSelectedImages.pending, ((state) => ({
-      ...state,
-      [FormName.MoveImageForm]: {
-        status: 'PENDING',
-      },
-    })));
-    builder.addCase(moveSelectedImages.fulfilled, ((state) => ({
-      ...state,
-      [FormName.MoveImageForm]: {
-        status: 'DONE',
-      },
-    })));
-    builder.addCase(copySelectedImages.pending, ((state) => ({
-      ...state,
-      [FormName.CopyImageForm]: {
-        status: 'PENDING',
-      },
-    })));
-    builder.addCase(copySelectedImages.fulfilled, ((state) => ({
-      ...state,
-      [FormName.CopyImageForm]: {
-        status: 'DONE',
-      },
-    })));
-    builder.addCase(passwordLogin.rejected, (state) => ({
-      ...state,
-      loginForm: {
-        status: 'FAILED',
-        error: 'Bad username or password',
-      },
-    }));
-    builder.addCase(passwordLogin.fulfilled, (state) => ({
-      ...state,
-      loginForm: {
-        status: 'DONE',
-      },
-    }));
-    builder.addCase(resetApplication.fulfilled, () => ({
-      ...initialState,
-    }));
+    builder
+      .addCase(createNewProject.pending, (state) => {
+        state[FormName.NewProjectForm].status = 'PENDING';
+      })
+      .addCase(createNewProject.fulfilled, (state) => {
+        state[FormName.NewProjectForm].status = 'DONE';
+      })
+      .addCase(createNewCollection.pending, (state) => {
+        state[FormName.NewCollectionForm].status = 'PENDING';
+      })
+      .addCase(createNewCollection.fulfilled, (state) => {
+        state[FormName.NewCollectionForm].status = 'DONE';
+      })
+      .addCase(renameCollectionAction.pending, (state) => {
+        state[FormName.RenameFolderForm].status = 'PENDING';
+      })
+      .addCase(renameCollectionAction.fulfilled, (state) => {
+        state[FormName.RenameFolderForm].status = 'DONE';
+      })
+      .addCase(createNewFocus.pending, (state) => {
+        state[FormName.NewFocusForm].status = 'PENDING';
+      })
+      .addCase(createNewFocus.fulfilled, (state) => {
+        state[FormName.NewFocusForm].status = 'DONE';
+      })
+      .addCase(renameFocusAction.pending, (state) => {
+        state[FormName.RenameFolderForm].status = 'PENDING';
+      })
+      .addCase(renameFocusAction.fulfilled, (state) => {
+        state[FormName.RenameFolderForm].status = 'DONE';
+      })
+      .addCase(moveSelectedImages.pending, ((state) => {
+        state[FormName.MoveImageForm].status = 'PENDING';
+      }))
+      .addCase(moveSelectedImages.fulfilled, ((state) => {
+        state[FormName.MoveImageForm].status = 'DONE';
+      }))
+      .addCase(copySelectedImages.pending, ((state) => {
+        state[FormName.CopyImageForm].status = 'PENDING';
+      }))
+      .addCase(copySelectedImages.fulfilled, ((state) => {
+        state[FormName.CopyImageForm].status = 'DONE';
+      }))
+      .addCase(passwordLogin.rejected, (state) => ({
+        ...state,
+        loginForm: {
+          status: 'FAILED',
+          error: 'Bad username or password',
+        },
+      }))
+      .addCase(passwordLogin.fulfilled, (state) => {
+        state[FormName.LoginForm].status = 'DONE';
+      })
+      .addCase(resetApplication.fulfilled, () => ({
+        ...initialState,
+      }));
   },
 });
 
