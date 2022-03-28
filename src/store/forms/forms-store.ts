@@ -3,7 +3,7 @@ import {
   copySelectedImages,
   createNewCollection,
   createNewFocus,
-  createNewProject,
+  createNewProject, deleteCollectionAction, deleteFocusAction,
   moveSelectedImages,
   passwordLogin,
   renameCollectionAction,
@@ -23,6 +23,7 @@ export type InitialState = {
   [FormName.NewCollectionForm]: FormState;
   [FormName.NewFocusForm]: FormState;
   [FormName.RenameFolderForm]: FormState;
+  [FormName.DeleteFolderForm]: FormState;
   [FormName.LoginForm]: FormState;
   [FormName.MoveImageForm]: FormState;
   [FormName.CopyImageForm]: FormState;
@@ -33,6 +34,7 @@ const initialState: InitialState = {
   [FormName.NewCollectionForm]: { status: 'READY' },
   [FormName.NewFocusForm]: { status: 'READY' },
   [FormName.RenameFolderForm]: { status: 'READY' },
+  [FormName.DeleteFolderForm]: { status: 'READY' },
   [FormName.LoginForm]: { status: 'READY' },
   [FormName.MoveImageForm]: { status: 'READY' },
   [FormName.CopyImageForm]: { status: 'READY' },
@@ -69,6 +71,12 @@ const { actions, reducer } = createSlice({
       .addCase(renameCollectionAction.fulfilled, (state) => {
         state[FormName.RenameFolderForm].status = 'DONE';
       })
+      .addCase(deleteCollectionAction.pending, (state) => {
+        state[FormName.DeleteFolderForm].status = 'PENDING';
+      })
+      .addCase(deleteCollectionAction.fulfilled, (state) => {
+        state[FormName.DeleteFolderForm].status = 'DONE';
+      })
       .addCase(createNewFocus.pending, (state) => {
         state[FormName.NewFocusForm].status = 'PENDING';
       })
@@ -80,6 +88,12 @@ const { actions, reducer } = createSlice({
       })
       .addCase(renameFocusAction.fulfilled, (state) => {
         state[FormName.RenameFolderForm].status = 'DONE';
+      })
+      .addCase(deleteFocusAction.pending, (state) => {
+        state[FormName.DeleteFolderForm].status = 'PENDING';
+      })
+      .addCase(deleteFocusAction.fulfilled, (state) => {
+        state[FormName.DeleteFolderForm].status = 'DONE';
       })
       .addCase(moveSelectedImages.pending, ((state) => {
         state[FormName.MoveImageForm].status = 'PENDING';

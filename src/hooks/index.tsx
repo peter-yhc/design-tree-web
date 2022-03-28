@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import systemStore from 'store/system/system-store';
 import { RootState, useAppSelector } from '../store';
+import { FormName } from '../store/forms/FormName';
+import formStore from '../store/forms/forms-store';
 
 export function useProject() {
   const activeProjectId = useSelector((state: RootState) => state.system.activeProjectId) as string;
@@ -79,4 +81,16 @@ export const useRegisterResponsiveListener = (query: string) => {
       mediaQueryList.removeEventListener('change', mediaQueryHandler);
     };
   }, [query]);
+};
+
+export const useFormHook = (formName: FormName, cb: () => void) => {
+  const dispatch = useDispatch();
+  const { status } = useAppSelector((state) => state.forms[formName]);
+
+  useEffect(() => {
+    if (status === 'DONE') {
+      dispatch(formStore.actions.resetForm(formName));
+      cb();
+    }
+  }, [status, cb]);
 };

@@ -3,8 +3,8 @@ import { fetchProjects } from './profile-store-requests';
 import {
   createNewCollection,
   createNewFocus,
-  createNewProject,
-  renameCollectionAction, renameFocusAction
+  createNewProject, deleteCollectionAction, deleteFocusAction,
+  renameCollectionAction, renameFocusAction,
 } from '../forms/forms-store-requests';
 import { IProjectResponse } from '../../api/server-interfaces';
 
@@ -113,9 +113,17 @@ const { actions, reducer } = createSlice({
       const { projectUid, collectionUid } = action.meta.arg;
       state.projects[projectUid].collections[collectionUid].name = action.payload.name;
     });
+    builder.addCase(deleteCollectionAction.fulfilled, (state, action) => {
+      const { projectUid, collectionUid } = action.meta.arg;
+      delete state.projects[projectUid].collections[collectionUid];
+    });
     builder.addCase(renameFocusAction.fulfilled, (state, action) => {
       const { projectUid, collectionUid, focusUid } = action.meta.arg;
       state.projects[projectUid].collections[collectionUid].focuses[focusUid].name = action.payload.name;
+    });
+    builder.addCase(deleteFocusAction.fulfilled, (state, action) => {
+      const { projectUid, collectionUid, focusUid } = action.meta.arg;
+      delete state.projects[projectUid].collections[collectionUid].focuses[focusUid];
     });
   },
 });

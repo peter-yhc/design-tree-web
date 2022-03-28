@@ -75,6 +75,19 @@ async function renameCollection({ projectUid, collectionUid, name }: { projectUi
   return await response.json() as ICollectionResponse;
 }
 
+async function deleteCollection({ projectUid, collectionUid }: { projectUid: string, collectionUid: string }): Promise<void> {
+  const token = await getToken();
+  const response = await fetch(`${host}/projects/${projectUid}/collections/${collectionUid}`, {
+    method: 'DELETE',
+    mode: 'cors',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+  });
+  await response.json();
+}
+
 async function createFocus({ name, projectUid, collectionUid }: { name: string, projectUid: string, collectionUid: string}): Promise<IFocusResponse> {
   const token = await getToken();
   const response = await fetch(`${host}/projects/${projectUid}/collections/${collectionUid}/focuses`, {
@@ -103,6 +116,21 @@ async function renameFocus({
     body: JSON.stringify({ name }),
   });
   return await response.json() as IFocusResponse;
+}
+
+async function deleteFocus({
+  projectUid, collectionUid, focusUid,
+}: { projectUid: string, collectionUid: string, focusUid: string}): Promise<void> {
+  const token = await getToken();
+  const response = await fetch(`${host}/projects/${projectUid}/collections/${collectionUid}/focuses/${focusUid}`, {
+    method: 'DELETE',
+    mode: 'cors',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+  });
+  await response.json();
 }
 
 async function getImages({ projectUid, locationUid }: {projectUid: string, locationUid: string}): Promise<IImageResponse[]> {
@@ -219,8 +247,10 @@ export {
   getProjects,
   createCollection,
   renameCollection,
+  deleteCollection,
   createFocus,
   renameFocus,
+  deleteFocus,
   getImages,
   createImage,
   moveImages,
