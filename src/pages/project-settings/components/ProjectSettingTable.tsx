@@ -9,7 +9,7 @@ import { DeleteModalTargetType, EditModalTargetType } from './ModalTypes';
 
 const Table = styled.table`
   text-align: left;
-  width: 70rem;
+  width: 100%;
   border-collapse: collapse;
 `;
 
@@ -74,6 +74,7 @@ interface TdProps {
 const Td = styled.td<TdProps>`
   position: relative;
   padding: ${(props) => props.theme.innerSpacing.small};
+  white-space: nowrap;
   
   ${(props) => props.$mono && css`
     font-family: 'Roboto Mono', sans-serif;

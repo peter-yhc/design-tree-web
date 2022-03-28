@@ -10,7 +10,8 @@ const Container = styled.article`
 `;
 
 const Card = styled.section`
-  margin: ${(props) => props.theme.outerSpacing.large} auto;
+  margin: ${(props) => props.theme.outerSpacing.large} 0;
+  width: 100%;
 `;
 
 export default function ProjectSettingsPage() {
