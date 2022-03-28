@@ -6,7 +6,7 @@ import { useProject } from 'hooks';
 import { useAppSelector } from 'store';
 import { FormName } from 'store/forms/FormName';
 import { Input } from 'common-components';
-import ModalAction from '../../../../modal-action/ModalAction';
+import ModalAction from './ModalAction';
 
 const StyledInput = styled(Input)`
   margin-top: ${(props) => props.theme.outerSpacing.large};
@@ -50,7 +50,7 @@ export default function NewCollectionAction() {
       label="+ New Collection"
       formName={FormName.NewCollectionForm}
       onSave={handleSave}
-      saveValidity={inputValue.length === 0 || formState !== 'READY'}
+      saveValidity={inputValue.length !== 0 || formState !== 'READY'}
     >
       <h4>New Collection</h4>
       <p>A collection is a set of images with a common theme.</p>

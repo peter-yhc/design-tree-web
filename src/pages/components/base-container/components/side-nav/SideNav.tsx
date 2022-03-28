@@ -4,8 +4,6 @@ import Logo from 'assets/images/Logo.svg';
 import { Link, useLocation } from 'react-router-dom';
 import { useProject } from 'hooks';
 import ProjectSelector from './components/ProjectSelector';
-import NewCollectionAction from './components/NewCollectionAction';
-import NewFocusAction from './components/NewFocusAction';
 import NavIndicator from './components/NavIndicator';
 
 const Nav = styled.nav`
@@ -64,10 +62,6 @@ const ActiveProjectSelector = styled(ProjectSelector)`
   font-weight: 600;
 `;
 
-const ActionsContainer = styled.div`
-  margin-top: ${(props) => props.theme.outerSpacing.medium}
-`;
-
 export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
   const { projectId, projectCategories } = useProject();
   const location = useLocation();
@@ -113,11 +107,6 @@ export default function SideNav({ className }: HTMLAttributes<HTMLDivElement>) {
           </Categories>
         )
       }
-      <ActionsContainer>
-        {/* <NewProjectAction /> */}
-        {projectId && <NewCollectionAction />}
-        {projectId && <NewFocusAction />}
-      </ActionsContainer>
       <NavIndicator />
     </Nav>
   );

@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import BaseContainer from '../components/base-container/BaseContainer';
 import { useAppSelector } from '../../store';
 import ProjectSettingTable from './components/ProjectSettingTable';
+import NewCollectionAction from './components/NewCollectionAction';
+import NewFocusAction from './components/NewFocusAction';
 
 const Container = styled.article`
   display: flex;
@@ -26,6 +28,8 @@ export default function ProjectSettingsPage() {
             <Card key={key}>
               <h2>{projects[key].name}</h2>
               <ProjectSettingTable project={{ uid: key, ...projects[key] }} />
+              <NewCollectionAction />
+              <NewFocusAction />
             </Card>
           ))
         }

@@ -6,7 +6,7 @@ import { useProject } from 'hooks';
 import { useAppSelector } from 'store';
 import { FormName } from 'store/forms/FormName';
 import { Input } from 'common-components';
-import ModalAction from '../../../../modal-action/ModalAction';
+import ModalAction from './ModalAction';
 
 const StyledInput = styled(Input)`
   margin-top: ${(props) => props.theme.outerSpacing.large};
@@ -53,7 +53,7 @@ export default function NewFocusAction() {
       label="+ New Focus"
       formName={FormName.NewFocusForm}
       onSave={handleSave}
-      saveValidity={focusName.length === 0 || formState !== 'READY'}
+      saveValidity={focusName.length !== 0 || formState !== 'READY'}
     >
       <h4>New Focus</h4>
       <p>A Focus is a specific area of a collection that you wish to concentrate on.</p>
