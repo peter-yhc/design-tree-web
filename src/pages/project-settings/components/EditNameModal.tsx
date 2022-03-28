@@ -23,10 +23,10 @@ interface EditNameModalProps extends HtmlHTMLAttributes<HTMLDivElement>{
 export default function EditNameModal({ active, onTriggerClose, target }: EditNameModalProps) {
   const dispatch = useDispatch();
   const { status } = useAppSelector((state) => state.forms[FormName.RenameFolderForm]);
-  const [value, setValue] = useState(target.name);
+  const [value, setValue] = useState(target?.name);
 
   useEffect(() => {
-    setValue(target.name);
+    setValue(target?.name);
   }, [target]);
 
   useEffect(() => {
